@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
@@ -20,7 +15,7 @@ public class Part1SettingsLoader
 
         if (string.IsNullOrWhiteSpace(aiKey) || string.IsNullOrWhiteSpace(aiEndpoint) || string.IsNullOrWhiteSpace(aiRegion))
         {
-            StringBuilder sb = new StringBuilder($"The application is missing required configuration variables for Azure AI Services.{Environment.NewLine}" +
+            StringBuilder sb = new($"The application is missing required configuration variables for Azure AI Services.{Environment.NewLine}" +
                                $"Check your [SteelBlue]appsettings.json[/] file and restart the application.{Environment.NewLine}{Environment.NewLine}");
 
             sb.AppendLine("Missing variables:");

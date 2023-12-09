@@ -40,7 +40,8 @@ while (!hasQuit)
             Part1Settings? p1Settings = Part1SettingsLoader.ExtractAndValidateSettings(config, EnvironmentPrefix);
             if (p1Settings is not null)
             {
-                break;
+                TextAnalysisDemo demo = new(p1Settings.AiEndpoint, p1Settings.AiKey);
+                await demo.AnalyzeSentimentAsync();
             }
             break;
         case WorkshopMenuOption.Part2:
