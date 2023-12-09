@@ -63,10 +63,10 @@ public class TextAnalysisDemo
         AnsiConsole.Write(new BarChart()
             .Label("Sentiment Analysis Confidence %")
             .CenterLabel()
+            .WithMaxValue(100)
             // Confidence %s range from 0 to 1.0 with 1.0 being 100%. We multiply by 100 to get a percentage for the bar chart.
             .AddItem("[Green]Positive[/]", result.ConfidenceScores.Positive * 100, Color.Green)
             .AddItem("[Yellow]Neutral[/]", result.ConfidenceScores.Neutral * 100, Color.Yellow)
-            .AddItem("[Red]Negative[/]", result.ConfidenceScores.Negative * 100, Color.Red)
-            .Width(100));
+            .AddItem("[Red]Negative[/]", result.ConfidenceScores.Negative * 100, Color.Red));
     }
 }

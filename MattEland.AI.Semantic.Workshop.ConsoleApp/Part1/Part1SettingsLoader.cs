@@ -6,7 +6,9 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public class Part1SettingsLoader
 {
-    public static Part1Settings? ExtractAndValidateSettings(IConfigurationRoot config, string environmentPrefix)
+    public const string EnvironmentPrefix = "CODEMASH_SK_";
+
+    public static Part1Settings? ExtractAndValidateSettings(IConfiguration config)
     {
         // Load settings
         string? aiKey = config["AzureAIServices:Key"];
@@ -33,7 +35,7 @@ public class Part1SettingsLoader
             }
 
             sb.AppendLine();
-            sb.AppendLine($"You can also set these variables via user secrets or environment variables prefixed by [SteelBlue]{environmentPrefix}[/].");
+            sb.AppendLine($"You can also set these variables via user secrets or environment variables prefixed by [SteelBlue]{EnvironmentPrefix}[/].");
             sb.AppendLine($"See [SteelBlue]README.md[/] for more instructions.");
 
             DisplayHelpers.DisplayBorderedMessage("Additional Configuration Needed", sb.ToString(), Color.Red);
