@@ -31,8 +31,15 @@ public class MainMenu
                     Part1Settings? p1Settings = Part1SettingsLoader.ExtractAndValidateSettings(_config);
                     if (p1Settings is not null)
                     {
+                        // TODO: Add a menu for this
+                        // TODO: Add an overarching theme
+
                         TextAnalysisDemo demo = new(p1Settings.AiEndpoint, p1Settings.AiKey);
-                        await demo.AnalyzeSentimentAsync();
+                        //await demo.AnalyzeSentimentAsync();
+
+                        await demo.AnalyzeAsync();
+                        //await demo.AbstractiveSummarizationAsync();
+                        //await demo.ExtractiveSummarizationAsync();
                     }
                     break;
                 case WorkshopMenuOption.Part2:

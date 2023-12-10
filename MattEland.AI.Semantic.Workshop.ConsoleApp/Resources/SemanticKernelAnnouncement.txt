@@ -1,0 +1,46 @@
+This document taken from John Maeda's post on the Microsoft Blog at https://devblogs.microsoft.com/semantic-kernel/hello-world/
+---
+Artificial intelligence (AI) and Large Language Models (LLM) are helping to transform the way we develop and interact with software. 
+From chatbots to code generators, natural language is the future of user interaction, delivering delightful and intelligent “copilot” experiences. 
+As these AI models become more prevalent and accessible, organizations and developers are looking for ways to quickly and easily integrate these 
+capabilities into applications without needing to train or fine-tune a model from scratch.
+
+Hello, Semantic Kernel!
+Semantic Kernel (SK) is a lightweight SDK that lets you mix conventional programming languages, like C# and Python, with the latest in Large Language Model 
+(LLM) AI “prompts” with prompt templating, chaining, and planning capabilities. This enables you to build new experiences into your apps to bring unparalleled 
+productivity for your users: like summarizing a lengthy chat exchange, flagging an important “next step” that’s added to your to-do list via Microsoft Graph, 
+or planning a full vacation instead of just reserving a seat on a plane.
+
+SK is available on GitHub as an open-source framework and is accompanied by example apps and notebooks that illustrate how to get going quickly with LLM AI. 
+Central to Semantic Kernel’s design are “Skills” that developers can build as semantic or native code. The design of Skills has prioritized maximum flexibility 
+for the developer to be both lightweight and extensible, and to work seamlessly with SK’s Memories (for context) and Connectors (for live data and actions). 
+Lastly, SK’s “Planner” facilitates complex tasks by taking a user’s “ask” and translates it into the Skills, Memories, and Connectors needed to achieve their goal.
+
+SK supports models from OpenAI, including the newly released GPT-4, and Azure OpenAI Service, and we hope to add more model support in the future. 
+We designed SK to take advantage of emerging capabilities of next generation models like GPT-4. For example, both the Planner and Skills architectures 
+were built for achieving outcomes instead of just outputs — in a more goal-oriented approach to programming that’s embodied by SK’s underlying architecture.
+
+SK takes a user's ask, creates a plan as a series of steps, and then gathers the Skills, Memory, Connectors it needs to get the user's ask fulfilled.
+
+With SK, you can now build AI-first apps faster by design while also having a front-row peek at how the SDK is being built. SK was built as an internal 
+incubation project at Microsoft to offer flexibility to a developer adding AI capability into their app. It is being shared as an open-source project to 
+further the world’s shared understanding of how to develop software that incorporates LLM AI. We’re inviting developers around the world to collaborate 
+with us through GitHub Issues, Discussions, and our Discord channel.
+
+Key benefits of SK include the following:
+
+Fast integration: SK is designed to be embedded in any kind of application, making it easy for you to test and get running with LLM AI.
+Extensibility: With SK, you can connect with external data sources and services — giving their apps the ability to use natural language processing in 
+conjunction with live information.
+Better prompting: SK’s templated prompts let you quickly design semantic functions with useful abstractions and machinery to unlock LLM AI’s potential.
+Novel-But-Familiar: Native code is always available to you as a first-class partner on your prompt engineering quest. You get the best of both worlds.
+Python has been central to this landmark year in AI, and it’s available in the experimental branch in preview form on the GitHub repo. At launch we 
+support C# as the fastest way to get started, with our preview support for Python will be active in parallel. We also are looking carefully at TypeScript
+and other languages, and we will add language support based upon what we learn from the community.
+
+Learn Semantic Kernel
+Two people talking with each other
+
+Starting today, LinkedIn Learning has a new course available on Semantic Kernel for free to kickstart your learning journey. 
+You can also learn more about Semantic Kernel from our developer learning hub as SK evolves in the open. 
+We’re actively looking forward to getting feedback and input as we further evolve SK with the developer community.

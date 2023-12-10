@@ -1,0 +1,7 @@
+Are you a budding super hero or super villain* but you feel like you're lacking that AI companion to help you reach that next level? Have you ever wanted to see what AI can do to help your daily life? Do you have an interesting application that would just be so much better with a little artificial intelligence? Don't fear, because of course there's a PreCompiler for that.
+
+In this half-day workshop we'll see how to build enterprise-level AI applications by integrating AI vision, speech, and large language models into an app. We'll start out simple by seeing how to work with these APIs on their own before layering them together with Semantic Kernel to form an AI system capable of planning complex tasks involving external data and APIs.
+
+By the time we're done, you'll have a better understanding of what AI can do and see how easy it is to integrate it into your applications. You'll also be that much closer to super hero / super villain* status with a modular personal AI companion of your very own to continue extending after CodeMash is over.
+
+* CodeMash does not endorse acts of villainy including but not limited to taking over the world and/or the Kalahari.
