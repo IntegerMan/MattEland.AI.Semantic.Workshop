@@ -29,15 +29,15 @@ public class TextAnalysisDemo
                 TextAnalyticsActions actions = new()
                 {
                     DisplayName = "CodeMash Analysis",
-                    AnalyzeSentimentActions = new List<AnalyzeSentimentAction>() { new() { ActionName = "AnalyzeSentiment" } },
-                    AbstractiveSummarizeActions = new List<AbstractiveSummarizeAction>() { new() { ActionName = "AbstractiveSummarize" } },
-                    ExtractiveSummarizeActions = new List<ExtractiveSummarizeAction>() { new() { ActionName = "ExtractiveSummarize" } },
-                    ExtractKeyPhrasesActions = new List<ExtractKeyPhrasesAction>() { new() { ActionName = "ExtractKeyPhrases" } },
-                    RecognizeEntitiesActions = new List<RecognizeEntitiesAction>() { new() { ActionName = "RecognizeEntities" } },
-                    RecognizeLinkedEntitiesActions = new List<RecognizeLinkedEntitiesAction>() { new() { ActionName = "RecognizeLinkedEntities" } },
-                    AnalyzeHealthcareEntitiesActions = new List<AnalyzeHealthcareEntitiesAction>() { new() { ActionName = "AnalyzeHealthcareEntities" } },
-                    RecognizePiiEntitiesActions = new List<RecognizePiiEntitiesAction>() { new() { ActionName = "RecognizePiiEntities" } },
-                    // Text classification actions are also possible, as are using custom models
+                    AnalyzeSentimentActions = new List<AnalyzeSentimentAction>() { new() },
+                    AbstractiveSummarizeActions = new List<AbstractiveSummarizeAction>() { new() },
+                    ExtractiveSummarizeActions = new List<ExtractiveSummarizeAction>() { new() },
+                    ExtractKeyPhrasesActions = new List<ExtractKeyPhrasesAction>() { new() },
+                    RecognizeEntitiesActions = new List<RecognizeEntitiesAction>() { new() },
+                    RecognizeLinkedEntitiesActions = new List<RecognizeLinkedEntitiesAction>() { new() },
+                    RecognizePiiEntitiesActions = new List<RecognizePiiEntitiesAction>() { new() },
+                    AnalyzeHealthcareEntitiesActions = new List<AnalyzeHealthcareEntitiesAction>() { new() },
+                    // Text classification and using custom models is also possible
                 };
 
                 IEnumerable<TextDocumentInput> documents = GetDocumentsToAnalyze();
@@ -78,8 +78,58 @@ public class TextAnalysisDemo
                 {
                     DisplayLinkedEntitiesResult(linkedEntityResult);
                 }
+                foreach (RecognizePiiEntitiesResult piiEntityResult in result.RecognizePiiEntitiesResults.SelectMany(r => r.DocumentsResults))
+                {
+                    DisplayPiiEntitiesResult(piiEntityResult);
+                }
+                foreach (AnalyzeHealthcareEntitiesResult healthcareEntityResult in result.AnalyzeHealthcareEntitiesResults.SelectMany(r => r.DocumentsResults))
+                {
+                    DisplayHealthcareEntitiesResult(healthcareEntityResult);
+                }
             }
         }
+    }
+
+    private static void DisplayPiiEntitiesResult(RecognizePiiEntitiesResult piiEntityResult)
+    { 
+        if (piiEntityResult.HasError)
+        {
+            AnsiConsole.MarkupLine($"[Red]Document {piiEntityResult.Id} failed with error:[/] {Markup.Escape(piiEntityResult.Error.Message)}");
+            return;
+        }
+
+        StringBuilder sb = new();
+        foreach (PiiEntity entity in piiEntityResult.Entities.DistinctBy(e => e.Text))
+        {
+            string categoryName = entity.Category.ToString();
+            if (entity.SubCategory is not null)
+            {
+                categoryName += $"/{entity.SubCategory}";
+            }
+
+            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category {categoryName} with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
+        }
+
+        DisplayHelpers.DisplayBorderedMessage($"PII Entities for Document {piiEntityResult.Id}", sb.ToString());
+    }
+
+    private static void DisplayHealthcareEntitiesResult(AnalyzeHealthcareEntitiesResult healthcareEntityResult)
+    {
+        if (healthcareEntityResult.HasError)
+        {
+            AnsiConsole.MarkupLine($"[Red]Document {healthcareEntityResult.Id} failed with error:[/] {Markup.Escape(healthcareEntityResult.Error.Message)}");
+            return;
+        }
+
+        StringBuilder sb = new();
+        foreach (HealthcareEntity entity in healthcareEntityResult.Entities.DistinctBy(e => e.Text))
+        {
+            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category {entity.Category} with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
+
+            // TODO: Investigate entity.Assertion and entity.DataSources
+        }
+
+        DisplayHelpers.DisplayBorderedMessage($"Healthcare Entities for Document {healthcareEntityResult.Id}", sb.ToString());
     }
 
     private static void DisplayEntitiesResult(RecognizeEntitiesResult entityResult)
