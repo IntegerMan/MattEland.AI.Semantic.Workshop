@@ -36,7 +36,6 @@ public static class DisplayHelpers
         AnsiConsole.WriteLine();
     }
 
-
     public static string ToFriendlyName(this Enum value)
     {
         FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());

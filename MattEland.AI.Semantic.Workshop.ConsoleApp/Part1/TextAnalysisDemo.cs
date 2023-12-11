@@ -1,10 +1,8 @@
 ﻿using Azure;
 using Azure.AI.TextAnalytics;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using Spectre.Console;
 using System.Net;
 using System.Text;
-using System.Linq;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
@@ -19,10 +17,10 @@ public class TextAnalysisDemo
         _client = new TextAnalyticsClient(endpointUri, credential);
     }
 
-    public async Task AnalyzeAsync()
+    public async Task AnalyzeAsync(string documentText)
     {
         AnalyzeActionsOperation? operation = null;
-        await AnsiConsole.Status().StartAsync("[Yellow]Performing analysis...[/]", async ctx =>
+        await AnsiConsole.Status().StartAsync("[Yellow]Performing text analysis...[/]", async ctx =>
         {
             try
             {
@@ -31,7 +29,6 @@ public class TextAnalysisDemo
                     DisplayName = "CodeMash Analysis",
                     AnalyzeSentimentActions = new List<AnalyzeSentimentAction>() { new() },
                     AbstractiveSummarizeActions = new List<AbstractiveSummarizeAction>() { new() },
-                    ExtractiveSummarizeActions = new List<ExtractiveSummarizeAction>() { new() },
                     ExtractKeyPhrasesActions = new List<ExtractKeyPhrasesAction>() { new() },
                     RecognizeEntitiesActions = new List<RecognizeEntitiesAction>() { new() },
                     RecognizeLinkedEntitiesActions = new List<RecognizeLinkedEntitiesAction>() { new() },
@@ -40,13 +37,22 @@ public class TextAnalysisDemo
                     // Text classification and using custom models is also possible
                 };
 
-                IEnumerable<TextDocumentInput> documents = GetDocumentsToAnalyze();
+                // We'll get an ArgumentOutOfRangeException if the text is too short, so only enable this if we've crossed a certain threshold.
+                if (documentText.Length > 40)
+                {
+                    actions.ExtractiveSummarizeActions = new List<ExtractiveSummarizeAction>() { new() };
+                }
 
+                string[] documents = [documentText];
                 operation = await _client.AnalyzeActionsAsync(WaitUntil.Completed, documents, actions);
             }
             catch (RequestFailedException ex)
             {
                 HandleRequestFailedException(ex);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                AnsiConsole.MarkupLine($"[Red]Text analysis failed. This can happen when the provided text is too short. Error details:[/] {Markup.Escape(ex.Message)}");
             }
         });
 
@@ -90,114 +96,39 @@ public class TextAnalysisDemo
         }
     }
 
-    private static void DisplayPiiEntitiesResult(RecognizePiiEntitiesResult piiEntityResult)
-    { 
-        if (piiEntityResult.HasError)
+    private static void DisplayAbstractiveSummaryResult(AbstractiveSummarizeResult result)
+    {
+        if (result.HasError)
         {
-            AnsiConsole.MarkupLine($"[Red]Document {piiEntityResult.Id} failed with error:[/] {Markup.Escape(piiEntityResult.Error.Message)}");
+            AnsiConsole.MarkupLine($"[Red]AbstractiveSummarize failed with error:[/] {Markup.Escape(result.Error.Message)}");
             return;
         }
 
         StringBuilder sb = new();
-        foreach (PiiEntity entity in piiEntityResult.Entities.DistinctBy(e => e.Text))
+        foreach (AbstractiveSummary summary in result.Summaries)
         {
-            string categoryName = entity.Category.ToString();
-            if (entity.SubCategory is not null)
-            {
-                categoryName += $"/{entity.SubCategory}";
-            }
-
-            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category {categoryName} with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
+            sb.AppendLine(summary.Text);
         }
 
-        DisplayHelpers.DisplayBorderedMessage($"PII Entities for Document {piiEntityResult.Id}", sb.ToString());
+        DisplayHelpers.DisplayBorderedMessage("Abstractive Summary", sb.ToString());
     }
 
-    private static void DisplayHealthcareEntitiesResult(AnalyzeHealthcareEntitiesResult healthcareEntityResult)
+    private static void DisplayExtractiveSummaryResult(ExtractiveSummarizeResult item)
     {
-        if (healthcareEntityResult.HasError)
+        if (item.HasError)
         {
-            AnsiConsole.MarkupLine($"[Red]Document {healthcareEntityResult.Id} failed with error:[/] {Markup.Escape(healthcareEntityResult.Error.Message)}");
+            AnsiConsole.MarkupLine($"[Red]ExtractiveSummarize failed with error:[/] {Markup.Escape(item.Error.Message)}");
             return;
         }
 
         StringBuilder sb = new();
-        foreach (HealthcareEntity entity in healthcareEntityResult.Entities.DistinctBy(e => e.Text))
+        foreach (ExtractiveSummarySentence sentence in item.Sentences)
         {
-            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category {entity.Category} with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
-
-            // TODO: Investigate entity.Assertion and entity.DataSources
+            sb.AppendLine();
+            sb.AppendLine($"[Yellow]>[/] [Italic]{Markup.Escape(sentence.Text)}[/]");
         }
 
-        DisplayHelpers.DisplayBorderedMessage($"Healthcare Entities for Document {healthcareEntityResult.Id}", sb.ToString());
-    }
-
-    private static void DisplayEntitiesResult(RecognizeEntitiesResult entityResult)
-    {
-        if (entityResult.HasError)
-        {
-            AnsiConsole.MarkupLine($"[Red]Document {entityResult.Id} failed with error:[/] {Markup.Escape(entityResult.Error.Message)}");
-            return;
-        }
-
-        DisplayHelpers.DisplayBorderedMessage($"Entities for Document {entityResult.Id}", string.Join(", ", entityResult.Entities.Select(e => e.Text)));
-    }
-
-    private static void DisplayLinkedEntitiesResult(RecognizeLinkedEntitiesResult entityResult)
-    {
-        if (entityResult.HasError)
-        {
-            AnsiConsole.MarkupLine($"[Red]Document {entityResult.Id} failed with error:[/] {Markup.Escape(entityResult.Error.Message)}");
-            return;
-        }
-
-        StringBuilder sb = new();
-        sb.AppendLine();
-        foreach (var entity in entityResult.Entities)
-        {
-            sb.AppendLine($"- [Yellow]{entity.Name}:[/] [Blue]{entity.Url}[/]");
-        }
-
-        DisplayHelpers.DisplayBorderedMessage($"Linked Entities for Document {entityResult.Id}", sb.ToString());
-    }
-
-    private static void DisplayKeyPhrasesResult(ExtractKeyPhrasesResult keyPhraseResult)
-    {
-        if (keyPhraseResult.HasError)
-        {
-            AnsiConsole.MarkupLine($"[Red]Document {keyPhraseResult.Id} failed with error:[/] {Markup.Escape(keyPhraseResult.Error.Message)}");
-            return;
-        }
-
-        DisplayHelpers.DisplayBorderedMessage($"Key Phrases for Document {keyPhraseResult.Id}", string.Join(", ", keyPhraseResult.KeyPhrases));
-    }
-
-    public async Task AnalyzeSentimentAsync()
-    {
-        // Get the text to analyze from the user
-        string text = AnsiConsole.Ask<string>("[Yellow]Enter text for sentiment analysis:[/]");
-        AnsiConsole.MarkupLine($"[Yellow]Analyzing:[/] {text}");
-        AnsiConsole.WriteLine();
-
-        // Analyze the text
-        DocumentSentiment? result = null;
-        await AnsiConsole.Status().StartAsync("[Yellow]Performing sentiment analysis...[/]", async ctx =>
-        {
-            try
-            {
-                result = await _client.AnalyzeSentimentAsync(text);
-            }
-            catch (RequestFailedException ex)
-            {
-                HandleRequestFailedException(ex);
-            }
-        });
-
-        // This can be null if an exception occurred
-        if (result is not null)
-        {
-            DisplaySentimentAnalysisResult(result);
-        }
+        DisplayHelpers.DisplayBorderedMessage("Extractive Summary", sb.ToString());
     }
 
     private static void DisplaySentimentAnalysisResult(DocumentSentiment result)
@@ -230,106 +161,114 @@ public class TextAnalysisDemo
         _ => Color.White // Shouldn't happen
     };
 
-    public async Task AbstractiveSummarizationAsync()
+    private static void DisplayKeyPhrasesResult(ExtractKeyPhrasesResult keyPhraseResult)
     {
-        // Analyze the text
-        List<AbstractiveSummarizeResult> summaries = new();
-        await AnsiConsole.Status().StartAsync("[Yellow]Performing abstractive summarization...[/]", async ctx =>
+        if (keyPhraseResult.HasError)
         {
-            try
-            {
-                IEnumerable<TextDocumentInput> documents = GetDocumentsToAnalyze();
-                AbstractiveSummarizeOperation operation = await _client.AbstractiveSummarizeAsync(WaitUntil.Completed, documents);
-
-                Response<AsyncPageable<AbstractiveSummarizeResultCollection>> result = await operation.WaitForCompletionAsync();
-
-                foreach (AbstractiveSummarizeResultCollection resultCollection in result.Value.ToBlockingEnumerable())
-                {
-                    summaries.AddRange(resultCollection);
-                }
-            }
-            catch (RequestFailedException ex)
-            {
-                HandleRequestFailedException(ex);
-            }
-        });
-
-        foreach (AbstractiveSummarizeResult item in summaries)
-        {
-            DisplayAbstractiveSummaryResult(item);
+            AnsiConsole.MarkupLine($"[Red]KeyPhraseExtraction failed with error:[/] {Markup.Escape(keyPhraseResult.Error.Message)}");
+            return;
         }
+
+        if (keyPhraseResult.KeyPhrases.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[Yellow]No key phrases found.[/]");
+            return;
+        }
+        DisplayHelpers.DisplayBorderedMessage("Key Phrases", string.Join(", ", keyPhraseResult.KeyPhrases.Select(p => $"[Yellow]{Markup.Escape(p)}[/]")));
     }
 
-    private static void DisplayAbstractiveSummaryResult(AbstractiveSummarizeResult result)
+    private static void DisplayEntitiesResult(RecognizeEntitiesResult entityResult)
     {
-        if (result.HasError)
+        if (entityResult.HasError)
         {
-            AnsiConsole.MarkupLine($"[Red]Document {result.Id} failed with error:[/] {Markup.Escape(result.Error.Message)}");
+            AnsiConsole.MarkupLine($"[Red]RecognizeEntities failed with error:[/] {Markup.Escape(entityResult.Error.Message)}");
+            return;
+        }
+
+        if (entityResult.Entities.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[Yellow]No entities found.[/]");
+            return;
+        }
+        DisplayHelpers.DisplayBorderedMessage("Entities", string.Join(", ", entityResult.Entities.Select(e => $"[Yellow]{Markup.Escape(e.Text)}[/]")));
+    }
+
+    private static void DisplayLinkedEntitiesResult(RecognizeLinkedEntitiesResult entityResult)
+    {
+        if (entityResult.HasError)
+        {
+            AnsiConsole.MarkupLine($"[Red]RecognizeLinkedEntities failed with error:[/] {Markup.Escape(entityResult.Error.Message)}");
+            return;
+        }
+
+        if (entityResult.Entities.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[Yellow]No linked entities found.[/]");
             return;
         }
 
         StringBuilder sb = new();
-        foreach (AbstractiveSummary summary in result.Summaries)
+        sb.AppendLine();
+        foreach (var entity in entityResult.Entities)
         {
-            sb.AppendLine(summary.Text);
+            sb.AppendLine($"- [Yellow]{entity.Name}:[/] [Blue]{entity.Url}[/]");
         }
 
-        DisplayHelpers.DisplayBorderedMessage($"Document {result.Id} Abstractive Summary", sb.ToString());
+        DisplayHelpers.DisplayBorderedMessage("Linked Entities", sb.ToString());
     }
 
-    public async Task ExtractiveSummarizationAsync()
+    private static void DisplayPiiEntitiesResult(RecognizePiiEntitiesResult piiEntityResult)
     {
-        // Analyze the text
-        List<ExtractiveSummarizeResult> summaries = new();
-        await AnsiConsole.Status().StartAsync("[Yellow]Performing extractive summarization...[/]", async ctx =>
+        if (piiEntityResult.HasError)
         {
-            try
-            {
-                IEnumerable<TextDocumentInput> documents = GetDocumentsToAnalyze();
-                ExtractiveSummarizeOperation operation = await _client.ExtractiveSummarizeAsync(WaitUntil.Completed, documents);
-
-                Response<AsyncPageable<ExtractiveSummarizeResultCollection>> result = await operation.WaitForCompletionAsync();
-
-                foreach (ExtractiveSummarizeResultCollection resultCollection in result.Value.ToBlockingEnumerable())
-                {
-                    summaries.AddRange(resultCollection);
-                }
-            }
-            catch (RequestFailedException ex)
-            {
-                HandleRequestFailedException(ex);
-            }
-        });
-
-        foreach (ExtractiveSummarizeResult item in summaries)
-        {
-            DisplayExtractiveSummaryResult(item);
+            AnsiConsole.MarkupLine($"[Red]PII failed with error:[/] {Markup.Escape(piiEntityResult.Error.Message)}");
+            return;
         }
-    }
 
-    private static void DisplayExtractiveSummaryResult(ExtractiveSummarizeResult item)
-    {
-        if (item.HasError)
+        if (piiEntityResult.Entities.Count == 0)
         {
-            AnsiConsole.MarkupLine($"[Red]Document {item.Id} failed with error:[/] {Markup.Escape(item.Error.Message)}");
+            AnsiConsole.MarkupLine("[Yellow]No PII entities found.[/]");
             return;
         }
 
         StringBuilder sb = new();
-
-        foreach (ExtractiveSummarySentence sentence in item.Sentences)
+        foreach (PiiEntity entity in piiEntityResult.Entities.DistinctBy(e => e.Text))
         {
-            sb.AppendLine();
-            sb.AppendLine($"[Yellow]>[/] [Italic]{Markup.Escape(sentence.Text)}[/]");
+            string categoryName = entity.Category.ToString();
+            if (entity.SubCategory is not null)
+            {
+                categoryName += $"/{entity.SubCategory}";
+            }
+
+            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category [SteelBlue]{categoryName}[/] with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
         }
 
-        DisplayHelpers.DisplayBorderedMessage($"Document {item.Id} Extractive Summary", sb.ToString());
+        DisplayHelpers.DisplayBorderedMessage("Personally Identifiable Information (PII)", sb.ToString());
     }
 
-    private static IEnumerable<TextDocumentInput> GetDocumentsToAnalyze()
+    private static void DisplayHealthcareEntitiesResult(AnalyzeHealthcareEntitiesResult healthcareEntityResult)
     {
-        yield return new TextDocumentInput("CodeMash Workshop Abstract", Resources.WorkshopAbstract);
-        // yield return new TextDocumentInput("SemanticKernel Announcement", Resources.SemanticKernelAnnouncement);
+        if (healthcareEntityResult.HasError)
+        {
+            AnsiConsole.MarkupLine($"[Red]HealthCare Entities failed with error:[/] {Markup.Escape(healthcareEntityResult.Error.Message)}");
+            return;
+        }
+
+        if (healthcareEntityResult.Entities.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[Yellow]No healthcare entities found.[/]");
+            return;
+        }
+
+        StringBuilder sb = new();
+        foreach (HealthcareEntity entity in healthcareEntityResult.Entities.DistinctBy(e => e.Text))
+        {
+            sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category [SteelBlue]{entity.Category}[/] with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
+
+            // TODO: Investigate entity.Assertion and entity.DataSources
+        }
+
+        DisplayHelpers.DisplayBorderedMessage("Healthcare Entities", sb.ToString());
     }
 
     private static void HandleRequestFailedException(RequestFailedException ex)

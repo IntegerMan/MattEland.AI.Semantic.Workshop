@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+
 public enum WorkshopMenuOption
 {
     [Description("Part 1: Azure AI Services")]
