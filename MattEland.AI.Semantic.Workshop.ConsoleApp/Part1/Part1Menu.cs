@@ -6,10 +6,12 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 public class Part1Menu
 {
     private readonly TextAnalysisDemo _textAnalysis;
+    private readonly ImageAnalysisDemo _imageAnalysis;
 
     public Part1Menu(Part1Settings settings)
     {
         _textAnalysis = new TextAnalysisDemo(settings.AiEndpoint, settings.AiKey);
+        _imageAnalysis = new ImageAnalysisDemo(settings.AiEndpoint, settings.AiKey);
     }
 
     public async Task RunAsync()
@@ -19,6 +21,15 @@ public class Part1Menu
             { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text to analyze:[/]")) },
             { "This Workshop's Abstract", () => Properties.Resources.WorkshopAbstract},
             { "Semantic Kernel Announcement", () => Properties.Resources.SemanticKernelAnnouncement },
+            { "Back", () => string.Empty }
+        };
+
+        Dictionary<string, Func<string>> imageSources = new()
+        {
+            { "AI Generated Portrait (local file)", () => "Resources/AIPortrait.png"},
+            { "Article Billboard (web file)", () => "https://accessibleai.dev/img/SK/A_SemanticKernelIntro.png" },
+            { "Custom Image", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter the image URL or relative path:[/]")) },
+            { "Back", () => string.Empty }
         };
 
         bool hasQuit = false;
@@ -39,6 +50,8 @@ public class Part1Menu
                                                .AddChoices(textSources.Keys)
                                                .UseConverter(c => c));
 
+                    if (textToAnalyze == "Back") break;
+
                     AnsiConsole.MarkupLine($"[Yellow]Analyzing {textToAnalyze}[/]");
                     string documentText = textSources[textToAnalyze]();
 
@@ -46,7 +59,17 @@ public class Part1Menu
                     break;
 
                 case Part1MenuOptions.AnalyzeImage:
-                    AnsiConsole.WriteLine("Image analysis is not yet implemented. Please check back later.");
+                    string pathToAnalyze = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                                               .Title("What image do you want to analyze?")
+                                               .HighlightStyle(Style.Parse("Orange3"))
+                                               .AddChoices(imageSources.Keys)
+                                               .UseConverter(c => c));
+
+                    if (pathToAnalyze == "Back") break;
+
+                    string imageSource = imageSources[pathToAnalyze]();
+
+                    await _imageAnalysis.AnalyzeAsync(imageSource);
                     break;
 
                 case Part1MenuOptions.TextToSpeech:

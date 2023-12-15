@@ -19,6 +19,8 @@ public class TextAnalysisDemo
 
     public async Task AnalyzeAsync(string documentText)
     {
+        documentText = "Scrooge was at first inclined to be surprised that the Spirit should attach importance to conversations apparently so trivial; but feeling assured that they must have some hidden purpose, he set himself to consider what it was likely to be. They could scarcely be supposed to have any bearing on the death of Jacob, his old partner, for that was Past, and this Ghost’s province was the Future. Nor could he think of any one immediately connected with himself, to whom he could apply them. But nothing doubting that to whomsoever they applied they had some latent moral for his own improvement, he resolved to treasure up every word he heard, and everything he saw; and especially to observe the shadow of himself when it appeared. For he had an expectation that the conduct of his future self would give him the clue he missed, and would render the solution of these riddles easy.";
+
         AnalyzeActionsOperation? operation = null;
         await AnsiConsole.Status().StartAsync("[Yellow]Performing text analysis...[/]", async ctx =>
         {
@@ -26,7 +28,6 @@ public class TextAnalysisDemo
             {
                 TextAnalyticsActions actions = new()
                 {
-                    DisplayName = "CodeMash Analysis",
                     AnalyzeSentimentActions = new List<AnalyzeSentimentAction>() { new() },
                     AbstractiveSummarizeActions = new List<AbstractiveSummarizeAction>() { new() },
                     ExtractKeyPhrasesActions = new List<ExtractKeyPhrasesAction>() { new() },
@@ -34,6 +35,7 @@ public class TextAnalysisDemo
                     RecognizeLinkedEntitiesActions = new List<RecognizeLinkedEntitiesAction>() { new() },
                     RecognizePiiEntitiesActions = new List<RecognizePiiEntitiesAction>() { new() },
                     AnalyzeHealthcareEntitiesActions = new List<AnalyzeHealthcareEntitiesAction>() { new() },
+                    
                     // Text classification and using custom models is also possible
                 };
 
@@ -49,6 +51,10 @@ public class TextAnalysisDemo
             catch (RequestFailedException ex)
             {
                 HandleRequestFailedException(ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                AnsiConsole.MarkupLine($"[Red]Text analysis failed. The requested actions may not be possible in your Azure region. Error details:[/] {Markup.Escape(ex.Message)}");
             }
             catch (ArgumentOutOfRangeException ex)
             {
