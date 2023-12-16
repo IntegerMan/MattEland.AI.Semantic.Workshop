@@ -121,6 +121,15 @@
   <data name="SemanticKernelAnnouncement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SemanticKernelAnnouncement.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="TextFewShot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextFewShot.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="TextOneShot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextOneShot.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="TextZeroShot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextZeroShot.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="WorkshopAbstract" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WorkshopAbstract.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

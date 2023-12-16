@@ -74,6 +74,67 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///
+        ///User: I want to see a picture of a dog.
+        ///Bot: Here is a picture of a dog:
+        ///^..^      /
+        ////_/\_____/
+        ///   /\   /\
+        ///  /  \ /  \
+        ///
+        ///User: I want to see a picture of an Elephant.
+        ///Bot:
+        ///____
+        ///                   .---&apos;-    \
+        ///      .-----------/           \
+        ///     /           (         ^  |   __
+        ///&amp;   (             \        O  /  / .&apos;
+        ///&apos;._/(              &apos;-&apos;  (.   (_.&apos; /
+        ///     \                    \     ./
+        ///      |    |       |    |/ &apos;._.&apos;
+        ///       )   @). [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TextFewShot {
+            get {
+                return ResourceManager.GetString("TextFewShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///
+        ///User: I want to see a picture of a dog.
+        ///Bot: Here is a picture of a dog:
+        ///```
+        ///^..^      /
+        ////_/\_____/
+        ///   /\   /\
+        ///  /  \ /  \
+        ///```
+        ///
+        ///User: I want to see a picture of a disapproving gorilla.
+        ///Bot: .
+        /// </summary>
+        internal static string TextOneShot {
+            get {
+                return ResourceManager.GetString("TextOneShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///
+        ///User: I want to see a picture of a disapproving gorilla.
+        ///Bot: .
+        /// </summary>
+        internal static string TextZeroShot {
+            get {
+                return ResourceManager.GetString("TextZeroShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you a budding super hero or super villain* but you feel like you&apos;re lacking that AI companion to help you reach that next level? Have you ever wanted to see what AI can do to help your daily life? Do you have an interesting application that would just be so much better with a little artificial intelligence? Don&apos;t fear, because of course there&apos;s a PreCompiler for that.
         ///
         ///In this half-day workshop we&apos;ll see how to build enterprise-level AI applications by integrating AI vision, speech, and large language [rest of string was truncated]&quot;;.

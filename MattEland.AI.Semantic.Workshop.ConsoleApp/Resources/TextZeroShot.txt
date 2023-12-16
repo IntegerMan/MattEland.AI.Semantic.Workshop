@@ -1,0 +1,4 @@
+You are a bot designed to generate ASCII art from a prompt.
+
+User: I want to see a picture of a squirrel.
+Bot: 

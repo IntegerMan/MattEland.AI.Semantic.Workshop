@@ -21,6 +21,15 @@ public class Part2Menu
 
     public async Task RunAsync()
     {
+        Dictionary<string, Func<string>> textSources = new()
+        {
+            { "Zero Shot Inference Example", () => Properties.Resources.TextZeroShot},
+            { "One Shot Inference Example", () => Properties.Resources.TextOneShot},
+            { "Few Shot Inference Example", () => Properties.Resources.TextFewShot},
+            { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text prompt:[/]")) },
+            { "Back", () => string.Empty }
+        };
+
         bool hasQuit = false;
         while (!hasQuit)
         {
@@ -33,20 +42,49 @@ public class Part2Menu
             switch (choice)
             {
                 case Part2MenuOptions.TextCompletion:
-                    // TODO: This would be better with a few examples already implemented, plus a "provide your own" option
-                    string prompt = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the prompt to send to the large language model:[/]"));
+                    if (string.IsNullOrEmpty(_settings.TextDeployment))
+                    {
+                        AnsiConsole.MarkupLine($"[Red]No text deployment specified. Please check your settings.[/]");
+                        break;
+                    }
+
+                    string textChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                                               .Title("What text prompt do you want to use?")
+                                               .HighlightStyle(Style.Parse("Orange3"))
+                                               .AddChoices(textSources.Keys)
+                                               .UseConverter(c => c));
+
+                    if (textChoice == "Back")
+                        break;
+
+                    string prompt = textSources[textChoice]();
+                    AnsiConsole.Markup($"[Yellow]Text Prompt:[/] [SteelBlue]{Markup.Escape(prompt)}[/]");
+
                     string? response = await _llm.GetTextCompletionAsync(prompt);
                     if (response is not null)
                     {
-                        DisplayHelpers.DisplayBorderedMessage(prompt, response);
-                    }
+                        AnsiConsole.WriteLine(response);
+                    } 
+                    AnsiConsole.WriteLine();
                     break;
 
                 case Part2MenuOptions.ChatCompletion:
+                    if (string.IsNullOrEmpty(_settings.ChatDeployment))
+                    {
+                        AnsiConsole.MarkupLine($"[Red]No chat deployment specified. Please check your settings.[/]");
+                        break;
+                    }
+
                     AnsiConsole.WriteLine("Chat Completion is not yet implemented. Please check back later.");
                     break;
 
                 case Part2MenuOptions.TextEmbedding:
+                    if (string.IsNullOrEmpty(_settings.EmbeddingDeployment))
+                    {
+                        AnsiConsole.MarkupLine($"[Red]No text embedding deployment specified. Please check your settings.[/]");
+                        break;
+                    }
+
                     AnsiConsole.WriteLine("Text Embedding is not yet implemented. Please check back later.");
                     break;
 
