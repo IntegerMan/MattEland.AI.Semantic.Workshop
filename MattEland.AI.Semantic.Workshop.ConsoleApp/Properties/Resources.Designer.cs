@@ -61,6 +61,19 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference. The user is a software engineer who is attending the conference.
+        ///
+        ///Be polite to the user and answer their questions. Provide relevant information on Azure AI Services and OpenAI when needed.
+        ///
+        ///If the user seems stuck or confused, advise them to ask for help from the people running the workshop: Matt Eland and Sam Gomez..
+        /// </summary>
+        internal static string ChatAssistantSystemPrompt {
+            get {
+                return ResourceManager.GetString("ChatAssistantSystemPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This document taken from John Maeda&apos;s post on the Microsoft Blog at https://devblogs.microsoft.com/semantic-kernel/hello-world/
         ///---
         ///Artificial intelligence (AI) and Large Language Models (LLM) are helping to transform the way we develop and interact with software. 
@@ -74,26 +87,27 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///   Looks up a localized string similar to You are a bot designed to generate workshop content outlines.
         ///
-        ///User: I want to see a picture of a dog.
-        ///Bot: Here is a picture of a dog:
-        ///^..^      /
-        ////_/\_____/
-        ///   /\   /\
-        ///  /  \ /  \
+        ///User: Generate a workshop outline covering AI in .NET with Azure AI Services, OpenAI, and Semantic Kernel
+        ///Bot: Sure. Here&apos;s a high-level outline of the workshop:
         ///
-        ///User: I want to see a picture of an Elephant.
-        ///Bot:
-        ///____
-        ///                   .---&apos;-    \
-        ///      .-----------/           \
-        ///     /           (         ^  |   __
-        ///&amp;   (             \        O  /  / .&apos;
-        ///&apos;._/(              &apos;-&apos;  (.   (_.&apos; /
-        ///     \                    \     ./
-        ///      |    |       |    |/ &apos;._.&apos;
-        ///       )   @). [rest of string was truncated]&quot;;.
+        ///1: Azure AI Services
+        ///1.1: Azure AI Vision
+        ///1.2: Azure AI Language
+        ///1.3: Azure AI Speech
+        ///
+        ///2: OpenAI
+        ///2.1: Text Completions
+        ///2.2: Chat Completions
+        ///
+        ///--- Break 1 ---
+        ///
+        ///2.3: Image Completions
+        ///2.4: Text Embedding Search
+        ///
+        ///3: Semantic Kernel with Semantic Functions
+        ///3.1: The need [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TextFewShot {
             get {
@@ -102,19 +116,27 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///   Looks up a localized string similar to You are a bot designed to generate workshop content outlines.
         ///
-        ///User: I want to see a picture of a dog.
-        ///Bot: Here is a picture of a dog:
-        ///```
-        ///^..^      /
-        ////_/\_____/
-        ///   /\   /\
-        ///  /  \ /  \
-        ///```
+        ///User: Generate a workshop outline covering AI in .NET with Azure AI Services, OpenAI, and Semantic Kernel
+        ///Bot: Sure. Here&apos;s a high-level outline of the workshop:
         ///
-        ///User: I want to see a picture of a disapproving gorilla.
-        ///Bot: .
+        ///1: Azure AI Services
+        ///1.1: Azure AI Vision
+        ///1.2: Azure AI Language
+        ///1.3: Azure AI Speech
+        ///
+        ///--- Break 1 ---
+        ///
+        ///2: OpenAI
+        ///2.1: Text Completions
+        ///2.2: Chat Completions
+        ///2.3: Image Completions
+        ///2.4: Text Embedding Search
+        ///
+        ///--- Break 2 ---
+        ///
+        ///3: Semantic Kernel with Semantic Functio [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TextOneShot {
             get {
@@ -123,9 +145,9 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are a bot designed to generate ASCII art from a prompt.
+        ///   Looks up a localized string similar to You are a bot designed to generate workshop content outlines.
         ///
-        ///User: I want to see a picture of a disapproving gorilla.
+        ///User: Generate a workshop outline covering learning the basics of .NET programming
         ///Bot: .
         /// </summary>
         internal static string TextZeroShot {

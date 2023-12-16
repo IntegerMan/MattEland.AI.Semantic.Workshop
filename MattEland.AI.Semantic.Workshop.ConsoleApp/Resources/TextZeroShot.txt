@@ -1,4 +1,4 @@
-You are a bot designed to generate ASCII art from a prompt.
+You are a bot designed to generate workshop content outlines.
 
-User: I want to see a picture of a squirrel.
+User: Generate a workshop outline covering learning the basics of .NET programming
 Bot: 

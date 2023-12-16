@@ -37,7 +37,7 @@ public class LargeLanguageModelDemo
             CompletionsOptions options = new()
             {
                 ChoicesPerPrompt = 1,
-                MaxTokens = 100,
+                MaxTokens = 1000,
                 DeploymentName = _settings.TextDeployment,
                 Temperature = 1f, // ranges from 0 to 2
                 Echo = false,
@@ -72,11 +72,6 @@ public class LargeLanguageModelDemo
                 AnsiConsole.MarkupLine($"[Red]Status Code: {ex.Status}[/]");
                 AnsiConsole.MarkupLine($"[Red]Error Code: {ex.ErrorCode}[/]");
             }
-        }
-        catch (Exception ex)
-        {
-            AnsiConsole.MarkupLine($"[Red]Error: {ex.Message} ({ex.GetType().Name})[/]");
-            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
         }
 
         return null;

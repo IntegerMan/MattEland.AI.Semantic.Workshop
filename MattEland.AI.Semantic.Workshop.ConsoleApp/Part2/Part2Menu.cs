@@ -1,4 +1,5 @@
 ﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,22 @@ public class Part2Menu
 {
     private readonly Part2Settings _settings;
     private readonly LargeLanguageModelDemo _llm;
+    private readonly ChatDemo _chat;
 
     public Part2Menu(Part2Settings p2Settings)
     {
         _settings = p2Settings;
         _llm = new LargeLanguageModelDemo(_settings);
+        _chat = new ChatDemo(_settings, Resources.ChatAssistantSystemPrompt);
     }
 
     public async Task RunAsync()
     {
         Dictionary<string, Func<string>> textSources = new()
         {
-            { "Zero Shot Inference Example", () => Properties.Resources.TextZeroShot},
-            { "One Shot Inference Example", () => Properties.Resources.TextOneShot},
-            { "Few Shot Inference Example", () => Properties.Resources.TextFewShot},
+            { "Zero Shot Inference Example", () => Resources.TextZeroShot},
+            { "One Shot Inference Example", () => Resources.TextOneShot},
+            { "Few Shot Inference Example", () => Resources.TextFewShot},
             { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text prompt:[/]")) },
             { "Back", () => string.Empty }
         };
@@ -75,7 +78,23 @@ public class Part2Menu
                         break;
                     }
 
-                    AnsiConsole.WriteLine("Chat Completion is not yet implemented. Please check back later.");
+                    bool keepChatting = true;
+                    do
+                    {
+                        string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
+                        string? chatResponse = await _chat.GetChatCompletionAsync(userText);
+
+                        if (chatResponse is not null)
+                        {
+                            AnsiConsole.WriteLine();
+                            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {Markup.Escape(chatResponse)}");
+                        }
+
+                        AnsiConsole.WriteLine();
+                        keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
+                        AnsiConsole.WriteLine();
+                    } while (keepChatting);
+
                     break;
 
                 case Part2MenuOptions.TextEmbedding:
