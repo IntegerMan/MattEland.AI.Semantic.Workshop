@@ -8,12 +8,14 @@ public class Part2Menu
     private readonly Part2Settings _settings;
     private readonly LargeLanguageModelDemo _llm;
     private readonly ChatDemo _chat;
+    private readonly ImageDemo _dalle;
 
     public Part2Menu(Part2Settings p2Settings)
     {
         _settings = p2Settings;
         _llm = new LargeLanguageModelDemo(_settings);
         _chat = new ChatDemo(_settings, Resources.ChatAssistantSystemPrompt);
+        _dalle = new ImageDemo(_settings);
     }
 
     public async Task RunAsync()
@@ -24,6 +26,15 @@ public class Part2Menu
             { "One Shot Inference Example", () => Resources.TextOneShot},
             { "Few Shot Inference Example", () => Resources.TextFewShot},
             { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text prompt:[/]")) },
+            { "Back", () => string.Empty }
+        };
+
+        Dictionary<string, Func<string>> imageSources = new()
+        {
+            { "Disapproving Gorilla", () => "An oil painting of disapproving gorilla staring at the viewer"},
+            { "Batman and Robin presenting at CodeMash", () => "Batman presenting at a technical conference with Robin there helping"},
+            { "Bacon Buffet", () => "An illustration of programming conference attendees waiting in line at a buffet featuring bacon and only bacon at CodeMash 2024." },
+            { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own image prompt:[/]")) },
             { "Back", () => string.Empty }
         };
 
@@ -89,6 +100,28 @@ public class Part2Menu
                         AnsiConsole.WriteLine();
                     } while (keepChatting);
 
+                    break;
+
+                case Part2MenuOptions.ImageCompletion:
+                    if (string.IsNullOrEmpty(_settings.ImageDeployment))
+                    {
+                        AnsiConsole.MarkupLine($"[Red]No image deployment specified. Please check your settings.[/]");
+                        break;
+                    }
+
+                    string imageChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                                               .Title("What image prompt do you want to use?")
+                                               .HighlightStyle(Style.Parse("Orange3"))
+                                               .AddChoices(imageSources.Keys)
+                                               .UseConverter(c => c));
+
+                    if (imageChoice == "Back")
+                        break;
+
+                    string imagePrompt = imageSources[imageChoice]();
+                    AnsiConsole.MarkupLine($"[Yellow]Image Prompt:[/] [SteelBlue]{Markup.Escape(imagePrompt)}[/]");
+
+                    await _dalle.GenerateImageAsync(imagePrompt);
                     break;
 
                 case Part2MenuOptions.TextEmbedding:

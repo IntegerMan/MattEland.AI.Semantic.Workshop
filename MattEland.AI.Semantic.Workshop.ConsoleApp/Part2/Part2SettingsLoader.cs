@@ -16,8 +16,9 @@ public class Part2SettingsLoader
         string? textDeployment = config["OpenAI:TextDeployment"];
         string? chatDeployment = config["OpenAI:ChatDeployment"];
         string? embeddingDeployment = config["OpenAI:EmbeddingDeployment"];
+        string? imageDeployment = config["OpenAI:ImageDeployment"];
 
-        if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(endpoint))
+        if (string.IsNullOrWhiteSpace(key))
         {
             StringBuilder sb = new($"The application is missing required configuration variables for OpenAI.{Environment.NewLine}" +
                                $"Check your [SteelBlue]appsettings.json[/] file and restart the application.{Environment.NewLine}{Environment.NewLine}");
@@ -58,11 +59,15 @@ public class Part2SettingsLoader
         {
             AnsiConsole.MarkupLine($"[Orange1]OpenAI:EmbeddingDeployment[/] is not set. Using embeddings will be disabled.");
         }
+        if (string.IsNullOrEmpty(imageDeployment))
+        {
+            AnsiConsole.MarkupLine($"[Orange1]OpenAI:ImageDeployment[/] is not set. Using DALL-E will be disabled.");
+        }
 
         DisplayHelpers.DisplayBorderedMessage("Part 2 OpenAI Setup Confirmed",
                                       "Your machine is configured and ready to go.",
                                       Color.Green);
 
-        return new Part2Settings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment);
+        return new Part2Settings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment, imageDeployment);
     }   
 }

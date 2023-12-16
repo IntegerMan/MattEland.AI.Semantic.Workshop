@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Rendering;
+using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -42,4 +43,26 @@ public static class DisplayHelpers
         DescriptionAttribute[]? attributes = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
         return attributes?[0].Description ?? value.ToString();
     }
+
+    public static void DisplayImage(this string imagePath)
+    {
+        CanvasImage image = new(imagePath);
+        image.MaxWidth = 30;
+        AnsiConsole.Write(image);
+    }
+
+    public static async Task DisplayImageAsync(this Uri imageUri)
+    {
+        using HttpClient webClient = new();
+        using Stream stream = await webClient.GetStreamAsync(imageUri);
+
+        DisplayImage(stream);
+    }
+
+    public static void DisplayImage(this Stream imageStream)
+    {
+        CanvasImage image = new(imageStream);
+        image.MaxWidth = 30;
+        AnsiConsole.Write(image);
+    }   
 }

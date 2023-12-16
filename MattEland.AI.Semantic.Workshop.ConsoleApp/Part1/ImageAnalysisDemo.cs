@@ -23,15 +23,11 @@ public class ImageAnalysisDemo
         VisionSource source;
         if (imageSource.StartsWith("http", StringComparison.OrdinalIgnoreCase))
         {
-            source = VisionSource.FromUrl(new Uri(imageSource));
+            Uri uri = new Uri(imageSource);
+            source = VisionSource.FromUrl(uri);
 
-            // Download the image to a local file so we can show a preview of it
-            using HttpClient webClient = new();
-            using Stream stream = await webClient.GetStreamAsync(imageSource);
-
-            CanvasImage image = new(stream);
-            image.MaxWidth = 30;
-            AnsiConsole.Write(image);
+            // Show a web image
+            await DisplayHelpers.DisplayImageAsync(uri);
         }
         else
         {
@@ -43,9 +39,7 @@ public class ImageAnalysisDemo
 
             source = VisionSource.FromFile(imageSource);
 
-            CanvasImage image = new(imageSource);
-            image.MaxWidth = 30;
-            AnsiConsole.Write(image);
+            DisplayHelpers.DisplayImage(imageSource);
         }
 
         ImageAnalysisOptions analysisOptions = new()

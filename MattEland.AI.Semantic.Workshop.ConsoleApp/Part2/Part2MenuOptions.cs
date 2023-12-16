@@ -8,6 +8,8 @@ public enum Part2MenuOptions
     TextCompletion,
     [Description("Chat Completion")]
     ChatCompletion,
+    [Description("Image Generation (DALL-E)")]
+    ImageCompletion,
     [Description("Text Embedding")]
     TextEmbedding,
     [Description("Go back")]
