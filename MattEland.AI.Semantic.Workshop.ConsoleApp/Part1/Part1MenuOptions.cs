@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public enum Part1MenuOptions
 {

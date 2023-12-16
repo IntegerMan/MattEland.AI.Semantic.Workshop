@@ -3,8 +3,8 @@ using Spectre.Console;
 using System.Text;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 // Using UTF8 allows more capabilities for Spectre.Console.
 Console.OutputEncoding = Encoding.UTF8;
