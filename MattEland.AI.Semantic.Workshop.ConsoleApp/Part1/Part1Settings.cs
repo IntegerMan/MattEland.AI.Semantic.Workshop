@@ -12,4 +12,5 @@ public class Part1Settings
     public string AiKey { get; }
     public string AiEndpoint { get; }
     public string AiRegion { get; }
+    public string VoiceName { get; set; } = "en-GB-AlfieNeural";
 }

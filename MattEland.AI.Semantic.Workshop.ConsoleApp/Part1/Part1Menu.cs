@@ -7,11 +7,15 @@ public class Part1Menu
 {
     private readonly TextAnalysisDemo _textAnalysis;
     private readonly ImageAnalysisDemo _imageAnalysis;
+    private readonly SpeechDemo _speech;
 
     public Part1Menu(Part1Settings settings)
     {
         _textAnalysis = new TextAnalysisDemo(settings.AiEndpoint, settings.AiKey);
         _imageAnalysis = new ImageAnalysisDemo(settings.AiEndpoint, settings.AiKey);
+
+        // Note Speech uses a region instead of an endpoint
+        _speech = new SpeechDemo(settings.AiRegion, settings.AiKey, settings.VoiceName ?? "en-GB-AlfieNeural");
     }
 
     public async Task RunAsync()
@@ -73,11 +77,16 @@ public class Part1Menu
                     break;
 
                 case Part1MenuOptions.TextToSpeech:
-                    AnsiConsole.WriteLine("Text to speech is not yet implemented. Please check back later.");
+                    string textToSpeak = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the text to speak:[/]"));
+                    await _speech.SpeakAsync(textToSpeak);
                     break;
 
                 case Part1MenuOptions.SpeechToText:
-                    AnsiConsole.WriteLine("Speech to text is not yet implemented. Please check back later.");
+                    string? text = await _speech.RecognizeSpeechAsync();
+                    if (text != null)
+                    {
+                        await _speech.SpeakAsync($"I heard you say: {text}");
+                    }
                     break;
 
                 case Part1MenuOptions.Back:

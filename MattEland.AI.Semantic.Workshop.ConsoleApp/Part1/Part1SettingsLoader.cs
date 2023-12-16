@@ -46,6 +46,9 @@ public class Part1SettingsLoader
                                       "Your machine is configured and ready to go.",
                                       Color.Green);
 
-        return new Part1Settings(aiKey, aiEndpoint, aiRegion);
+        return new Part1Settings(aiKey, aiEndpoint, aiRegion)
+        {
+            VoiceName = config["AzureAIServices:VoiceName"] ?? "en-GB-AlfieNeural"
+        };
     }   
 }
