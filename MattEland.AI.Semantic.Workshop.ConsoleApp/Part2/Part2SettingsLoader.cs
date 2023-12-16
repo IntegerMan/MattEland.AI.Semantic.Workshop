@@ -27,10 +27,6 @@ public class Part2SettingsLoader
             {
                 sb.AppendLine($"- [Orange1]OpenAI:Key[/]");
             }
-            if (string.IsNullOrWhiteSpace(endpoint))
-            {
-                sb.AppendLine($"- [Orange1]OpenAI:Endpoint[/]");
-            }
 
             sb.AppendLine();
             sb.AppendLine($"You can also set these variables via user secrets or environment variables prefixed by [SteelBlue]{EnvironmentPrefix}[/].");
@@ -38,6 +34,16 @@ public class Part2SettingsLoader
 
             DisplayHelpers.DisplayBorderedMessage("Additional Configuration Needed", sb.ToString(), Color.Red);
             return null;
+        }
+
+        // We support two different OpenAI providers: Azure and non-Azure. Make sure it's clear which is being used.
+        if (string.IsNullOrEmpty(endpoint))
+        {
+            AnsiConsole.MarkupLine($"[SteelBlue]OpenAI:Endpoint[/] is not set. [Orange1]Using non-Azure OpenAI[/].");
+        } 
+        else
+        {
+            AnsiConsole.MarkupLine($"[SteelBlue]OpenAI:Endpoint[/] is set. [Blue]Using Azure OpenAI[/].");
         }
 
         if (string.IsNullOrEmpty(textDeployment))

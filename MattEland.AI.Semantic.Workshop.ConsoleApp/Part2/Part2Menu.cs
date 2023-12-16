@@ -11,10 +11,12 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 public class Part2Menu
 {
     private readonly Part2Settings _settings;
+    private readonly LargeLanguageModelDemo _llm;
 
     public Part2Menu(Part2Settings p2Settings)
     {
         _settings = p2Settings;
+        _llm = new LargeLanguageModelDemo(_settings);
     }
 
     public async Task RunAsync()
@@ -31,7 +33,13 @@ public class Part2Menu
             switch (choice)
             {
                 case Part2MenuOptions.TextCompletion:
-                    AnsiConsole.WriteLine("Text Completion is not yet implemented. Please check back later.");
+                    // TODO: This would be better with a few examples already implemented, plus a "provide your own" option
+                    string prompt = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the prompt to send to the large language model:[/]"));
+                    string? response = await _llm.GetTextCompletionAsync(prompt);
+                    if (response is not null)
+                    {
+                        DisplayHelpers.DisplayBorderedMessage(prompt, response);
+                    }
                     break;
 
                 case Part2MenuOptions.ChatCompletion:

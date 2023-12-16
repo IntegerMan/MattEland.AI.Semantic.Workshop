@@ -2,7 +2,7 @@
 
 public class Part2Settings
 {
-    public Part2Settings(string openAiKey, string openAiEndpoint, string? textDeployment, string? chatDeployment, string? embeddingDeployment)
+    public Part2Settings(string openAiKey, string? openAiEndpoint, string? textDeployment, string? chatDeployment, string? embeddingDeployment)
     {
         OpenAiKey = openAiKey;
         OpenAiEndpoint = openAiEndpoint;
@@ -12,7 +12,7 @@ public class Part2Settings
     }
 
     public string OpenAiKey { get; }
-    public string OpenAiEndpoint { get; }
+    public string? OpenAiEndpoint { get; }
     public string? TextDeployment { get; }
     public string? ChatDeployment { get; }
     public string? EmbeddingDeployment { get; }
