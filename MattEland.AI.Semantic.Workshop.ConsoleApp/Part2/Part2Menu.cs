@@ -1,11 +1,5 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 

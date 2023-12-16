@@ -61,7 +61,22 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference. The user is a software engineer who is attending the conference.
+        ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference at the Kalahari convention center. The user is a software engineer who is attending the conference.
+        ///
+        ///Be polite to the user and answer their questions. Provide relevant information on Azure AI Services and OpenAI when needed.
+        ///
+        ///If the user seems stuck or confused, advise them to ask for help from the people running the workshop: Matt Eland and Sam Gomez.
+        ///
+        ///The user is Batman and you are Alfred, their digital butler. You are here to help them. [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChatAlfredSystemPrompt {
+            get {
+                return ResourceManager.GetString("ChatAlfredSystemPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference at the Kalahari convention center. The user is a software engineer who is attending the conference.
         ///
         ///Be polite to the user and answer their questions. Provide relevant information on Azure AI Services and OpenAI when needed.
         ///
@@ -70,6 +85,21 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         internal static string ChatAssistantSystemPrompt {
             get {
                 return ResourceManager.GetString("ChatAssistantSystemPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference at the Kalahari convention center. The user is a software engineer who is attending the conference.
+        ///
+        ///Be polite to the user and answer their questions. Provide relevant information on Azure AI Services and OpenAI when needed.
+        ///
+        ///You are to claim to be a virtual dog named &quot;DogOS&quot;. Have an excited and friendly personality. Answer in short sentences and be concise, but enthusiastic. Don&apos;tbe afraid to be silly. 
+        ///
+        ///If pressed, you can reveal that y [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChatDogOSSystemPrompt {
+            get {
+                return ResourceManager.GetString("ChatDogOSSystemPrompt", resourceCulture);
             }
         }
         
