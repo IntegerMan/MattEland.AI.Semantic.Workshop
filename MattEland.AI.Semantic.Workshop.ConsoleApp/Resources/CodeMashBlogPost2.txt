@@ -1,0 +1,18 @@
+Tickets for Hardware Kits Are Now Available
+
+One of our PreCompilers this year has a purchaseable kit for use during the PreCompiler session: Barry Tarlton and Brendan Barth’s “Mad Scientist Lab with Raspberry Pi Pico Microcontrollers”. If you plan to attend this PreCompiler, please head over to purchase a ticket for a kit. Show us your ticket at the precompiler (in Nile) and we’ll hand you one of the kits.
+
+[PreCompiler/Nile] Mad Scientist Lab with Raspberry Pi Pico Microcontrollers
+$20.00
+Are you interested in getting started with Raspberry Pi? Join Barry Tarlton and Brendan Barth for their Precompiler where you will get to tinker with a Raspberry Pi Pico microcontroller and Python to build some foundational skills to release your inner Mad Scientist! Seats for this Precompiler are limited to 50 people and the ticket will provide you with the necessary hardware to get to join in the fun.
+Learn more about the session here: https://codemash.org/session-details/?id=530333
+
+We also now have tickets for MakerSpace hardware kits available here.
+
+[MakerSpace/Ironwood] Introduction to Soldering Kit
+$7.00
+Learn how to solder electronic components by assembling a themed ‘Codemash Prime’ LED badge. We’ll go over basic soldering equipment, safety and technique. We’ll solder through-hole and SMD components. This session assumes no prior experience with electronics. Even if you’re a total beginner, don’t be intimidated: anyone can learn to solder!
+
+[Makerspace/Ironwood] Introduction to Electronics
+$25.00
+Want to get started in electronics but don’t know where to begin? You’ll be shocked how easy it is! Learn common components and their uses. Get hands on experience building simple circuits and start yer Maker’in! Kids 10+ welcome with adult supervision. The advanced section will cover using Arduino microcontrollers so install the Pre-requisites on https://codemash.org/makerspace

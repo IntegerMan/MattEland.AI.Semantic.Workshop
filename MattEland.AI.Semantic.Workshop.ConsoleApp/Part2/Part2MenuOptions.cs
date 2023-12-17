@@ -10,8 +10,10 @@ public enum Part2MenuOptions
     ChatCompletion,
     [Description("Image Generation (DALL-E)")]
     ImageCompletion,
-    [Description("Text Embedding")]
-    TextEmbedding,
+    [Description("Generate Text Embeddings")]
+    GenerateTextEmbedding,
+    [Description("Search Text Embeddings")]
+    SearchEmbedding,
     [Description("Go back")]
     Back
 }

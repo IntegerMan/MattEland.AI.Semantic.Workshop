@@ -104,6 +104,72 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Join us at CodeMash
+        ///
+        ///Do you have friends or co-workers who you think should attend CodeMash? Please feel free to share the following with them:
+        ///
+        ///3 reasons you should come to CodeMash
+        ///
+        ///1 Learning! Come to diversify your stack, or dig deeper into what you already know. Check out the schedule!
+        ///2 Connections: Prospecting a new job opportunity or maybe just looking to make some new friends? Check out our sponsors!
+        ///3 Try something new! Give a lightning talk, make something on a 3D printer, or play LAZER T [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CodeMashBlogPost1 {
+            get {
+                return ResourceManager.GetString("CodeMashBlogPost1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tickets for Hardware Kits Are Now Available
+        ///
+        ///One of our PreCompilers this year has a purchaseable kit for use during the PreCompiler session: Barry Tarlton and Brendan Barth’s “Mad Scientist Lab with Raspberry Pi Pico Microcontrollers”. If you plan to attend this PreCompiler, please head over to purchase a ticket for a kit. Show us your ticket at the precompiler (in Nile) and we’ll hand you one of the kits.
+        ///
+        ///[PreCompiler/Nile] Mad Scientist Lab with Raspberry Pi Pico Microcontrollers
+        ///$20.00
+        ///Are you in [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CodeMashBlogPost2 {
+            get {
+                return ResourceManager.GetString("CodeMashBlogPost2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///KidzMash 2024 Ticketz!
+        ///
+        ///Have you heard about KidzMash? It is a conference within CodeMash, offered to the families of attendees. Similar to CodeMash attendee sessions, KidzMash also holds sessions and events which run Tuesday-Friday.
+        ///
+        ///Please see the new KidzMash page for more info, and make sure your kids/family members are signed up!
+        ///
+        ///Note: If you have already purchased a ticket for CodeMash and need to either add tickets to your order or edit the order details, here is how you do that.
+        ///
+        ///All Kidz [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CodeMashBlogPost3 {
+            get {
+                return ResourceManager.GetString("CodeMashBlogPost3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [
+        ///	{
+        ///		&quot;Name&quot;: &quot;Join us at CodeMash&quot;,
+        ///		&quot;Url&quot;: &quot;https://codemash.org/join-us-at-codemash/&quot;,
+        ///		&quot;Embeddings&quot;: [0.010155369, 0.006179446, 0.019530607, -0.021214044, -0.017491322, 0.0089783305, -0.018572554,
+        ///-0.013132177, -0.018517807, -0.021296164, 0.00091870496, 0.006747435, 0.01987277, 0.012030416, -0.02270587,
+        ///-0.010353822, 0.018093526, -0.02811203, -0.011017617, -0.026414907, -0.005799646, -0.018216705, 0.002169307,
+        ///-0.030931445, -0.052473966, 0.02270587, 0.01656064, -0.0008365861, -0.011790902, 0.0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SearchableEmbeddings {
+            get {
+                return ResourceManager.GetString("SearchableEmbeddings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This document taken from John Maeda&apos;s post on the Microsoft Blog at https://devblogs.microsoft.com/semantic-kernel/hello-world/
         ///---
         ///Artificial intelligence (AI) and Large Language Models (LLM) are helping to transform the way we develop and interact with software. 

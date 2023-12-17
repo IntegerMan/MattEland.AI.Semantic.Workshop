@@ -1,4 +1,6 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
+﻿using Azure.AI.OpenAI;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
+using System.Numerics.Tensors;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
@@ -9,6 +11,7 @@ public class Part2Menu
     private readonly LargeLanguageModelDemo _llm;
     private readonly ChatDemo _chat;
     private readonly ImageDemo _dalle;
+    private readonly EmbeddingDemo _embeddings;
 
     public Part2Menu(Part2Settings p2Settings)
     {
@@ -16,6 +19,7 @@ public class Part2Menu
         _llm = new LargeLanguageModelDemo(_settings);
         _chat = new ChatDemo(_settings, Resources.ChatAssistantSystemPrompt);
         _dalle = new ImageDemo(_settings);
+        _embeddings = new EmbeddingDemo(_settings);
     }
 
     public async Task RunAsync()
@@ -35,6 +39,15 @@ public class Part2Menu
             { "Batman and Robin presenting at CodeMash", () => "Batman presenting at a technical conference with Robin there helping"},
             { "Bacon Buffet", () => "An illustration of programming conference attendees waiting in line at a buffet featuring bacon and only bacon at CodeMash 2024." },
             { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own image prompt:[/]")) },
+            { "Back", () => string.Empty }
+        };
+
+        Dictionary<string, Func<string>> embeddingSources = new()
+        {
+            { "CodeMash Blog Post 1: Join us", () => Resources.CodeMashBlogPost1},
+            { "CodeMash Blog Post 2: Maker Space", () => Resources.CodeMashBlogPost2},
+            { "CodeMash Blog Post 3: KidzMash", () => Resources.CodeMashBlogPost3},
+            { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text prompt:[/]")) },
             { "Back", () => string.Empty }
         };
 
@@ -124,14 +137,53 @@ public class Part2Menu
                     await _dalle.GenerateImageAsync(imagePrompt);
                     break;
 
-                case Part2MenuOptions.TextEmbedding:
+                case Part2MenuOptions.GenerateTextEmbedding:
                     if (string.IsNullOrEmpty(_settings.EmbeddingDeployment))
                     {
                         AnsiConsole.MarkupLine($"[Red]No text embedding deployment specified. Please check your settings.[/]");
                         break;
                     }
 
-                    AnsiConsole.WriteLine("Text Embedding is not yet implemented. Please check back later.");
+                    string embeddingChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                                               .Title("What text do you want to generate embeddings for?")
+                                               .HighlightStyle(Style.Parse("Orange3"))
+                                               .AddChoices(embeddingSources.Keys)
+                                               .UseConverter(c => c));
+
+                    if (embeddingChoice == "Back")
+                        break;
+
+                    string embeddingPrompt = embeddingSources[embeddingChoice]();
+
+                    float[] embeddings = await _embeddings.GetEmbeddingsAsync(embeddingPrompt);
+
+                    AnsiConsole.MarkupLine($"[Yellow]Embedding Data:[/] {string.Join(", ", embeddings.ToArray())}");
+                    break;
+
+                case Part2MenuOptions.SearchEmbedding:
+                    if (string.IsNullOrEmpty(_settings.EmbeddingDeployment))
+                    {
+                        AnsiConsole.MarkupLine($"[Red]No text embedding deployment specified. Please check your settings.[/]");
+                        break;
+                    }
+
+                    string searchPrompt = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the text to search for:[/]"));
+
+                    float[] searchEmbeddings = await _embeddings.GetEmbeddingsAsync(searchPrompt);
+                    List<ArticleLinkWithEmbeddings> searchableArticles = System.Text.Json.JsonSerializer.Deserialize<List<ArticleLinkWithEmbeddings>>(Resources.SearchableEmbeddings)!;
+
+                    foreach (ArticleLinkWithEmbeddings article in searchableArticles)
+                    {
+                        double score = TensorPrimitives.CosineSimilarity(article.Embeddings, searchEmbeddings);
+                        article.Score = score;
+                    }
+
+                    AnsiConsole.WriteLine();
+                    AnsiConsole.MarkupLine($"[Yellow]Top Results:[/]");
+                    foreach (ArticleLinkWithEmbeddings result in searchableArticles.OrderByDescending(a => a.Score).Take(5))
+                    {
+                        AnsiConsole.MarkupLine($"- [Yellow]Score:[/] {result.Score:F3}, [Yellow]Url:[/] [SteelBlue]{result.Url}[/]");
+                    }
                     break;
 
                 case Part2MenuOptions.Back:

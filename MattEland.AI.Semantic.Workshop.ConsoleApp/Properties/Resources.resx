@@ -127,6 +127,18 @@
   <data name="ChatDogOSSystemPrompt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChatDogOSSystemPrompt.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="CodeMashBlogPost1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeMashBlogPost1.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CodeMashBlogPost2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeMashBlogPost2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CodeMashBlogPost3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeMashBlogPost3.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SearchableEmbeddings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SearchableEmbeddings.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="SemanticKernelAnnouncement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SemanticKernelAnnouncement.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
