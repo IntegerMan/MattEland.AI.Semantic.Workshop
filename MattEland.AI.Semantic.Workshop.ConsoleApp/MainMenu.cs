@@ -1,5 +1,6 @@
 ﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 
@@ -47,7 +48,12 @@ public class MainMenu
                     }
                     break;
                 case WorkshopMenuOption.Part3:
-                    AnsiConsole.WriteLine("Part 3 is not yet implemented. Please check back later.");
+                    Part3Settings? p3Settings = Part3SettingsLoader.ExtractAndValidateSettings(_config);
+                    if (p3Settings is not null)
+                    {
+                        Part3Menu p3Menu = new(p3Settings);
+                        await p3Menu.RunAsync();
+                    }
                     break;
                 case WorkshopMenuOption.Part4:
                     AnsiConsole.WriteLine("Part 4 is not yet implemented. Please check back later.");

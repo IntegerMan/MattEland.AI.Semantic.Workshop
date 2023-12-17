@@ -67,7 +67,7 @@ public class EmbeddingDemo
                 AnsiConsole.MarkupLine($"[Red]Error Code: {ex.ErrorCode}[/]");
             }
 
-            return null;
+            return [];
         }
     }
 }
