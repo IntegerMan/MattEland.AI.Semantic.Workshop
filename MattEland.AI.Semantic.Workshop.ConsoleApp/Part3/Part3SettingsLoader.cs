@@ -64,7 +64,7 @@ public class Part3SettingsLoader
             AnsiConsole.MarkupLine($"[Orange1]OpenAI:ImageDeployment[/] is not set. Using DALL-E will be disabled.");
         }
 
-        DisplayHelpers.DisplayBorderedMessage("Part 2 OpenAI Setup Confirmed",
+        DisplayHelpers.DisplayBorderedMessage("Part 3 OpenAI Setup Confirmed",
                                       "Your machine is configured and ready to go.",
                                       Color.Green);
 

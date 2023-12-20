@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using Azure.AI.OpenAI;
+using Spectre.Console;
 using Spectre.Console.Rendering;
 using System;
 using System.ComponentModel;
@@ -64,5 +65,43 @@ public static class DisplayHelpers
         CanvasImage image = new(imageStream);
         image.MaxWidth = 30;
         AnsiConsole.Write(image);
-    }   
+    }
+
+    public static void DisplayContentFilterResults(ContentFilterResultDetailsForPrompt filter)
+    {
+        Table contentTable = new();
+        contentTable.Title = new TableTitle("[Yellow]Content Filter Results[/]");
+
+        contentTable.AddColumns("Type", "Severity", "Filtered?");
+        AddContentFilterRow(contentTable, filter.Sexual, "Sexual");
+        AddContentFilterRow(contentTable, filter.Violence, "Violence");
+        AddContentFilterRow(contentTable, filter.SelfHarm, "Self-Harm");
+
+        AnsiConsole.Write(contentTable);
+        AnsiConsole.WriteLine();
+    }
+
+    private static void AddContentFilterRow(Table table, ContentFilterResult result, string name)
+    {
+        string severity = result.Severity.ToString();
+
+        severity = severity switch
+        {
+            "safe" => "[Green]Safe[/]",
+            "low" => "[Yellow]Low[/]",
+            "medium" => "[Orange3]Medium[/]",
+            "high" => "[Red]High[/]",
+            _ => severity
+        };
+
+        table.AddRow($"[SteelBlue]{name}[/]", severity, result.Filtered ? "[Red]Yes[/]" : "[Green]No[/]");
+    }
+
+    public static void DisplayTokenUsage(CompletionsUsage usage)
+    {
+        DisplayBorderedMessage($"[White]Token Usage ({usage.TotalTokens} Tokens)[/]", new BreakdownChart()
+            .FullSize()
+            .AddItem("Prompt", usage.PromptTokens, Color.Yellow)
+            .AddItem("Completion", usage.CompletionTokens, Color.SteelBlue));
+    }
 }

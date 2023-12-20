@@ -96,7 +96,7 @@ public class Part2Menu
                         break;
                     }
 
-                    bool keepChatting = true;
+                    bool keepChatting;
                     do
                     {
                         string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
