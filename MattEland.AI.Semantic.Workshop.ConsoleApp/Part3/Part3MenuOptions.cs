@@ -10,6 +10,8 @@ public enum Part3MenuOptions
     SemanticFunction,
     [Description("Chaining together Semantic Functions")]
     ChainedFunctions,
+    [Description("Chat using the Function-Calling Stepwise Planner")]
+    FunctionCallingPlanner,
     [Description("Go back")]
     Back
 }

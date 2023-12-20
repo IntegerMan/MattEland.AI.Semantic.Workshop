@@ -39,7 +39,12 @@ public class Part3Menu
                     await simpleKernel.RunAsync();
                     break;
                 case Part3MenuOptions.SemanticFunction:
-                    AnsiConsole.WriteLine("Semantic Function not yet implemented. Please check back later.");
+                    SemanticFunctionDemo functionDemo = new(_settings);
+                    await functionDemo.RunAsync();
+                    break;
+                case Part3MenuOptions.FunctionCallingPlanner:
+                    PlannerDemo plannerDemo = new(_settings);
+                    await plannerDemo.RunAsync();
                     break;
                 case Part3MenuOptions.ChainedFunctions:
                     AnsiConsole.WriteLine("Chained Functions not yet implemented. Please check back later.");

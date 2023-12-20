@@ -30,6 +30,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.0.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planners.Handlebars" Version="1.0.1-preview" />
+    <PackageReference Include="Microsoft.SemanticKernel.Planners.OpenAI" Version="1.0.1-preview" />
     <PackageReference Include="Spectre.Console" Version="0.48.1-preview.0.5" />
     <PackageReference Include="Spectre.Console.ImageSharp" Version="0.48.1-preview.0.5" />
     <PackageReference Include="System.Numerics.Tensors" Version="8.0.0" />
