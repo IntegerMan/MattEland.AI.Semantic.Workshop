@@ -8,6 +8,8 @@ public enum Part1MenuOptions
     AnalyzeText,
     [Description("Analyze Images")]
     AnalyzeImage,
+    [Description("Remove Background")]
+    BackgroundRemoval,
     [Description("Text to Speech")]
     TextToSpeech,
     [Description("Speech to Text")]

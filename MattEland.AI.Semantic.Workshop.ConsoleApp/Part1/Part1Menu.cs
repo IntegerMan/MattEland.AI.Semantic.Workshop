@@ -76,6 +76,21 @@ public class Part1Menu
                     await _imageAnalysis.AnalyzeAsync(imageSource);
                     break;
 
+                case Part1MenuOptions.BackgroundRemoval:
+                    string imagePath = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                                               .Title("What image do you want to remove the background of?")
+                                               .HighlightStyle(Style.Parse("Orange3"))
+                                               .AddChoices(imageSources.Keys)
+                                               .UseConverter(c => c));
+
+                    if (imagePath == "Back")
+                        break;
+
+                    string image = imageSources[imagePath]();
+
+                    await _imageAnalysis.RemoveBackgroundAsync(image);
+                    break;
+
                 case Part1MenuOptions.TextToSpeech:
                     string textToSpeak = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the text to speak:[/]"));
                     await _speech.SpeakAsync(textToSpeak);

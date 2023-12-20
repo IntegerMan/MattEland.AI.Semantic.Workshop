@@ -1,9 +1,7 @@
-﻿using Azure.AI.Vision;
-using Azure;
+﻿using Azure;
 using Azure.AI.Vision.ImageAnalysis;
 using Azure.AI.Vision.Common;
 using Spectre.Console;
-using System.Net;
 using System.Text;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
@@ -46,12 +44,14 @@ public class ImageAnalysisDemo
         {
             GenderNeutralCaption = false,
             Language = "en",
+            CroppingAspectRatios = [1.5],
             Features = ImageAnalysisFeature.Caption |
                        ImageAnalysisFeature.Tags |
                        ImageAnalysisFeature.Objects |
                        ImageAnalysisFeature.People |
                        ImageAnalysisFeature.DenseCaptions |
-                       ImageAnalysisFeature.Text
+                       ImageAnalysisFeature.Text |
+                       ImageAnalysisFeature.CropSuggestions
         };
 
         using ImageAnalyzer client = new(_serviceOptions, source, analysisOptions);
@@ -131,5 +131,58 @@ public class ImageAnalysisDemo
             AnsiConsole.MarkupLine($"[Yellow]No text detected[/]");
         }
 
+        // Crop Suggestions
+        if (result.CropSuggestions.Count > 0)
+        {
+            StringBuilder sb = new();
+            foreach (CropSuggestion suggestion in result.CropSuggestions)
+            {
+                sb.AppendLine($"[Yellow]Crop Suggestion:[/] Aspect Ratio: {suggestion.AspectRatio}, Bounds: {suggestion.BoundingBox}");
+            }
+            AnsiConsole.MarkupLine(sb.ToString());
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[Yellow]No crop suggestions detected[/]");
+        }
+    }
+
+    public async Task RemoveBackgroundAsync(string imageSource)
+    {
+        VisionSource source;
+        if (imageSource.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+        {
+            Uri uri = new Uri(imageSource);
+            source = VisionSource.FromUrl(uri);
+
+            // Show a web image
+            await DisplayHelpers.DisplayImageAsync(uri);
+        }
+        else
+        {
+            if (!File.Exists(imageSource))
+            {
+                AnsiConsole.MarkupLine($"[Red]File not found: {imageSource}[/]");
+                return;
+            }
+
+            source = VisionSource.FromFile(imageSource);
+
+            DisplayHelpers.DisplayImage(imageSource);
+        }
+
+        ImageAnalysisOptions analysisOptions = new()
+        {
+            SegmentationMode = ImageSegmentationMode.ForegroundMatting,
+            Features = ImageAnalysisFeature.None
+        };
+
+        using ImageAnalyzer client = new(_serviceOptions, source, analysisOptions);
+
+        ImageAnalysisResult result = await client.AnalyzeAsync();
+
+        File.WriteAllBytes("ForegroundMatte.png", result.SegmentationResult.ImageBuffer.ToArray());
+
+        DisplayHelpers.DisplayImage("ForegroundMatte.png");
     }
 }
