@@ -18,4 +18,6 @@ public class Part3Settings
     public string? ChatDeployment { get; }
     public string? EmbeddingDeployment { get; }
     public string? ImageDeployment { get; }
+    public bool ShowTokenUsage { get; }
+    public bool ShowFilterResults { get; }
 }

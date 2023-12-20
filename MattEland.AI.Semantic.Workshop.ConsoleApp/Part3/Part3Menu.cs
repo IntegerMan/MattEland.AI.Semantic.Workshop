@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics.Tensors;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.AI.OpenAI;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using Microsoft.SemanticKernel;
 using Spectre.Console;
 
@@ -20,40 +23,40 @@ public class Part3Menu
 
     public async Task RunAsync()
     {
-        IKernelBuilder builder = Kernel.CreateBuilder();
-
-        if (string.IsNullOrEmpty(_settings.OpenAiEndpoint))
+        bool hasQuit = false;
+        while (!hasQuit)
         {
-            builder.AddOpenAIChatCompletion(_settings.ChatDeployment!, _settings.OpenAiKey);
+            Part3MenuOptions choice = AnsiConsole.Prompt(new SelectionPrompt<Part3MenuOptions>()
+                .Title("What task in part 3?")
+                .HighlightStyle(Style.Parse("Orange3"))
+                .AddChoices(Enum.GetValues(typeof(Part3MenuOptions)).Cast<Part3MenuOptions>())
+                .UseConverter(c => c.ToFriendlyName()));
+
+            switch (choice)
+            {
+                case Part3MenuOptions.SimpleChat:
+                    SimpleKernelDemo simpleKernel = new(_settings);
+                    await simpleKernel.RunAsync();
+                    break;
+                case Part3MenuOptions.SemanticFunction:
+                    AnsiConsole.WriteLine("Semantic Function not yet implemented. Please check back later.");
+                    break;
+                case Part3MenuOptions.ChainedFunctions:
+                    AnsiConsole.WriteLine("Chained Functions not yet implemented. Please check back later.");
+                    break;
+                case Part3MenuOptions.Back:
+                    hasQuit = true;
+                    break;
+                default:
+                    AnsiConsole.WriteLine($"Matt apparently forgot to handle menu choice {choice}. What a dolt!");
+                    break;
+            }
+
+            AnsiConsole.WriteLine();
         }
-        else
-        {
-            builder.AddAzureOpenAIChatCompletion(_settings.ChatDeployment!, _settings.OpenAiEndpoint, _settings.OpenAiKey);
-        }
 
-        Kernel kernel = builder.Build();
+        await Task.CompletedTask;
 
-
-        bool keepChatting;
-        do
-        {
-            string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
-            AnsiConsole.WriteLine();
-
-            FunctionResult response = await kernel.InvokePromptAsync(userText);
-            string reply = response.ToString();
-
-            CompletionsUsage usage = (CompletionsUsage)response.Metadata!["Usage"]!;
-            DisplayHelpers.DisplayTokenUsage(usage);
-
-            List<ContentFilterResultsForPrompt> filters = (List<ContentFilterResultsForPrompt>)response.Metadata["PromptFilterResults"]!;
-            DisplayHelpers.DisplayContentFilterResults(filters.First().ContentFilterResults);
-
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
-
-            keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
-            AnsiConsole.WriteLine();
-        } while (keepChatting);
     }
+
 }

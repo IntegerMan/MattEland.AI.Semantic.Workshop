@@ -1,4 +1,5 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 using Microsoft.Extensions.Configuration;

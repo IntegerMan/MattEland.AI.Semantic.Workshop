@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.AI.TextAnalytics;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 using Spectre.Console;
 using System.Net;
 using System.Text;

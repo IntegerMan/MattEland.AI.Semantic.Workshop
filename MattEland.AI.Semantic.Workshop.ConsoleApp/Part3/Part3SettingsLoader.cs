@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 using System.Text;
 

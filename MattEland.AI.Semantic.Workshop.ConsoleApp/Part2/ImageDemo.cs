@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.AI.OpenAI;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 using Spectre.Console;
 using System;
 

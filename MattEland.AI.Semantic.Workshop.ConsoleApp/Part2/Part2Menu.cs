@@ -2,6 +2,7 @@
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using System.Numerics.Tensors;
 using Spectre.Console;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 

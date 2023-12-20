@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 public static class DisplayHelpers
 {
@@ -57,7 +57,7 @@ public static class DisplayHelpers
         using HttpClient webClient = new();
         using Stream stream = await webClient.GetStreamAsync(imageUri);
 
-        DisplayImage(stream);
+        stream.DisplayImage();
     }
 
     public static void DisplayImage(this Stream imageStream)

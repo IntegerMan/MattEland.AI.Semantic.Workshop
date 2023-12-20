@@ -1,4 +1,5 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
