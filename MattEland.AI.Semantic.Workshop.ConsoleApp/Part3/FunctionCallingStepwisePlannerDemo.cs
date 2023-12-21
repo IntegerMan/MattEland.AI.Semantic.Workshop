@@ -8,9 +8,9 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 #pragma warning disable SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-public class PlannerDemo : KernelDemoBase
+public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
 {
-    public PlannerDemo(Part3Settings settings) : base(settings)
+    public FunctionCallingStepwisePlannerDemo(Part3Settings settings) : base(settings)
     {
     }
 

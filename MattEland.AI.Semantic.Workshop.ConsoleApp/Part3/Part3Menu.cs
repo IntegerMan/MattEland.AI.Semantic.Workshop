@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics.Tensors;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.AI.OpenAI;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
-using Microsoft.SemanticKernel;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
@@ -46,8 +37,12 @@ public class Part3Menu
                     EventsDemo eventsDemo = new(_settings);
                     await eventsDemo.RunAsync();
                     break;
+                case Part3MenuOptions.HandlebarsPlanner:
+                    HandlebarsPlannerDemo handlebarsDemo = new(_settings);
+                    await handlebarsDemo.RunAsync();
+                    break;
                 case Part3MenuOptions.FunctionCallingPlanner:
-                    PlannerDemo plannerDemo = new(_settings);
+                    FunctionCallingStepwisePlannerDemo plannerDemo = new(_settings);
                     await plannerDemo.RunAsync();
                     break;
                 case Part3MenuOptions.ChainedFunctions:
