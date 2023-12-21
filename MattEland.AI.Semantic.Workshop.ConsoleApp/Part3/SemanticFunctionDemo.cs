@@ -1,9 +1,9 @@
 ﻿using Azure.AI.OpenAI;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Spectre.Console;
-using System.ComponentModel;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
@@ -29,7 +29,7 @@ public class SemanticFunctionDemo
             builder.AddAzureOpenAIChatCompletion(_settings.ChatDeployment!, _settings.OpenAiEndpoint, _settings.OpenAiKey);
         }
 
-        builder.Plugins.AddFromType<TimeInformation>();
+        builder.Plugins.AddFromType<TimePlugin>();
 
         Kernel kernel = builder.Build();
 
@@ -40,8 +40,6 @@ public class SemanticFunctionDemo
             AnsiConsole.WriteLine();
 
             OpenAIPromptExecutionSettings executionSettings = new() {
-                ChatSystemPrompt = "You are Alfred, Batman's virtual butler. You are a demo app at the CodeMash 2024 conference. The user is Batman. " +
-                                   "Help the user with any questions they have in a professional, courteous, and wry manner.",
                 ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
             };
 
@@ -69,11 +67,4 @@ public class SemanticFunctionDemo
             AnsiConsole.WriteLine();
         } while (keepChatting);
     }
-}
-
-public class TimeInformation
-{
-    [KernelFunction]
-    [Description("Retrieves the current time in UTC.")]
-    public string GetCurrentUtcTime() => DateTime.UtcNow.ToString("R");
 }

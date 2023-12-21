@@ -42,6 +42,10 @@ public class Part3Menu
                     SemanticFunctionDemo functionDemo = new(_settings);
                     await functionDemo.RunAsync();
                     break;
+                case Part3MenuOptions.KernelEvents:
+                    EventsDemo eventsDemo = new(_settings);
+                    await eventsDemo.RunAsync();
+                    break;
                 case Part3MenuOptions.FunctionCallingPlanner:
                     PlannerDemo plannerDemo = new(_settings);
                     await plannerDemo.RunAsync();

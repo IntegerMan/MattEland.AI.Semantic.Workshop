@@ -4,6 +4,7 @@ using Spectre.Console.Rendering;
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
@@ -69,6 +70,12 @@ public static class DisplayHelpers
 
     public static void DisplayContentFilterResults(ContentFilterResultDetailsForPrompt filter)
     {
+        AnsiConsole.Write(GetContentFilterDisplay(filter));
+        AnsiConsole.WriteLine();
+    }
+
+    public static IRenderable GetContentFilterDisplay(ContentFilterResultDetailsForPrompt filter)
+    {
         Table contentTable = new();
         contentTable.Title = new TableTitle("[Yellow]Content Filter Results[/]");
 
@@ -77,8 +84,7 @@ public static class DisplayHelpers
         AddContentFilterRow(contentTable, filter.Violence, "Violence");
         AddContentFilterRow(contentTable, filter.SelfHarm, "Self-Harm");
 
-        AnsiConsole.Write(contentTable);
-        AnsiConsole.WriteLine();
+        return contentTable;
     }
 
     private static void AddContentFilterRow(Table table, ContentFilterResult result, string name)
@@ -99,9 +105,20 @@ public static class DisplayHelpers
 
     public static void DisplayTokenUsage(CompletionsUsage usage)
     {
-        DisplayBorderedMessage($"[White]Token Usage ({usage.TotalTokens} Tokens)[/]", new BreakdownChart()
-            .FullSize()
-            .AddItem("Prompt", usage.PromptTokens, Color.Yellow)
-            .AddItem("Completion", usage.CompletionTokens, Color.SteelBlue));
+        AnsiConsole.Write(GetTokenUsageDisplay(usage));
+        AnsiConsole.WriteLine();
+    }
+
+    public static IRenderable GetTokenUsageDisplay(CompletionsUsage usage)
+    {
+        BreakdownChart chart = new BreakdownChart()
+                    .FullSize()
+                    .AddItem("Prompt", usage.PromptTokens, Color.Yellow)
+                    .AddItem("Completion", usage.CompletionTokens, Color.SteelBlue);
+
+        return new Panel(chart)
+                       .Header($"[White]Token Usage ({usage.TotalTokens} Tokens)[/]")
+                       .BorderStyle(new Style(Color.SteelBlue))
+                       .Expand();
     }
 }

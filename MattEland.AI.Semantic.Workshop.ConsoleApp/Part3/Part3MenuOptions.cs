@@ -8,10 +8,12 @@ public enum Part3MenuOptions
     SimpleChat,
     [Description("Chat with a Semantic Function")]
     SemanticFunction,
-    [Description("Chaining together Semantic Functions")]
-    ChainedFunctions,
+    [Description("Observability with Kernel Events")]
+    KernelEvents,
     [Description("Chat using the Function-Calling Stepwise Planner")]
     FunctionCallingPlanner,
+    [Description("Chaining together Semantic Functions")]
+    ChainedFunctions,
     [Description("Go back")]
     Back
 }

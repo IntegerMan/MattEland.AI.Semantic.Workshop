@@ -1,16 +1,17 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
+﻿using Azure.AI.OpenAI;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Planning;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-public class PlannerDemo : KernelDemoBase
+public class EventsDemo : KernelDemoBase
 {
-    public PlannerDemo(Part3Settings settings) : base(settings)
+    public EventsDemo(Part3Settings settings) : base(settings)
     {
     }
 
@@ -27,17 +28,19 @@ public class PlannerDemo : KernelDemoBase
         kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
-        FunctionCallingStepwisePlannerConfig plannerConfig = new();
-        FunctionCallingStepwisePlanner planner = new(plannerConfig);
-
         bool keepChatting;
         do
         {
             string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
             AnsiConsole.WriteLine();
 
-            FunctionCallingStepwisePlannerResult result = await planner.ExecuteAsync(kernel, userText);
-            string reply = result.FinalAnswer;
+            OpenAIPromptExecutionSettings executionSettings = new()
+            {
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+            };
+
+            FunctionResult result = await kernel.InvokePromptAsync(userText, new KernelArguments(executionSettings));
+            string reply = result.ToString();
 
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
             AnsiConsole.WriteLine();
@@ -49,5 +52,4 @@ public class PlannerDemo : KernelDemoBase
 }
 
 #pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
