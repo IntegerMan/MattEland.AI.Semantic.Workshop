@@ -43,6 +43,10 @@ public static class DisplayHelpers
     {
         FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
         DescriptionAttribute[]? attributes = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+        
+        if (attributes is null || attributes.Length == 0)
+            return value.ToString();
+
         return attributes?[0].Description ?? value.ToString();
     }
 

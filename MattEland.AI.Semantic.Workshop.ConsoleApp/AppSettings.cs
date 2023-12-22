@@ -1,8 +1,8 @@
-﻿namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+﻿namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
-public class Part3Settings
+public class AppSettings
 {
-    public Part3Settings(string openAiKey, string? openAiEndpoint, string? textDeployment, string? chatDeployment, string? embeddingDeployment, string? imageDeployment)
+    public AppSettings(string openAiKey, string? openAiEndpoint, string? textDeployment, string? chatDeployment, string? embeddingDeployment, string? imageDeployment)
     {
         OpenAiKey = openAiKey;
         OpenAiEndpoint = openAiEndpoint;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public class SpeechDemo
 {

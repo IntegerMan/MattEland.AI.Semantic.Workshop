@@ -1,16 +1,16 @@
 ﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Planning;
+using Microsoft.SemanticKernel.Planning.Handlebars;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0060 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
+public class HandlebarsPlannerDemo : KernelDemoBase
 {
-    public FunctionCallingStepwisePlannerDemo(Part3Settings settings) : base(settings)
+    public HandlebarsPlannerDemo(AppSettings settings) : base(settings)
     {
     }
 
@@ -27,8 +27,11 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
         kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
-        FunctionCallingStepwisePlannerConfig plannerConfig = new();
-        FunctionCallingStepwisePlanner planner = new(plannerConfig);
+        HandlebarsPlannerOptions plannerConfig = new()
+        {
+            AllowLoops = true,
+        };
+        HandlebarsPlanner planner = new(plannerConfig);
 
         bool keepChatting;
         do
@@ -36,8 +39,10 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
             string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
             AnsiConsole.WriteLine();
 
-            FunctionCallingStepwisePlannerResult result = await planner.ExecuteAsync(kernel, userText);
-            string reply = result.FinalAnswer;
+            HandlebarsPlan plan = await planner.CreatePlanAsync(kernel, userText);
+            AnsiConsole.MarkupLine($"[Yellow]Plan:[/] {plan}");
+
+            string reply = await plan.InvokeAsync(kernel);
 
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
             AnsiConsole.WriteLine();
@@ -49,5 +54,6 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
 }
 
 #pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0060 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
 

@@ -3,13 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 using System.Text;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
-public class Part3SettingsLoader
+public class SettingsLoader
 {
     public const string EnvironmentPrefix = "CODEMASH_SK_";
 
-    public static Part3Settings? ExtractAndValidateSettings(IConfiguration config)
+    public static AppSettings? ExtractAndValidateSettings(IConfiguration config)
     {
         // Load settings
         string? key = config["OpenAI:Key"];
@@ -42,7 +42,7 @@ public class Part3SettingsLoader
         if (string.IsNullOrEmpty(endpoint))
         {
             AnsiConsole.MarkupLine($"[SteelBlue]OpenAI:Endpoint[/] is not set. [Orange1]Using non-Azure OpenAI[/].");
-        } 
+        }
         else
         {
             AnsiConsole.MarkupLine($"[SteelBlue]OpenAI:Endpoint[/] is set. [Blue]Using Azure OpenAI[/].");
@@ -69,6 +69,6 @@ public class Part3SettingsLoader
                                       "Your machine is configured and ready to go.",
                                       Color.Green);
 
-        return new Part3Settings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment, imageDeployment);
-    }   
+        return new AppSettings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment, imageDeployment);
+    }
 }

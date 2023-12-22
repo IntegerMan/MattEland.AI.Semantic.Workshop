@@ -5,7 +5,7 @@ using Spectre.Console;
 using System.Text;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public class ImageAnalysisDemo
 {
@@ -26,7 +26,7 @@ public class ImageAnalysisDemo
             source = VisionSource.FromUrl(uri);
 
             // Show a web image
-            await DisplayHelpers.DisplayImageAsync(uri);
+            await uri.DisplayImageAsync();
         }
         else
         {
@@ -38,7 +38,7 @@ public class ImageAnalysisDemo
 
             source = VisionSource.FromFile(imageSource);
 
-            DisplayHelpers.DisplayImage(imageSource);
+            imageSource.DisplayImage();
         }
 
         ImageAnalysisOptions analysisOptions = new()
@@ -157,7 +157,7 @@ public class ImageAnalysisDemo
             source = VisionSource.FromUrl(uri);
 
             // Show a web image
-            await DisplayHelpers.DisplayImageAsync(uri);
+            await uri.DisplayImageAsync();
         }
         else
         {
@@ -169,7 +169,7 @@ public class ImageAnalysisDemo
 
             source = VisionSource.FromFile(imageSource);
 
-            DisplayHelpers.DisplayImage(imageSource);
+            imageSource.DisplayImage();
         }
 
         ImageAnalysisOptions analysisOptions = new()
@@ -184,6 +184,6 @@ public class ImageAnalysisDemo
 
         File.WriteAllBytes("ForegroundMatte.png", result.SegmentationResult.ImageBuffer.ToArray());
 
-        DisplayHelpers.DisplayImage("ForegroundMatte.png");
+        "ForegroundMatte.png".DisplayImage();
     }
 }

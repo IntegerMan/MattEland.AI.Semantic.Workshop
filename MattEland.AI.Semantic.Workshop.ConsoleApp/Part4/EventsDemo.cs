@@ -1,16 +1,17 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
+﻿using Azure.AI.OpenAI;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Planning.Handlebars;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning disable SKEXP0060 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
-public class HandlebarsPlannerDemo : KernelDemoBase
+public class EventsDemo : KernelDemoBase
 {
-    public HandlebarsPlannerDemo(Part3Settings settings) : base(settings)
+    public EventsDemo(AppSettings settings) : base(settings)
     {
     }
 
@@ -27,22 +28,19 @@ public class HandlebarsPlannerDemo : KernelDemoBase
         kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
-        HandlebarsPlannerOptions plannerConfig = new()
-        {
-            AllowLoops = true,
-        };
-        HandlebarsPlanner planner = new(plannerConfig);
-
         bool keepChatting;
         do
         {
             string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
             AnsiConsole.WriteLine();
 
-            HandlebarsPlan plan = await planner.CreatePlanAsync(kernel, userText);
-            AnsiConsole.MarkupLine($"[Yellow]Plan:[/] {plan}");
+            OpenAIPromptExecutionSettings executionSettings = new()
+            {
+                ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+            };
 
-            string reply = await plan.InvokeAsync(kernel);
+            FunctionResult result = await kernel.InvokePromptAsync(userText, new KernelArguments(executionSettings));
+            string reply = result.ToString();
 
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
             AnsiConsole.WriteLine();
@@ -54,6 +52,4 @@ public class HandlebarsPlannerDemo : KernelDemoBase
 }
 
 #pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-#pragma warning restore SKEXP0060 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
 

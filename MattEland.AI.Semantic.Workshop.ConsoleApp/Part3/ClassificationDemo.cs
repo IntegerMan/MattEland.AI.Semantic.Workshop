@@ -10,7 +10,7 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
 public class ClassificationDemo : KernelDemoBase
 {
-    public ClassificationDemo(Part3Settings settings) : base(settings)
+    public ClassificationDemo(AppSettings settings) : base(settings)
     {
     }
 

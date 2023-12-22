@@ -10,7 +10,7 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
 public class TemplatedChatDemo : KernelDemoBase
 {
-    public TemplatedChatDemo(Part3Settings settings) : base(settings)
+    public TemplatedChatDemo(AppSettings settings) : base(settings)
     {
     }
 

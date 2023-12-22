@@ -7,7 +7,7 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
 public class SimpleKernelDemo : KernelDemoBase
 {
-    public SimpleKernelDemo(Part3Settings settings) : base(settings)
+    public SimpleKernelDemo(AppSettings settings) : base(settings)
     {
     }
 

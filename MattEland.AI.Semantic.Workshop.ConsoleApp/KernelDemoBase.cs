@@ -3,18 +3,18 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 using Microsoft.SemanticKernel;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public abstract class KernelDemoBase
 {
-    protected KernelDemoBase(Part3Settings settings)
+    protected KernelDemoBase(AppSettings settings)
     {
         Settings = settings;
     }
 
-    protected Part3Settings Settings { get; }
+    protected AppSettings Settings { get; }
 
     protected void OnFunctionInvoking(object? sender, FunctionInvokingEventArgs e)
     {

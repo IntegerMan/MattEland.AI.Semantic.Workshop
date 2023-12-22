@@ -1,8 +1,7 @@
 ﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public class Part1Menu
 {
@@ -23,7 +22,7 @@ public class Part1Menu
     {
         Dictionary<string, Func<string>> textSources = new()
         {
-            { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own text to analyze:[/]")) },
+            { "Custom text", () => AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter your own text to analyze:[/]")) },
             { "This Workshop's Abstract", () => Properties.Resources.WorkshopAbstract},
             { "Semantic Kernel Announcement", () => Properties.Resources.SemanticKernelAnnouncement },
             { "Back", () => string.Empty }
@@ -33,7 +32,7 @@ public class Part1Menu
         {
             { "AI Generated Portrait (local file)", () => "Resources/AIPortrait.png"},
             { "Article Billboard (web file)", () => "https://accessibleai.dev/img/SK/A_SemanticKernelIntro.png" },
-            { "Custom Image", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter the image URL or relative path:[/]")) },
+            { "Custom Image", () => AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the image URL or relative path:[/]")) },
             { "Back", () => string.Empty }
         };
 
@@ -55,7 +54,8 @@ public class Part1Menu
                                                .AddChoices(textSources.Keys)
                                                .UseConverter(c => c));
 
-                    if (textToAnalyze == "Back") break;
+                    if (textToAnalyze == "Back")
+                        break;
 
                     AnsiConsole.MarkupLine($"[Yellow]Analyzing {textToAnalyze}[/]");
                     string documentText = textSources[textToAnalyze]();
@@ -70,7 +70,8 @@ public class Part1Menu
                                                .AddChoices(imageSources.Keys)
                                                .UseConverter(c => c));
 
-                    if (pathToAnalyze == "Back") break;
+                    if (pathToAnalyze == "Back")
+                        break;
 
                     string imageSource = imageSources[pathToAnalyze]();
 

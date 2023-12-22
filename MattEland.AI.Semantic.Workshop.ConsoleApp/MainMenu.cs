@@ -2,6 +2,7 @@
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 
@@ -49,15 +50,20 @@ public class MainMenu
                     }
                     break;
                 case WorkshopMenuOption.Part3:
-                    Part3Settings? p3Settings = Part3SettingsLoader.ExtractAndValidateSettings(_config);
-                    if (p3Settings is not null)
+                    AppSettings? settings = SettingsLoader.ExtractAndValidateSettings(_config);
+                    if (settings is not null)
                     {
-                        Part3Menu p3Menu = new(p3Settings);
+                        Part3Menu p3Menu = new(settings);
                         await p3Menu.RunAsync();
                     }
                     break;
                 case WorkshopMenuOption.Part4:
-                    AnsiConsole.WriteLine("Part 4 is not yet implemented. Please check back later.");
+                    AppSettings? p4Settings = SettingsLoader.ExtractAndValidateSettings(_config);
+                    if (p4Settings is not null)
+                    {
+                        Part4Menu p4Menu = new(p4Settings);
+                        await p4Menu.RunAsync();
+                    }
                     break;
                 case WorkshopMenuOption.Quit:
                     hasQuit = true;

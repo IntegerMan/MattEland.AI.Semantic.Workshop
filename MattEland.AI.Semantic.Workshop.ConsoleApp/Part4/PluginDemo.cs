@@ -1,13 +1,14 @@
 ﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Spectre.Console;
 
-namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
+namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
 public class PluginDemo : KernelDemoBase
 {
-    public PluginDemo(Part3Settings settings) : base(settings)
+    public PluginDemo(AppSettings settings) : base(settings)
     {
     }
 
@@ -17,6 +18,7 @@ public class PluginDemo : KernelDemoBase
         AddLargeLanguageModelIntegration(builder);
 
         builder.Plugins.AddFromType<TimePlugin>();
+        builder.Plugins.AddFromType<SessionizePlugin>();
 
         Kernel kernel = builder.Build();
 
@@ -26,7 +28,8 @@ public class PluginDemo : KernelDemoBase
             string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
             AnsiConsole.WriteLine();
 
-            OpenAIPromptExecutionSettings executionSettings = new() {
+            OpenAIPromptExecutionSettings executionSettings = new()
+            {
                 ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
             };
 
