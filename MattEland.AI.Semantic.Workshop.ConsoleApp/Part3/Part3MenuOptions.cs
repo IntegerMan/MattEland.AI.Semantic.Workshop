@@ -6,16 +6,20 @@ public enum Part3MenuOptions
 {
     [Description("Chat with the Kernel")]
     SimpleChat,
-    [Description("Chat with a Semantic Function")]
-    SemanticFunction,
+    [Description("Chat with prompt template")]
+    SimpleChatWithTemplate,
+    [Description("Classification Chat Example")]
+    Classification,
+    [Description("Chaining together Semantic Functions")]
+    ChainedFunctions,
+    [Description("Chat with a plugin")]
+    PluginDemo,
     [Description("Observability with Kernel Events")]
     KernelEvents,
     [Description("Chat using the Handlebars Planner")]
     HandlebarsPlanner,
     [Description("Chat using the Function-Calling Stepwise Planner")]
     FunctionCallingPlanner,
-    [Description("Chaining together Semantic Functions")]
-    ChainedFunctions,
     [Description("Go back")]
     Back
 }

@@ -5,13 +5,13 @@ using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 
-public class SemanticFunctionDemo : KernelDemoBase
+public class PluginDemo : KernelDemoBase
 {
-    public SemanticFunctionDemo(Part3Settings settings) : base(settings)
+    public PluginDemo(Part3Settings settings) : base(settings)
     {
     }
 
-    public async Task RunAsync()
+    public async override Task RunAsync()
     {
         IKernelBuilder builder = Kernel.CreateBuilder();
         AddLargeLanguageModelIntegration(builder);

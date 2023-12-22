@@ -14,8 +14,8 @@ public class Part3Menu
 
     public async Task RunAsync()
     {
-        bool hasQuit = false;
-        while (!hasQuit)
+        KernelDemoBase? demo = null;
+        do
         {
             Part3MenuOptions choice = AnsiConsole.Prompt(new SelectionPrompt<Part3MenuOptions>()
                 .Title("What task in part 3?")
@@ -23,44 +23,27 @@ public class Part3Menu
                 .AddChoices(Enum.GetValues(typeof(Part3MenuOptions)).Cast<Part3MenuOptions>())
                 .UseConverter(c => c.ToFriendlyName()));
 
-            switch (choice)
+            demo = choice switch
             {
-                case Part3MenuOptions.SimpleChat:
-                    SimpleKernelDemo simpleKernel = new(_settings);
-                    await simpleKernel.RunAsync();
-                    break;
-                case Part3MenuOptions.SemanticFunction:
-                    SemanticFunctionDemo functionDemo = new(_settings);
-                    await functionDemo.RunAsync();
-                    break;
-                case Part3MenuOptions.KernelEvents:
-                    EventsDemo eventsDemo = new(_settings);
-                    await eventsDemo.RunAsync();
-                    break;
-                case Part3MenuOptions.HandlebarsPlanner:
-                    HandlebarsPlannerDemo handlebarsDemo = new(_settings);
-                    await handlebarsDemo.RunAsync();
-                    break;
-                case Part3MenuOptions.FunctionCallingPlanner:
-                    FunctionCallingStepwisePlannerDemo plannerDemo = new(_settings);
-                    await plannerDemo.RunAsync();
-                    break;
-                case Part3MenuOptions.ChainedFunctions:
-                    AnsiConsole.WriteLine("Chained Functions not yet implemented. Please check back later.");
-                    break;
-                case Part3MenuOptions.Back:
-                    hasQuit = true;
-                    break;
-                default:
-                    AnsiConsole.WriteLine($"Matt apparently forgot to handle menu choice {choice}. What a dolt!");
-                    break;
+                Part3MenuOptions.SimpleChat => new SimpleKernelDemo(_settings),
+                Part3MenuOptions.SimpleChatWithTemplate => new TemplatedChatDemo(_settings),
+                Part3MenuOptions.Classification => new ClassificationDemo(_settings),
+                Part3MenuOptions.PluginDemo => new PluginDemo(_settings),
+                Part3MenuOptions.KernelEvents => new EventsDemo(_settings),
+                Part3MenuOptions.HandlebarsPlanner => new HandlebarsPlannerDemo(_settings),
+                Part3MenuOptions.FunctionCallingPlanner => new FunctionCallingStepwisePlannerDemo(_settings),
+                Part3MenuOptions.ChainedFunctions => throw new NotImplementedException(),
+                _ => null
+            };
+
+            if (demo is not null)
+            {
+                await demo.RunAsync();
             }
 
             AnsiConsole.WriteLine();
-        }
+        } while (demo != null);
 
         await Task.CompletedTask;
-
     }
-
 }

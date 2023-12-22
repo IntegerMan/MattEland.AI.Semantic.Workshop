@@ -11,7 +11,7 @@ public class SimpleKernelDemo : KernelDemoBase
     {
     }
 
-    public async Task RunAsync()
+    public async override Task RunAsync()
     {
         IKernelBuilder builder = Kernel.CreateBuilder();
         AddLargeLanguageModelIntegration(builder);
