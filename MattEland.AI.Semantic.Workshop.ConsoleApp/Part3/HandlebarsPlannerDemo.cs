@@ -27,7 +27,10 @@ public class HandlebarsPlannerDemo : KernelDemoBase
         kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
-        HandlebarsPlannerOptions plannerConfig = new();
+        HandlebarsPlannerOptions plannerConfig = new()
+        {
+            AllowLoops = true,
+        };
         HandlebarsPlanner planner = new(plannerConfig);
 
         bool keepChatting;
@@ -37,6 +40,8 @@ public class HandlebarsPlannerDemo : KernelDemoBase
             AnsiConsole.WriteLine();
 
             HandlebarsPlan plan = await planner.CreatePlanAsync(kernel, userText);
+            AnsiConsole.MarkupLine($"[Yellow]Plan:[/] {plan}");
+
             string reply = await plan.InvokeAsync(kernel);
 
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
