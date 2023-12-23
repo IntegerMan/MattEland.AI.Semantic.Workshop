@@ -4,6 +4,7 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
 using Spectre.Console;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.OpenMeteo;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
@@ -31,6 +32,7 @@ public abstract class KernelDemoBase
     protected void AddPlugins(IKernelBuilder builder)
     {
         builder.Plugins.AddFromType<TimePlugin>();
+        builder.Plugins.AddFromType<OpenMeteoPlugin>();
 
         if (!string.IsNullOrEmpty(Settings.SessionizeApiToken))
         {
