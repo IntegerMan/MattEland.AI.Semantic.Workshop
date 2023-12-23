@@ -10,11 +10,6 @@ public class SessionizePlugin
     private readonly List<Session> _sessions = new();
     private readonly List<Speaker> _speakers = new();
 
-    public SessionizePlugin() : this("112yvhui")
-    {
-
-    }
-
     public SessionizePlugin(string apiToken)
     {
         _sessionize = new SessionizeService(apiToken);

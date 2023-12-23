@@ -18,8 +18,7 @@ public class HandlebarsPlannerDemo : KernelDemoBase
     {
         IKernelBuilder builder = Kernel.CreateBuilder();
         AddLargeLanguageModelIntegration(builder);
-
-        builder.Plugins.AddFromType<TimePlugin>();
+        AddPlugins(builder);
 
         Kernel kernel = builder.Build();
         kernel.FunctionInvoked += OnFunctionInvoked;

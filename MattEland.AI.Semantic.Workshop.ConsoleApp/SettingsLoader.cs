@@ -18,6 +18,7 @@ public class SettingsLoader
         string? chatDeployment = config["OpenAI:ChatDeployment"];
         string? embeddingDeployment = config["OpenAI:EmbeddingDeployment"];
         string? imageDeployment = config["OpenAI:ImageDeployment"];
+        string? sessionizeToken = config["SessionizeToken"];
 
         if (string.IsNullOrWhiteSpace(key))
         {
@@ -69,6 +70,6 @@ public class SettingsLoader
                                       "Your machine is configured and ready to go.",
                                       Color.Green);
 
-        return new AppSettings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment, imageDeployment);
+        return new AppSettings(key, endpoint, textDeployment, chatDeployment, embeddingDeployment, imageDeployment, sessionizeToken);
     }
 }

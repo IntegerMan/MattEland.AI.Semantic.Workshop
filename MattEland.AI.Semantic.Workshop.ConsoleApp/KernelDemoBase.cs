@@ -1,5 +1,7 @@
 ﻿using Azure.AI.OpenAI;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
 using Spectre.Console;
 
@@ -13,6 +15,30 @@ public abstract class KernelDemoBase
     {
         Settings = settings;
     }
+
+    protected void AddLargeLanguageModelIntegration(IKernelBuilder builder)
+    {
+        if (string.IsNullOrEmpty(Settings.OpenAiEndpoint))
+        {
+            builder.AddOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiKey);
+        }
+        else
+        {
+            builder.AddAzureOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
+        }
+    }
+
+    protected void AddPlugins(IKernelBuilder builder)
+    {
+        builder.Plugins.AddFromType<TimePlugin>();
+
+        if (!string.IsNullOrEmpty(Settings.SessionizeApiToken))
+        {
+            builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
+        }
+    }
+
+    public abstract Task RunAsync();
 
     protected AppSettings Settings { get; }
 
@@ -75,19 +101,5 @@ public abstract class KernelDemoBase
             AnsiConsole.Write(table);
         }
     }
-
-    protected void AddLargeLanguageModelIntegration(IKernelBuilder builder)
-    {
-        if (string.IsNullOrEmpty(Settings.OpenAiEndpoint))
-        {
-            builder.AddOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiKey);
-        }
-        else
-        {
-            builder.AddAzureOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
-        }
-    }
-
-    public abstract Task RunAsync();
 }
 #pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

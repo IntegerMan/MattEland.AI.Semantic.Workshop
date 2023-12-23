@@ -16,9 +16,7 @@ public class PluginDemo : KernelDemoBase
     {
         IKernelBuilder builder = Kernel.CreateBuilder();
         AddLargeLanguageModelIntegration(builder);
-
-        builder.Plugins.AddFromType<TimePlugin>();
-        builder.Plugins.AddFromType<SessionizePlugin>();
+        AddPlugins(builder);
 
         Kernel kernel = builder.Build();
 
