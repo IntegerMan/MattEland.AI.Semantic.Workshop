@@ -5,10 +5,12 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
 using Spectre.Console;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.OpenMeteo;
+using System.Text;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
 #pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public abstract class KernelDemoBase
 {
@@ -22,10 +24,12 @@ public abstract class KernelDemoBase
         if (string.IsNullOrEmpty(Settings.OpenAiEndpoint))
         {
             builder.AddOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiKey);
+            builder.AddOpenAITextEmbeddingGeneration(Settings.EmbeddingDeployment!, Settings.OpenAiKey);
         }
         else
         {
             builder.AddAzureOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
+            builder.AddAzureOpenAITextEmbeddingGeneration(Settings.EmbeddingDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
         }
     }
 
@@ -38,6 +42,8 @@ public abstract class KernelDemoBase
         {
             builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
         }
+
+        builder.Plugins.AddFromObject(new EmbeddingSearchPlugin());
     }
 
     public abstract Task RunAsync();
@@ -92,7 +98,22 @@ public abstract class KernelDemoBase
                 }
                 else if (value is List<ContentFilterResultsForPrompt> filterList)
                 {
+                    // In some cases we see null results come back, so let's not even render those in the UI
+                    if (filterList.Count == 0 || filterList.First().ContentFilterResults.Sexual is null)
+                    {
+                        continue;
+                    }
+
                     table.AddRow(new Text(Markup.Escape(key)), DisplayHelpers.GetContentFilterDisplay(filterList.First().ContentFilterResults));
+                }
+                else if (value is List<ChatCompletionsFunctionToolCall> toolCalls && toolCalls.Any())
+                {
+                    StringBuilder sbCalls = new("Calls were made to the following functions:");
+                    foreach (var call in toolCalls)
+                    {
+                        sbCalls.AppendLine($"- {call.Name} ({call.Arguments})");
+                    }
+                    table.AddRow(Markup.Escape(key), Markup.Escape(sbCalls.ToString()));
                 }
                 else
                 {
@@ -105,3 +126,4 @@ public abstract class KernelDemoBase
     }
 }
 #pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0011 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

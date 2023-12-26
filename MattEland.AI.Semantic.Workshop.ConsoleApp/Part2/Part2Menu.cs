@@ -3,6 +3,7 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using System.Numerics.Tensors;
 using Spectre.Console;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using System.Text.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
@@ -171,7 +172,7 @@ public class Part2Menu
                     string searchPrompt = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the text to search for:[/]"));
 
                     float[] searchEmbeddings = await _embeddings.GetEmbeddingsAsync(searchPrompt);
-                    List<ArticleLinkWithEmbeddings> searchableArticles = System.Text.Json.JsonSerializer.Deserialize<List<ArticleLinkWithEmbeddings>>(Resources.SearchableEmbeddings)!;
+                    List<ArticleLinkWithEmbeddings> searchableArticles = JsonSerializer.Deserialize<List<ArticleLinkWithEmbeddings>>(Resources.SearchableEmbeddings)!;
 
                     foreach (ArticleLinkWithEmbeddings article in searchableArticles)
                     {

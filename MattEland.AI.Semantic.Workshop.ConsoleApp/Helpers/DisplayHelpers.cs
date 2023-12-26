@@ -72,12 +72,6 @@ public static class DisplayHelpers
         AnsiConsole.Write(image);
     }
 
-    public static void DisplayContentFilterResults(ContentFilterResultDetailsForPrompt filter)
-    {
-        AnsiConsole.Write(GetContentFilterDisplay(filter));
-        AnsiConsole.WriteLine();
-    }
-
     public static IRenderable GetContentFilterDisplay(ContentFilterResultDetailsForPrompt filter)
     {
         Table contentTable = new();
@@ -91,8 +85,12 @@ public static class DisplayHelpers
         return contentTable;
     }
 
-    private static void AddContentFilterRow(Table table, ContentFilterResult result, string name)
+    private static void AddContentFilterRow(Table table, ContentFilterResult? result, string name)
     {
+        // This can happen in some cases, so let's just not render anything
+        if (result is null)
+            return;
+
         string severity = result.Severity.ToString();
 
         severity = severity switch
