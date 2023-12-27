@@ -22,8 +22,6 @@ public class HandlebarsPlannerDemo : KernelDemoBase
 
         Kernel kernel = builder.Build();
         kernel.FunctionInvoked += OnFunctionInvoked;
-        kernel.FunctionInvoking += OnFunctionInvoking;
-        kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
         HandlebarsPlannerOptions plannerConfig = new()

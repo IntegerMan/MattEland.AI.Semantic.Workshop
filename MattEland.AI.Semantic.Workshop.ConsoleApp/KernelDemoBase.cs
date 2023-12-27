@@ -38,13 +38,14 @@ public abstract class KernelDemoBase
     {
         builder.Plugins.AddFromType<TimePlugin>();
         builder.Plugins.AddFromType<OpenMeteoPlugin>();
+        builder.Plugins.AddFromType<PreferencesPlugin>();
 
         if (!string.IsNullOrEmpty(Settings.SessionizeApiToken))
         {
             builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
         }
 
-        builder.Plugins.AddFromObject(new EmbeddingSearchPlugin());
+        // TODO: Need proper DI here builder.Plugins.AddFromObject(new EmbeddingSearchPlugin());
     }
 
     public abstract Task RunAsync();
@@ -64,6 +65,7 @@ public abstract class KernelDemoBase
 
         RenderMetadata(e.Metadata, $"{e.Function.Name} Invoked Metadata");
     }
+
     protected void OnPromptRendering(object? sender, PromptRenderingEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Prompt Rendering:[/] {Markup.Escape(e.Function.Name)}");
@@ -108,7 +110,7 @@ public abstract class KernelDemoBase
             foreach (string key in metadata.Keys)
             {
                 // These keys don't generally have helpful information, so let's skip them
-                if (key == "SystemFingerprint" || key == "Created" || key == "Id")
+                if (key == "SystemFingerprint" || key == "Created" || key == "Id" || key.EndsWith(".Id"))
                     continue;
 
                 object? value = metadata[key];

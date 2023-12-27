@@ -1,4 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Planning;
 using Spectre.Console;
 
@@ -21,8 +22,6 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
 
         Kernel kernel = builder.Build();
         kernel.FunctionInvoked += OnFunctionInvoked;
-        kernel.FunctionInvoking += OnFunctionInvoking;
-        kernel.PromptRendering += OnPromptRendering;
         kernel.PromptRendered += OnPromptRendered;
 
         FunctionCallingStepwisePlannerConfig plannerConfig = new();
@@ -44,12 +43,24 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
                 {
                     if (step.Content is not null)
                     {
-                        AnsiConsole.MarkupLine($"[SteelBlue]{step.Role}:[/] {step.Content}");
+                        if (step.Role == AuthorRole.User)
+                        {
+                            AnsiConsole.MarkupLine($"[Yellow]Prompt:[/] {step.Content}");
+                        }
+                        else if (step.Role == AuthorRole.Assistant)
+                        {
+                            AnsiConsole.MarkupLine($"[SteelBlue]Reasoning:[/] {step.Content}");
+                        } 
+                        else
+                        {
+                            AnsiConsole.MarkupLine($"[Orange3]{step.Role}:[/] {step.Content}");
+                        }
                     }
                     if (step.Metadata is not null)
                     {
                         RenderMetadata(step.Metadata, $"{step.Role} Metadata");
                     }
+                    AnsiConsole.WriteLine();
                 }
             }
 
