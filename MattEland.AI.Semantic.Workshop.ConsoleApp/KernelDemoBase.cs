@@ -6,6 +6,7 @@ using Microsoft.SemanticKernel;
 using Spectre.Console;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.OpenMeteo;
 using System.Text;
+using Spectre.Console.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
@@ -73,7 +74,22 @@ public abstract class KernelDemoBase
     protected void OnPromptRendered(object? sender, PromptRenderedEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Prompt Rendered:[/] {Markup.Escape(e.Function.Name)}");
-        AnsiConsole.WriteLine(e.RenderedPrompt);
+
+        // Some responses have a [FUNCTIONS] section that we want to render as JSON. This represents the JSON contents of our available functions and is more readable using Spectre's JSON rendering
+        int functionsIndex = e.RenderedPrompt.IndexOf("[FUNCTIONS]", StringComparison.Ordinal);
+        int endFunctionsIndex = e.RenderedPrompt.IndexOf("[END FUNCTIONS]", StringComparison.Ordinal);
+        if (functionsIndex > -1 && endFunctionsIndex > -1 && endFunctionsIndex > functionsIndex)
+        {
+            AnsiConsole.WriteLine(e.RenderedPrompt.Substring(0, functionsIndex));
+            string json = e.RenderedPrompt.Substring(functionsIndex + "[FUNCTIONS]".Length, endFunctionsIndex - functionsIndex - "[FUNCTIONS]".Length);
+            json = json.Trim();
+            AnsiConsole.Write(new JsonText(json));
+            AnsiConsole.WriteLine(e.RenderedPrompt.Substring(endFunctionsIndex + "[END FUNCTIONS]".Length));
+        }
+        else
+        {
+            AnsiConsole.WriteLine(e.RenderedPrompt);
+        }
 
         RenderMetadata(e.Metadata, $"{e.Function.Name} Rendered Metadata");
     }
