@@ -35,6 +35,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Spectre.Console" Version="0.48.1-preview.0.5" />
     <PackageReference Include="Spectre.Console.ImageSharp" Version="0.48.1-preview.0.5" />
+    <PackageReference Include="Spectre.Console.Json" Version="0.48.1-preview.0.5" />
     <PackageReference Include="System.Numerics.Tensors" Version="8.0.0" />
   </ItemGroup>
 

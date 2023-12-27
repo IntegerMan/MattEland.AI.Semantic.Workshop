@@ -82,11 +82,19 @@ public abstract class KernelDemoBase
     {
         if (metadata is not null && metadata.Count > 0)
         {
+            int rows = 0;
+
             Table table = new();
             table.Title = new TableTitle($"[SteelBlue]{Markup.Escape(title)}[/]");
             table.AddColumns("Key", "Value");
+
+            // Loop over each column and render it based on its type
             foreach (string key in metadata.Keys)
             {
+                // These keys don't generally have helpful information, so let's skip them
+                if (key == "SystemFingerprint" || key == "Created" || key == "Id")
+                    continue;
+
                 object? value = metadata[key];
                 if (value?.ToString() is null)
                 {
@@ -119,9 +127,16 @@ public abstract class KernelDemoBase
                 {
                     table.AddRow(Markup.Escape(key), Markup.Escape(value.ToString()!));
                 }
+
+                rows++;
             }
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(table);
+
+            // In case we got a useless table, don't render it
+            if (rows > 0)
+            {
+                AnsiConsole.WriteLine();
+                AnsiConsole.Write(table);
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Azure.AI.OpenAI;
 using Spectre.Console;
+using Spectre.Console.Json;
 using Spectre.Console.Rendering;
 using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
+using System.Text.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
@@ -71,6 +73,18 @@ public static class DisplayHelpers
         image.MaxWidth = 30;
         AnsiConsole.Write(image);
     }
+
+    public static void DisplayObjectJson(this object source, string header = "JSON")
+    {
+        // Note: this demo app mixes Newtonsoft and system.text.json for conveniences in both / to work around default limitations of both
+        // Here Newtonsoft is able to serialize Type objects by default while System.Text.Json isn't.
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
+        JsonText jsonText = new(json);
+        AnsiConsole.Write(new Panel(jsonText)
+                                .Header(header)
+                                .BorderColor(Color.SteelBlue));
+    }
+
 
     public static IRenderable GetContentFilterDisplay(ContentFilterResultDetailsForPrompt filter)
     {

@@ -1,7 +1,10 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
 using Spectre.Console;
+using Spectre.Console.Json;
+using System.Text.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
@@ -38,8 +41,26 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
             FunctionCallingStepwisePlannerResult result = await planner.ExecuteAsync(kernel, userText);
             string reply = result.FinalAnswer;
 
+            // Display details on the plan for diagnostics:
+            if (result.ChatHistory is not null)
+            {
+                foreach (ChatMessageContent step in result.ChatHistory)
+                {
+                    if (step.Content is not null)
+                    {
+                        AnsiConsole.MarkupLine($"[SteelBlue]{step.Role}:[/] {step.Content}");
+                    }
+                    if (step.Metadata is not null)
+                    {
+                        RenderMetadata(step.Metadata, $"{step.Role} Metadata");
+                    }
+                }
+            }
+
+            AnsiConsole.WriteLine();
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
             AnsiConsole.WriteLine();
+
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();
