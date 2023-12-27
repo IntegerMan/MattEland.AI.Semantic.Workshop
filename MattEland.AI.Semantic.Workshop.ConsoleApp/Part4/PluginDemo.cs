@@ -34,7 +34,7 @@ public class PluginDemo : KernelDemoBase
 
             FunctionResult response = await kernel.InvokePromptAsync(userText, new KernelArguments(executionSettings));
 
-            DisplayHelpers.DisplayObjectJson(response, "Response");
+            // DisplayHelpers.DisplayObjectJson(response, "Response");
 
             RenderMetadata(response.Metadata, "Response Metadata");
 

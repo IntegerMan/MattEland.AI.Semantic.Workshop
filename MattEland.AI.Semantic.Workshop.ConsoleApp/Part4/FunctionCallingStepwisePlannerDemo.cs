@@ -1,10 +1,6 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Planning;
 using Spectre.Console;
-using Spectre.Console.Json;
-using System.Text.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
@@ -60,7 +56,6 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
             AnsiConsole.WriteLine();
             AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
             AnsiConsole.WriteLine();
-
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using MattEland.AI.Semantic.Workshop.ConsoleApp;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 try
 {
@@ -17,6 +18,11 @@ try
     AnsiConsole.Write(new FigletText("CodeMash AI").Color(Color.Yellow));
     AnsiConsole.MarkupLine("Precompiler workshop led by [SteelBlue]Matt Eland[/] and [SteelBlue]Sam Gomez[/].");
     AnsiConsole.WriteLine();
+
+    // Standard cost disclaimer
+    DisplayHelpers.DisplayBorderedMessage("Cost Disclaimer",
+                                          "[Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/]",  
+                                          Color.Red);
 
     // Load settings
     const string EnvironmentPrefix = Part1SettingsLoader.EnvironmentPrefix;
