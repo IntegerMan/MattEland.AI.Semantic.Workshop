@@ -12,7 +12,6 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 public static class DisplayHelpers
 {
-
     public static void DisplayBorderedMessage(string header, string message)
     {
         DisplayBorderedMessage(header, message, Color.SteelBlue);

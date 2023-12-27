@@ -62,27 +62,26 @@ public class ClassificationDemo : KernelDemoBase
             ]
                 ];
 
-                bool keepChatting;
-                do
-                {
-                    string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
-                    AnsiConsole.WriteLine();
+        bool keepChatting;
+        do
+        {
+            string userText = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]You:[/]"));
+            AnsiConsole.WriteLine();
 
-                    FunctionResult response = await kernel.InvokeAsync(
-                    getIntent,
-                            new() {
+            FunctionResult response = await kernel.InvokeAsync(
+            getIntent,
+                    new() {
                         { "request", userText },
                         { "choices", choices },
                         { "fewShotExamples", fewShotExamples }
-                    }
-                );
-                RenderMetadata(response.Metadata, "Response Metadata");
+            }
+        );
+            RenderMetadata(response.Metadata, "Response Metadata");
 
 
-                string reply = response.ToString();
+            string reply = response.ToString();
 
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
+            DisplayBotResponse(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

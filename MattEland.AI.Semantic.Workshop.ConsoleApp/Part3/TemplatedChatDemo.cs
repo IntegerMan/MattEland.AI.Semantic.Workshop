@@ -42,8 +42,7 @@ public class TemplatedChatDemo : KernelDemoBase
 
             string reply = response.ToString();
 
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
+            DisplayBotResponse(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

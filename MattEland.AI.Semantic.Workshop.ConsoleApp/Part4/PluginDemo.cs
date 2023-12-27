@@ -1,7 +1,4 @@
-﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Spectre.Console;
 
@@ -34,14 +31,11 @@ public class PluginDemo : KernelDemoBase
 
             FunctionResult response = await kernel.InvokePromptAsync(userText, new KernelArguments(executionSettings));
 
-            // DisplayHelpers.DisplayObjectJson(response, "Response");
-
             RenderMetadata(response.Metadata, "Response Metadata");
 
             string reply = response.ToString();
 
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
+            DisplayBotResponse(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

@@ -52,6 +52,14 @@ public abstract class KernelDemoBase
 
     protected AppSettings Settings { get; }
 
+    public void DisplayBotResponse(string reply)
+    {
+        DisplayHelpers.DisplayBorderedMessage("Alfred", reply, Color.SteelBlue);
+        AnsiConsole.WriteLine();
+
+        // TODO: Speak this message if configured to in the settings
+    }
+
     protected void OnFunctionInvoking(object? sender, FunctionInvokingEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Function Invoking:[/] {e.Function.Name}");

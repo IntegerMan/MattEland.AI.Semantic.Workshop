@@ -41,8 +41,7 @@ public class HandlebarsPlannerDemo : KernelDemoBase
 
             string reply = await plan.InvokeAsync(kernel);
 
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
+            DisplayBotResponse(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

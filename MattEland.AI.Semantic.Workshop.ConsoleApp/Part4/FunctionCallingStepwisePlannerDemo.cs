@@ -65,8 +65,8 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
             }
 
             AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine($"[SteelBlue]Bot:[/] {reply}");
-            AnsiConsole.WriteLine();
+
+            DisplayBotResponse(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();
