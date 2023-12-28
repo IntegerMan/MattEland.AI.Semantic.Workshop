@@ -1,7 +1,12 @@
-﻿
+﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Planning;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
+
+#pragma warning disable SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 public class Part4Lab : KernelDemoBase
 {
@@ -27,3 +32,6 @@ public class Part4Lab : KernelDemoBase
         // EXTRA CREDIT: If you build something cool, show us!
     }
 }
+
+#pragma warning restore SKEXP0004 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore SKEXP0061 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

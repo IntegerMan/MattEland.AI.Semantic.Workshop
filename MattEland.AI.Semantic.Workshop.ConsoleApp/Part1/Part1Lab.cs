@@ -1,5 +1,9 @@
-﻿
+﻿using Azure;
+using Azure.AI.Vision.ImageAnalysis;
+using Azure.AI.Vision.Common;
 using Spectre.Console;
+using System.Text;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
