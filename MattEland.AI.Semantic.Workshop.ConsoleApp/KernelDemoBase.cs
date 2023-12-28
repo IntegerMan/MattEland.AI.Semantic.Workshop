@@ -45,7 +45,7 @@ public abstract class KernelDemoBase
             builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
         }
 
-        // TODO: Need proper DI here builder.Plugins.AddFromObject(new EmbeddingSearchPlugin());
+        builder.Plugins.AddFromType<EmbeddingSearchPlugin>();
     }
 
     public abstract Task RunAsync();
@@ -54,7 +54,7 @@ public abstract class KernelDemoBase
 
     public void DisplayBotResponse(string reply)
     {
-        DisplayHelpers.DisplayBorderedMessage("Alfred", reply, Color.SteelBlue);
+        DisplayHelpers.DisplayBorderedMessage("Alfred", Markup.Escape(reply), Color.SteelBlue);
         AnsiConsole.WriteLine();
 
         // TODO: Speak this message if configured to in the settings

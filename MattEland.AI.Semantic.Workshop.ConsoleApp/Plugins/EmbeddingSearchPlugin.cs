@@ -3,6 +3,7 @@ using Azure.AI.OpenAI;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Embeddings;
 using System.ComponentModel;
 using System.Numerics.Tensors;
 using System.Text;
@@ -10,38 +11,32 @@ using System.Text.Json;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins;
 
+#pragma warning disable SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
 public class EmbeddingSearchPlugin
 {
+    private readonly ITextEmbeddingGenerationService _embeddingService;
     private readonly List<ArticleLinkWithEmbeddings> _articles;
-    private readonly OpenAIClient _client;
-    private readonly string _deploymentName;
 
-    public EmbeddingSearchPlugin()
+    public EmbeddingSearchPlugin(ITextEmbeddingGenerationService embeddingService)
     {
+        _embeddingService = embeddingService;
         _articles = LoadArticles();
-        //_client = client;
-        //_deploymentName = deploymentName;
     }
 
     [KernelFunction, Description("Searches for articles based on a search term")]
-    public async Task<string> SearchArticlesAsync(string searchText) // TODO: Need context here!
+    public async Task<string> SearchArticlesAsync(string searchText)
     {
         try
         {
-            EmbeddingsOptions options = new()
-            {
-                DeploymentName = _deploymentName
-            };
-            options.Input.Add(searchText);
+            IList<ReadOnlyMemory<float>> embeddings = await _embeddingService.GenerateEmbeddingsAsync([searchText]);
 
-            Response<Embeddings> response = await _client.GetEmbeddingsAsync(options);
-
-            if (response.Value.Data.Count == 0)
+            if (embeddings.Count == 0 || embeddings.First().Length == 0)
             {
                 return "No embeddings found";
             }
 
-            float[] searchEmbeddings = response.Value.Data.First().Embedding.ToArray();
+            float[] searchEmbeddings = embeddings.First().ToArray();
 
             IEnumerable<ArticleLinkWithEmbeddings> articles = ScoreEmbeddingSimilarity(searchEmbeddings).OrderByDescending(a => a.Score).Take(5);
             if (articles.Any())
@@ -78,3 +73,5 @@ public class EmbeddingSearchPlugin
     private static List<ArticleLinkWithEmbeddings> LoadArticles() 
         => JsonSerializer.Deserialize<List<ArticleLinkWithEmbeddings>>(Resources.SearchableEmbeddings)!;
 }
+
+#pragma warning restore SKEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
