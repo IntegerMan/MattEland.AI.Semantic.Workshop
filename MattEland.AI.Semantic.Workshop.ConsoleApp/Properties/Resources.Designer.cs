@@ -163,6 +163,24 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/].
+        /// </summary>
+        internal static string CostDisclaimerMessage {
+            get {
+                return ResourceManager.GetString("CostDisclaimerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Both OpenAI and Azure OpenAI are not configured. You must configure at least one of these to use OpenAI features. Please check your [SteelBlue]appsettings.json[/] file and make sure you have provided a key for OpenAI if using OpenAI. If using Azure OpenAI, you&apos;ll need a key, an endpoint, and the names of your deployed models. See [SteelBlue]README.md[/] for more setup details..
+        /// </summary>
+        internal static string OpenAINotConfiguredMessage {
+            get {
+                return ResourceManager.GetString("OpenAINotConfiguredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [
         ///	{
         ///		&quot;Name&quot;: &quot;Join us at CodeMash&quot;,

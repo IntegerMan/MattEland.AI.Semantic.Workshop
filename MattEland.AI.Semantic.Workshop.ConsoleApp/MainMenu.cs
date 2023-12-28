@@ -22,9 +22,7 @@ public class MainMenu
         // Standard cost disclaimer
         if (!_settings.SkipCostDisclaimer)
         {
-            DisplayHelpers.DisplayBorderedMessage("Cost Disclaimer",
-                                                  "[Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/]",
-                                                  Color.Red);
+            DisplayHelpers.DisplayBorderedMessage("Cost Disclaimer", Resources.CostDisclaimerMessage, Color.Red);
         }
 
         bool hasQuit = false;
@@ -45,24 +43,45 @@ public class MainMenu
                         // Run the submenu for Part 1
                         Part1Menu p1Menu = new(_settings.AzureAIServices);
                         await p1Menu.RunAsync();
-                    } 
+                    }
                     else
                     {
                         DisplayHelpers.DisplayBorderedMessage("Azure AI Services not configured", Resources.AzureAIServicesNotConfiguredMessage, Color.Orange3);
                     }
                     break;
                 case WorkshopMenuOption.Part2:
-                    // Run the submenu for Part 2
-                    Part2Menu p2Menu = new(_settings);
-                    await p2Menu.RunAsync();
+                    if (_settings.OpenAI.IsConfigured || _settings.AzureOpenAI.IsConfigured)
+                    {
+                        // Run the submenu for Part 2
+                        Part2Menu p2Menu = new(_settings);
+                        await p2Menu.RunAsync();
+                    }
+                    else
+                    {
+                        DisplayHelpers.DisplayBorderedMessage("OpenAI not configured", Resources.OpenAINotConfiguredMessage, Color.Orange3);
+                    }
                     break;
                 case WorkshopMenuOption.Part3:
-                    Part3Menu p3Menu = new(_settings);
-                    await p3Menu.RunAsync();
+                    if (_settings.OpenAI.IsConfigured || _settings.AzureOpenAI.IsConfigured)
+                    {
+                        Part3Menu p3Menu = new(_settings);
+                        await p3Menu.RunAsync();
+                    }
+                    else
+                    {
+                        DisplayHelpers.DisplayBorderedMessage("OpenAI not configured", Resources.OpenAINotConfiguredMessage, Color.Orange3);
+                    }
                     break;
                 case WorkshopMenuOption.Part4:
-                    Part4Menu p4Menu = new(_settings);
-                    await p4Menu.RunAsync();
+                    if (_settings.OpenAI.IsConfigured || _settings.AzureOpenAI.IsConfigured)
+                    {
+                        Part4Menu p4Menu = new(_settings);
+                        await p4Menu.RunAsync();
+                    }
+                    else
+                    {
+                        DisplayHelpers.DisplayBorderedMessage("OpenAI not configured", Resources.OpenAINotConfiguredMessage, Color.Orange3);
+                    }
                     break;
                 case WorkshopMenuOption.Quit:
                     hasQuit = true;

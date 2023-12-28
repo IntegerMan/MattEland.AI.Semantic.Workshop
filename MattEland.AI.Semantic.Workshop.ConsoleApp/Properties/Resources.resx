@@ -139,6 +139,12 @@
   <data name="CodeMashBlogPost3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CodeMashBlogPost3.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="CostDisclaimerMessage" xml:space="preserve">
+    <value>[Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/]</value>
+  </data>
+  <data name="OpenAINotConfiguredMessage" xml:space="preserve">
+    <value>Both OpenAI and Azure OpenAI are not configured. You must configure at least one of these to use OpenAI features. Please check your [SteelBlue]appsettings.json[/] file and make sure you have provided a key for OpenAI if using OpenAI. If using Azure OpenAI, you'll need a key, an endpoint, and the names of your deployed models. See [SteelBlue]README.md[/] for more setup details.</value>
+  </data>
   <data name="SearchableEmbeddings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SearchableEmbeddings.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
