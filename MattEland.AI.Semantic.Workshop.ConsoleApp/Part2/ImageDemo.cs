@@ -32,7 +32,6 @@ public class ImageDemo
             Guid guid = Guid.NewGuid();
             string tempFile = Path.Combine(AppContext.BaseDirectory, $"{guid}.png");
             Uri url = result.Value.Data.First().Url;
-            AnsiConsole.MarkupLine($"[Yellow]Image URL:[/] {Markup.Escape(url.ToString())}");
 
             // Display the image
             await DisplayHelpers.DisplayImageAsync(url);

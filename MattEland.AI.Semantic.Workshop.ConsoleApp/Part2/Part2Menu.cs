@@ -38,7 +38,8 @@ public class Part2Menu
         Dictionary<string, Func<string>> imageSources = new()
         {
             { "Disapproving Gorilla", () => "An oil painting of disapproving gorilla staring at the viewer"},
-            { "Batman and Robin presenting at CodeMash", () => "Batman presenting at a technical conference with Robin there helping"},
+            { "Batman and Robin presenting at CodeMash", () => "Batman and Robin presenting at a technical conference"},
+            { "Board Game Extravaganza", () => "A bunch of programmers playing many different board games at a conference"},
             { "Bacon Buffet", () => "An illustration of programming conference attendees waiting in line at a buffet featuring bacon and only bacon at CodeMash 2024." },
             { "Custom text", () => AnsiConsole.Prompt<string>(new TextPrompt<string>("[Yellow]Enter your own image prompt:[/]")) },
             { "Back", () => string.Empty }
@@ -156,6 +157,11 @@ public class Part2Menu
                     {
                         AnsiConsole.MarkupLine($"- [Yellow]Score:[/] {result.Score:F3}, [Yellow]Url:[/] [SteelBlue]{result.Url}[/]");
                     }
+                    break;
+
+                case Part2MenuOptions.Lab:
+                    Part2Lab lab = new(_settings);
+                    await lab.RunAsync();
                     break;
 
                 case Part2MenuOptions.Back:

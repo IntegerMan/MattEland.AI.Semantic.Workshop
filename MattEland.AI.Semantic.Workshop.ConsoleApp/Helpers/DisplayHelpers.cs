@@ -64,6 +64,8 @@ public static class DisplayHelpers
         using Stream stream = await webClient.GetStreamAsync(imageUri);
 
         stream.DisplayImage();
+
+        AnsiConsole.MarkupLine($"[Yellow]Image URL:[/] {Markup.Escape(imageUri.ToString())}");
     }
 
     public static void DisplayImage(this Stream imageStream)

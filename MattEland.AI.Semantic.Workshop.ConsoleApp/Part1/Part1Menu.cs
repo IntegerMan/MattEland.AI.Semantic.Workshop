@@ -5,12 +5,14 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 public class Part1Menu
 {
+    private readonly AzureAISettings _settings;
     private readonly TextAnalysisDemo _textAnalysis;
     private readonly ImageAnalysisDemo _imageAnalysis;
     private readonly SpeechDemo _speech;
 
     public Part1Menu(AzureAISettings settings)
     {
+        _settings = settings;
         _textAnalysis = new TextAnalysisDemo(settings.Endpoint, settings.Key);
         _imageAnalysis = new ImageAnalysisDemo(settings.Endpoint, settings.Key);
 
@@ -104,6 +106,11 @@ public class Part1Menu
                     {
                         await _speech.SpeakAsync($"I heard you say: {text}");
                     }
+                    break;
+
+                case Part1MenuOptions.Lab:
+                    Part1Lab lab = new(_settings);
+                    await lab.RunAsync();
                     break;
 
                 case Part1MenuOptions.Back:

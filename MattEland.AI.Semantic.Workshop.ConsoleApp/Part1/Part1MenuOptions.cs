@@ -14,6 +14,8 @@ public enum Part1MenuOptions
     TextToSpeech,
     [Description("Speech to Text")]
     SpeechToText,
+    [Description("Lab 1: Listen, Summarize, and Speak")]
+    Lab,
     [Description("Go back")]
     Back
 }
