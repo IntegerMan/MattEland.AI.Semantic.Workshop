@@ -15,6 +15,8 @@ public class AzureAISettings
     public required string Endpoint { get; init; }
     public required string Region { get; init; }
     public string VoiceName { get; init; } = "en-GB-AlfieNeural";
+
+    public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Region);
 }
 
 public class OpenAISettings

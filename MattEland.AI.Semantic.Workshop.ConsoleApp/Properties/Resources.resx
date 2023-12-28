@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AzureAIServicesNotConfiguredMessage" xml:space="preserve">
+    <value>Azure AI Services are not configured. Please check your [SteelBlue]appsettings.json[/] file and make sure [SteelBlue]AzureAIServices:Key[/], [SteelBlue]AzureAIServices:Endpoint[/], and [SteelBlue]AzureAIServices:Region[/] are set. You can find these values on the [Bold]Keys and Endpoint[/] blade in the Azure portal for your Azure AI Services resource. See [SteelBlue]README.md[/] for more setup details.</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ChatAlfredSystemPrompt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChatAlfredSystemPrompt.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>

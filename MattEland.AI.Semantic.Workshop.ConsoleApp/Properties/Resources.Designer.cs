@@ -61,6 +61,15 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Azure AI Services are not configured. Please check your [SteelBlue]appsettings.json[/] file and make sure [SteelBlue]AzureAIServices:Key[/], [SteelBlue]AzureAIServices:Endpoint[/], and [SteelBlue]AzureAIServices:Region[/] are set. You can find these values on the [Bold]Keys and Endpoint[/] blade in the Azure portal for your Azure AI Services resource. See [SteelBlue]README.md[/] for more setup details..
+        /// </summary>
+        internal static string AzureAIServicesNotConfiguredMessage {
+            get {
+                return ResourceManager.GetString("AzureAIServicesNotConfiguredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are a virtual assistant running at the CodeMash conference at the Kalahari convention center. The user is a software engineer who is attending the conference.
         ///
         ///Be polite to the user and answer their questions. Provide relevant information on Azure AI Services and OpenAI when needed.

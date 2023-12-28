@@ -3,6 +3,7 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
@@ -39,9 +40,16 @@ public class MainMenu
             switch (choice)
             {
                 case WorkshopMenuOption.Part1:
-                    // Run the submenu for Part 1
-                    Part1Menu p1Menu = new(_settings.AzureAIServices);
-                    await p1Menu.RunAsync();
+                    if (_settings.AzureAIServices.IsConfigured)
+                    {
+                        // Run the submenu for Part 1
+                        Part1Menu p1Menu = new(_settings.AzureAIServices);
+                        await p1Menu.RunAsync();
+                    } 
+                    else
+                    {
+                        DisplayHelpers.DisplayBorderedMessage("Azure AI Services not configured", Resources.AzureAIServicesNotConfiguredMessage, Color.Orange3);
+                    }
                     break;
                 case WorkshopMenuOption.Part2:
                     // Run the submenu for Part 2
