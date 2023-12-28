@@ -4,21 +4,21 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.OpenMeteo;
 
 public class DailyWeather
 {
-    public List<string> Time { get; set; }
+    public required List<string> Time { get; set; }
     [JsonProperty("weather_code")]
-    public List<int> WeatherCode { get; set; }
+    public required List<int> WeatherCode { get; set; }
     [JsonProperty("apparent_temperature_max")]
-    public List<decimal> ApparentTemperatureMax { get; set; }
+    public required List<decimal> ApparentTemperatureMax { get; set; }
     [JsonProperty("apparent_temperature_min")]
-    public List<decimal> ApparentTemperatureMin { get; set; }
+    public required List<decimal> ApparentTemperatureMin { get; set; }
     [JsonProperty("precipitation_sum")]
-    public List<decimal> Precipitation { get; set; }
+    public required List<decimal> Precipitation { get; set; }
     [JsonProperty("rain_sum")]
-    public List<decimal> Rain { get; set; }
+    public required List<decimal> Rain { get; set; }
     [JsonProperty("showers_sum")]
-    public List<decimal> Showers { get; set; }
+    public required List<decimal> Showers { get; set; }
     [JsonProperty("snowfall_sum")]
-    public List<decimal> Snowfall { get; set; }
+    public required List<decimal> Snowfall { get; set; }
     [JsonProperty("precipitation_probability_max")]
-    public List<int> PrecipitationChanceMax { get; set; }
+    public required List<int> PrecipitationChanceMax { get; set; }
 }

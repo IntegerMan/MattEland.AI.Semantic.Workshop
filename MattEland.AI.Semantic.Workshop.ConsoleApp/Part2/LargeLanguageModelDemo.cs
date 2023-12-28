@@ -6,24 +6,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YamlDotNet.Serialization;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
 public class LargeLanguageModelDemo
 {
     private readonly OpenAIClient _client;
-    private readonly Part2Settings _settings;
+    private readonly AppSettings _settings;
 
-    public LargeLanguageModelDemo(Part2Settings settings)
+    public LargeLanguageModelDemo(AppSettings settings)
     {
-        if (string.IsNullOrEmpty(settings.OpenAiEndpoint))
+        bool useAzureOpenAI = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+
+        if (!useAzureOpenAI)
         {
-            _client = new OpenAIClient(settings.OpenAiKey);
+            _client = new OpenAIClient(settings.OpenAI.Key);
         } 
         else
         {
-            Uri uri = new(settings.OpenAiEndpoint);
-            AzureKeyCredential key = new(settings.OpenAiKey);
+            Uri uri = new(settings.AzureOpenAI.Endpoint);
+            AzureKeyCredential key = new(settings.AzureOpenAI.Key);
             _client = new OpenAIClient(uri, key);
         }
 
@@ -32,18 +35,23 @@ public class LargeLanguageModelDemo
 
     public async Task<string?> GetTextCompletionAsync(string prompt)
     {
+        bool useAzureOpenAI = !string.IsNullOrEmpty(_settings.AzureOpenAI.Endpoint);
+        string deployment = useAzureOpenAI 
+            ? _settings.AzureOpenAI.TextDeploymentName 
+            : _settings.OpenAI.TextModel; // TODO: This may not work. Verify
+
+        CompletionsOptions options = new()
+        {
+            ChoicesPerPrompt = 1,
+            MaxTokens = 1000,
+            DeploymentName = deployment,
+            Temperature = 1f, // ranges from 0 to 2
+            Echo = false,
+        };
+        options.Prompts.Add(prompt);
+
         try
         {
-            CompletionsOptions options = new()
-            {
-                ChoicesPerPrompt = 1,
-                MaxTokens = 1000,
-                DeploymentName = _settings.TextDeployment,
-                Temperature = 1f, // ranges from 0 to 2
-                Echo = false,
-            };
-            options.Prompts.Add(prompt);
-
             Response<Completions> result = await _client.GetCompletionsAsync(options);
 
             return result.Value.Choices.First().Text;
@@ -52,7 +60,7 @@ public class LargeLanguageModelDemo
         {
             if (ex.ErrorCode == "DeploymentNotFound")
             {
-                AnsiConsole.MarkupLine($"[Red]Deployment {_settings.TextDeployment} not found. Please check your settings.[/]");
+                AnsiConsole.MarkupLine($"[Red]Deployment {options.DeploymentName} not found. Please check your settings.[/]");
             }
             else if (ex.ErrorCode == "MaxTokensError")
             {

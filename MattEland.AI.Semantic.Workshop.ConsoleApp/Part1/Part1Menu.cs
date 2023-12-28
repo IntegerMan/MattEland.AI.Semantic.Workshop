@@ -9,13 +9,13 @@ public class Part1Menu
     private readonly ImageAnalysisDemo _imageAnalysis;
     private readonly SpeechDemo _speech;
 
-    public Part1Menu(Part1Settings settings)
+    public Part1Menu(AzureAISettings settings)
     {
-        _textAnalysis = new TextAnalysisDemo(settings.AiEndpoint, settings.AiKey);
-        _imageAnalysis = new ImageAnalysisDemo(settings.AiEndpoint, settings.AiKey);
+        _textAnalysis = new TextAnalysisDemo(settings.Endpoint, settings.Key);
+        _imageAnalysis = new ImageAnalysisDemo(settings.Endpoint, settings.Key);
 
         // Note Speech uses a region instead of an endpoint
-        _speech = new SpeechDemo(settings.AiRegion, settings.AiKey, settings.VoiceName ?? "en-GB-AlfieNeural");
+        _speech = new SpeechDemo(settings.Region, settings.Key, settings.VoiceName);
     }
 
     public async Task RunAsync()

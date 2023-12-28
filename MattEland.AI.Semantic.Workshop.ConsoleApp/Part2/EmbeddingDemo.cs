@@ -7,18 +7,20 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 public class EmbeddingDemo
 {
     private readonly OpenAIClient _client;
-    private readonly Part2Settings _settings;
+    private readonly AppSettings _settings;
 
-    public EmbeddingDemo(Part2Settings settings)
+    public EmbeddingDemo(AppSettings settings)
     {
-        if (string.IsNullOrEmpty(settings.OpenAiEndpoint))
+        bool useAzureOpenAI = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+
+        if (!useAzureOpenAI)
         {
-            _client = new OpenAIClient(settings.OpenAiKey);
+            _client = new OpenAIClient(settings.OpenAI.Key);
         } 
         else
         {
-            Uri uri = new(settings.OpenAiEndpoint);
-            AzureKeyCredential key = new(settings.OpenAiKey);
+            Uri uri = new(settings.AzureOpenAI.Endpoint);
+            AzureKeyCredential key = new(settings.AzureOpenAI.Key);
             _client = new OpenAIClient(uri, key);
         }
 
@@ -27,9 +29,14 @@ public class EmbeddingDemo
 
     public async Task<float[]> GetEmbeddingsAsync(string prompt)
     {
+        bool useAzureOpenAI = !string.IsNullOrEmpty(_settings.AzureOpenAI.Endpoint);
+        string deployment = useAzureOpenAI 
+            ? _settings.AzureOpenAI.EmbeddingDeploymentName 
+            : _settings.OpenAI.EmbeddingModel; // TODO: This may not be available. Test this!
+
         EmbeddingsOptions options = new()
         {
-            DeploymentName = _settings.EmbeddingDeployment
+            DeploymentName = deployment
         };
 
         try

@@ -4,13 +4,8 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
 
 public class Session
 {
-    /*
-    [JsonProperty("questionAnswers")]
-    public List<object> QuestionAnswers { get; set; }
-    */
-
     [JsonProperty("id")]
-    public string Id { get; set; }
+    public required string Id { get; set; }
 
     [JsonProperty("title")]
     public required string Title { get; set; }

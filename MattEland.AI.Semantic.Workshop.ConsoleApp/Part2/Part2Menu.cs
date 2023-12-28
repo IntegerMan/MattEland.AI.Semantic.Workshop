@@ -9,15 +9,15 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
 public class Part2Menu
 {
-    private readonly Part2Settings _settings;
+    private readonly AppSettings _settings;
     private readonly LargeLanguageModelDemo _llm;
     private readonly ChatDemo _chat;
     private readonly ImageDemo _dalle;
     private readonly EmbeddingDemo _embeddings;
 
-    public Part2Menu(Part2Settings p2Settings)
+    public Part2Menu(AppSettings settings)
     {
-        _settings = p2Settings;
+        _settings = settings;
         _llm = new LargeLanguageModelDemo(_settings);
         _chat = new ChatDemo(_settings, Resources.ChatAssistantSystemPrompt);
         _dalle = new ImageDemo(_settings);
@@ -65,12 +65,6 @@ public class Part2Menu
             switch (choice)
             {
                 case Part2MenuOptions.TextCompletion:
-                    if (string.IsNullOrEmpty(_settings.TextDeployment))
-                    {
-                        AnsiConsole.MarkupLine($"[Red]No text deployment specified. Please check your settings.[/]");
-                        break;
-                    }
-
                     string textChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
                                                .Title("What text prompt do you want to use?")
                                                .HighlightStyle(Style.Parse("Orange3"))
@@ -92,12 +86,6 @@ public class Part2Menu
                     break;
 
                 case Part2MenuOptions.ChatCompletion:
-                    if (string.IsNullOrEmpty(_settings.ChatDeployment))
-                    {
-                        AnsiConsole.MarkupLine($"[Red]No chat deployment specified. Please check your settings.[/]");
-                        break;
-                    }
-
                     bool keepChatting;
                     do
                     {
@@ -118,12 +106,6 @@ public class Part2Menu
                     break;
 
                 case Part2MenuOptions.ImageCompletion:
-                    if (string.IsNullOrEmpty(_settings.ImageDeployment))
-                    {
-                        AnsiConsole.MarkupLine($"[Red]No image deployment specified. Please check your settings.[/]");
-                        break;
-                    }
-
                     string imageChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
                                                .Title("What image prompt do you want to use?")
                                                .HighlightStyle(Style.Parse("Orange3"))
@@ -140,12 +122,6 @@ public class Part2Menu
                     break;
 
                 case Part2MenuOptions.GenerateTextEmbedding:
-                    if (string.IsNullOrEmpty(_settings.EmbeddingDeployment))
-                    {
-                        AnsiConsole.MarkupLine($"[Red]No text embedding deployment specified. Please check your settings.[/]");
-                        break;
-                    }
-
                     string embeddingChoice = AnsiConsole.Prompt(new SelectionPrompt<string>()
                                                .Title("What text do you want to generate embeddings for?")
                                                .HighlightStyle(Style.Parse("Orange3"))
@@ -163,12 +139,6 @@ public class Part2Menu
                     break;
 
                 case Part2MenuOptions.SearchEmbedding:
-                    if (string.IsNullOrEmpty(_settings.EmbeddingDeployment))
-                    {
-                        AnsiConsole.MarkupLine($"[Red]No text embedding deployment specified. Please check your settings.[/]");
-                        break;
-                    }
-
                     string searchPrompt = AnsiConsole.Prompt(new TextPrompt<string>("[Yellow]Enter the text to search for:[/]"));
 
                     float[] searchEmbeddings = await _embeddings.GetEmbeddingsAsync(searchPrompt);

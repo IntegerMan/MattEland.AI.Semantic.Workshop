@@ -6,33 +6,35 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
 public class ChatDemo
 {
-    private readonly Part2Settings _settings;
     private readonly ChatCompletionsOptions _history;
     private readonly OpenAIClient _client;
 
-    public ChatDemo(Part2Settings settings, string systemPrompt)
+    public ChatDemo(AppSettings settings, string systemPrompt)
     {
-        _settings = settings;
+        bool useAzureOpenAi = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+        string deploymentName = useAzureOpenAi 
+            ? settings.AzureOpenAI.ChatDeploymentName 
+            : settings.OpenAI.ChatModel;
+
         _history = new ChatCompletionsOptions()
         {
             MaxTokens = 4000,
-            DeploymentName = settings.ChatDeployment,
+            DeploymentName = deploymentName,
             Temperature = 1f, // ranges from 0 to 2
             // You can connect to Azure AI Search to perform Retrieval Augmentation Generation (RAG) by providing Azure Extensions
         };
         _history.Messages.Add(new ChatRequestSystemMessage(systemPrompt));
 
-        if (string.IsNullOrEmpty(settings.OpenAiEndpoint))
+        if (useAzureOpenAi)
         {
-            _client = new OpenAIClient(settings.OpenAiKey);
+            Uri uri = new(settings.AzureOpenAI.Endpoint);
+            AzureKeyCredential key = new(settings.AzureOpenAI.Key);
+            _client = new OpenAIClient(uri, key);
         }
         else
         {
-            Uri uri = new(settings.OpenAiEndpoint);
-            AzureKeyCredential key = new(settings.OpenAiKey);
-            _client = new OpenAIClient(uri, key);
+            _client = new OpenAIClient(settings.OpenAI.Key);
         }
-
     }
 
     public async Task<string?> GetChatCompletionAsync(string userText)
@@ -55,7 +57,7 @@ public class ChatDemo
         {
             if (ex.ErrorCode == "DeploymentNotFound")
             {
-                AnsiConsole.MarkupLine($"[Red]Deployment {_settings.ChatDeployment} not found. Please check your settings.[/]");
+                AnsiConsole.MarkupLine($"[Red]Deployment not found. Please check your settings.[/]");
             }
             else if (ex.ErrorCode == "MaxTokensError")
             {

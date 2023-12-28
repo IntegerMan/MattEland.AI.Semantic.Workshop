@@ -22,15 +22,16 @@ public abstract class KernelDemoBase
 
     protected void AddLargeLanguageModelIntegration(IKernelBuilder builder)
     {
-        if (string.IsNullOrEmpty(Settings.OpenAiEndpoint))
+        bool useAzureOpenAI = !string.IsNullOrEmpty(Settings.AzureOpenAI.Endpoint);
+        if (useAzureOpenAI)
         {
-            builder.AddOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiKey);
-            builder.AddOpenAITextEmbeddingGeneration(Settings.EmbeddingDeployment!, Settings.OpenAiKey);
+            builder.AddAzureOpenAIChatCompletion(Settings.AzureOpenAI.ChatDeploymentName, Settings.AzureOpenAI.Endpoint, Settings.AzureOpenAI.Key);
+            builder.AddAzureOpenAITextEmbeddingGeneration(Settings.AzureOpenAI.EmbeddingDeploymentName, Settings.AzureOpenAI.Endpoint, Settings.AzureOpenAI.Key);
         }
         else
         {
-            builder.AddAzureOpenAIChatCompletion(Settings.ChatDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
-            builder.AddAzureOpenAITextEmbeddingGeneration(Settings.EmbeddingDeployment!, Settings.OpenAiEndpoint, Settings.OpenAiKey);
+            builder.AddOpenAIChatCompletion(Settings.OpenAI.ChatModel, Settings.OpenAI.Key);
+            builder.AddOpenAITextEmbeddingGeneration(Settings.OpenAI.EmbeddingModel, Settings.OpenAI.Key);
         }
     }
 

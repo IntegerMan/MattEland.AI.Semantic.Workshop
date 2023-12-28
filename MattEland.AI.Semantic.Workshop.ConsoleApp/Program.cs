@@ -1,11 +1,8 @@
-﻿using System;
-using Spectre.Console;
+﻿using Spectre.Console;
 using System.Text;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using MattEland.AI.Semantic.Workshop.ConsoleApp;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
-using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 
 try
 {
@@ -19,20 +16,18 @@ try
     AnsiConsole.MarkupLine("Precompiler workshop led by [SteelBlue]Matt Eland[/] and [SteelBlue]Sam Gomez[/].");
     AnsiConsole.WriteLine();
 
-    // Standard cost disclaimer
-    DisplayHelpers.DisplayBorderedMessage("Cost Disclaimer",
-                                          "[Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/]",  
-                                          Color.Red);
-
     // Load settings
-    const string EnvironmentPrefix = Part1SettingsLoader.EnvironmentPrefix;
     IConfigurationRoot config = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .AddUserSecrets(Assembly.GetExecutingAssembly())
-        .AddEnvironmentVariables(EnvironmentPrefix)
+        .AddEnvironmentVariables("CODEMASH_SK_") // if you define values in memory as environment variables, they must start with this. E.G. CODEMASH_SK_SkipCostDisclaimer or CODEMASH_SK_AzureAIServices:Key
         .Build();
 
-    MainMenu menu = new(config);
+    AppSettings settings = config.Get<AppSettings>()!;
+
+
+    // Run the menu system
+    MainMenu menu = new(settings);
     await menu.RunAsync();
 
     AnsiConsole.WriteLine("Thanks for checking out the workshop!");

@@ -2,38 +2,25 @@
 using Azure.AI.OpenAI;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
 using Spectre.Console;
-using System;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
 public class ImageDemo
 {
-    private readonly Part2Settings _settings;
     private readonly OpenAIClient _client;
 
-    public ImageDemo(Part2Settings settings)
+    public ImageDemo(AppSettings settings)
     {
-        _settings = settings;
-
-        if (string.IsNullOrEmpty(settings.OpenAiEndpoint))
-        {
-            _client = new OpenAIClient(settings.OpenAiKey);
-        }
-        else
-        {
-            Uri uri = new(settings.OpenAiEndpoint);
-            AzureKeyCredential key = new(settings.OpenAiKey);
-            _client = new OpenAIClient(uri, key);
-        }
+        // DALL-E on Azure OpenAI is not yet supported. We'll use the OpenAI API instead.
+        _client = new OpenAIClient(settings.OpenAI.Key);
     }
 
     public async Task GenerateImageAsync(string prompt)
     {
         ImageGenerationOptions options = new()
         {
-            DeploymentName = _settings.ImageDeployment,
-            //Size = ImageSize.Size256x256,
             Prompt = prompt,
+            // In the future, with Azure OpenAI, we'll be able to use the DALL-E model by specifying a deployment name here
         };
 
         try

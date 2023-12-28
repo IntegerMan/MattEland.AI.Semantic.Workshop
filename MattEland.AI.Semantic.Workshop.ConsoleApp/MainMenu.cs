@@ -3,22 +3,29 @@ using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part3;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
-using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
 public class MainMenu
 {
-    private readonly IConfiguration _config;
+    private readonly AppSettings _settings;
 
-    public MainMenu(IConfiguration config)
+    public MainMenu(AppSettings settings)
     {
-        _config = config;
+        _settings = settings;
     }
 
     public async Task RunAsync()
     {
+        // Standard cost disclaimer
+        if (!_settings.SkipCostDisclaimer)
+        {
+            DisplayHelpers.DisplayBorderedMessage("Cost Disclaimer",
+                                                  "[Yellow]This workshop uses Azure AI Services and OpenAI / Azure OpenAI. These services incur a per-call charge to work with. Nether the presenters nor the conference organizers are not responsible for any charges you incur.[/]",
+                                                  Color.Red);
+        }
+
         bool hasQuit = false;
         while (!hasQuit)
         {
@@ -32,38 +39,22 @@ public class MainMenu
             switch (choice)
             {
                 case WorkshopMenuOption.Part1:
-                    Part1Settings? p1Settings = Part1SettingsLoader.ExtractAndValidateSettings(_config);
-                    if (p1Settings is not null)
-                    {
-                        // Run the submenu for Part 1
-                        Part1Menu p1Menu = new(p1Settings);
-                        await p1Menu.RunAsync();
-                    }
+                    // Run the submenu for Part 1
+                    Part1Menu p1Menu = new(_settings.AzureAIServices);
+                    await p1Menu.RunAsync();
                     break;
                 case WorkshopMenuOption.Part2:
-                    Part2Settings? p2Settings = Part2SettingsLoader.ExtractAndValidateSettings(_config);
-                    if (p2Settings is not null)
-                    {
-                        // Run the submenu for Part 2
-                        Part2Menu p2Menu = new(p2Settings);
-                        await p2Menu.RunAsync();
-                    }
+                    // Run the submenu for Part 2
+                    Part2Menu p2Menu = new(_settings);
+                    await p2Menu.RunAsync();
                     break;
                 case WorkshopMenuOption.Part3:
-                    AppSettings? settings = SettingsLoader.ExtractAndValidateSettings(_config);
-                    if (settings is not null)
-                    {
-                        Part3Menu p3Menu = new(settings);
-                        await p3Menu.RunAsync();
-                    }
+                    Part3Menu p3Menu = new(_settings);
+                    await p3Menu.RunAsync();
                     break;
                 case WorkshopMenuOption.Part4:
-                    AppSettings? p4Settings = SettingsLoader.ExtractAndValidateSettings(_config);
-                    if (p4Settings is not null)
-                    {
-                        Part4Menu p4Menu = new(p4Settings);
-                        await p4Menu.RunAsync();
-                    }
+                    Part4Menu p4Menu = new(_settings);
+                    await p4Menu.RunAsync();
                     break;
                 case WorkshopMenuOption.Quit:
                     hasQuit = true;
