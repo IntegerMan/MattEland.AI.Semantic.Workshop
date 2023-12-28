@@ -7,6 +7,7 @@ public class AppSettings
     public required OpenAISettings OpenAI { get; init; }
     public required AzureOpenAISettings AzureOpenAI { get; init; }
     public string? SessionizeApiToken { get; init; }
+    public bool SpeakKernelResponses { get; init; }
 }
 
 public class AzureAISettings

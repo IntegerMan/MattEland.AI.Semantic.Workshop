@@ -7,6 +7,7 @@ using Spectre.Console;
 using MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.OpenMeteo;
 using System.Text;
 using Spectre.Console.Json;
+using MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
@@ -15,6 +16,8 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
 public abstract class KernelDemoBase
 {
+    private SpeechDemo _speech;
+
     protected KernelDemoBase(AppSettings settings)
     {
         Settings = settings;
@@ -40,25 +43,30 @@ public abstract class KernelDemoBase
         builder.Plugins.AddFromType<TimePlugin>();
         builder.Plugins.AddFromType<OpenMeteoPlugin>();
         builder.Plugins.AddFromType<PreferencesPlugin>();
+        builder.Plugins.AddFromType<EmbeddingSearchPlugin>();
 
         if (!string.IsNullOrEmpty(Settings.SessionizeApiToken))
         {
             builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
         }
-
-        builder.Plugins.AddFromType<EmbeddingSearchPlugin>();
-    }
+    }       
 
     public abstract Task RunAsync();
 
     protected AppSettings Settings { get; }
 
-    public void DisplayBotResponse(string reply)
+    public async Task DisplayBotResponseAsync(string reply)
     {
         DisplayHelpers.DisplayBorderedMessage("Alfred", Markup.Escape(reply), Color.SteelBlue);
         AnsiConsole.WriteLine();
 
-        // TODO: Speak this message if configured to in the settings
+        // Speak this message if configured to in the settings
+        if (Settings.AzureOpenAI.IsConfigured && Settings.SpeakKernelResponses) 
+        { 
+            _speech ??= new SpeechDemo(Settings.AzureAIServices.Region, Settings.AzureAIServices.Key, Settings.AzureAIServices.VoiceName);
+
+            await _speech.SpeakAsync(reply);
+        }
     }
 
     protected void OnFunctionInvoking(object? sender, FunctionInvokingEventArgs e)

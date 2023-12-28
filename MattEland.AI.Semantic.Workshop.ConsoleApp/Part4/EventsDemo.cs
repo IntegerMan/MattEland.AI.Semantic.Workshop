@@ -41,7 +41,7 @@ public class EventsDemo : KernelDemoBase
             FunctionResult result = await kernel.InvokePromptAsync(userText, new KernelArguments(executionSettings));
             string reply = result.ToString();
 
-            DisplayBotResponse(reply);
+            await DisplayBotResponseAsync(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

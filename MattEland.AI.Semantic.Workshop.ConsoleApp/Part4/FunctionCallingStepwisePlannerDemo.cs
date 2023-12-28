@@ -66,7 +66,7 @@ public class FunctionCallingStepwisePlannerDemo : KernelDemoBase
 
             AnsiConsole.WriteLine();
 
-            DisplayBotResponse(reply);
+            await DisplayBotResponseAsync(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

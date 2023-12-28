@@ -64,7 +64,7 @@ public class ChainedDemo : KernelDemoBase
             FunctionResult alfredResponse = await alfredFunc.InvokeAsync(kernel, new() { { "request", batmanResponse.ToString() } });
             RenderMetadata(alfredResponse.Metadata, "Alfred Response Metadata");
 
-            DisplayBotResponse(alfredResponse.ToString());
+            await DisplayBotResponseAsync(alfredResponse.ToString());
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

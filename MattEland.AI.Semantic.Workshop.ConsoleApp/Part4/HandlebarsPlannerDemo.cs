@@ -41,7 +41,7 @@ public class HandlebarsPlannerDemo : KernelDemoBase
 
             string reply = await plan.InvokeAsync(kernel);
 
-            DisplayBotResponse(reply);
+            await DisplayBotResponseAsync(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();

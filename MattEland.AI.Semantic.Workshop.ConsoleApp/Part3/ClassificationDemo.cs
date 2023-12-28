@@ -81,7 +81,7 @@ public class ClassificationDemo : KernelDemoBase
 
             string reply = response.ToString();
 
-            DisplayBotResponse(reply);
+            await DisplayBotResponseAsync(reply);
 
             keepChatting = AnsiConsole.Confirm("Keep chatting?", true);
             AnsiConsole.WriteLine();
