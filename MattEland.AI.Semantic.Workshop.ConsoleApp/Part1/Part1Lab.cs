@@ -28,6 +28,8 @@ public class Part1Lab
 
         // If you get stuck, reach out for help, or look at Part1LabSolution.cs for a working solution.
 
+        AnsiConsole.MarkupLine("[Yellow]Replace this with your implementation of this lab[/]");
+
         // Recognize speech
         AnsiConsole.MarkupLine("[Yellow]Speak your sentence to be analyzed[/]");
 
@@ -44,5 +46,7 @@ public class Part1Lab
 
         // EXTRA CREDIT: Add error handling for the speech recognition, text analysis, and speech synthesizer as needed.
         // EXTRA CREDIT: Try using sentiment analysis to generate different types of responses based on the overall sentiment.
+
+        await Task.CompletedTask; // Remove this line once you have an await keyword in your code. This just suppresses a warning from no async operations
     }
 }

@@ -58,8 +58,11 @@ public static class DisplayHelpers
         AnsiConsole.Write(image);
     }
 
-    public static async Task DisplayImageAsync(this Uri imageUri)
+    public static async Task DisplayImageAsync(this Uri? imageUri)
     {
+        if (imageUri is null)
+            return;
+
         using HttpClient webClient = new();
         using Stream stream = await webClient.GetStreamAsync(imageUri);
 

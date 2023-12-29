@@ -16,7 +16,7 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp;
 
 public abstract class KernelDemoBase
 {
-    private SpeechDemo _speech;
+    private SpeechDemo? _speech;
 
     protected KernelDemoBase(AppSettings settings)
     {

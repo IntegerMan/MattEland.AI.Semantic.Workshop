@@ -7,11 +7,11 @@ using Spectre.Console;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part2;
 
-public class Part2Lab
+public class Part2LabSolution
 {
     private readonly AppSettings _settings;
 
-    public Part2Lab(AppSettings settings)
+    public Part2LabSolution(AppSettings settings)
     {
         _settings = settings;
     }
@@ -22,39 +22,45 @@ public class Part2Lab
         // You'll then incorporate this caption into a prompt to generate a new image using DALL-E.
         // This will effectively let you generate new images based on what an AI model sees in an image.
 
-        // If you get stuck, reach out for help, or look at Part2LabSolution.cs for a working solution.
-
-        AnsiConsole.MarkupLine("[Yellow]Replace this with your implementation of this lab[/]");
-
         // Replace this with your own image if you want
         string imagePath = "https://lh3.googleusercontent.com/pw/ABLVV84QNUe_lPC-28or7JFEoYvq6M7npX-rVJceV_WbJ8VBd9nymn25sa2WhwpM2JJ4EhbOAhK3XpZqZpmrTI00r2u1bv4EBega7BBdMO2-3ztuhM0a0Ydm7SobNjIGmr6Ayqwz9eAY415Cvs7W03Rh2C_gtw=w1232-h924-s-no?authuser=0";
-        Uri imageUri = new(imagePath);
+        Uri imageUri = new Uri(imagePath);
 
         AnsiConsole.MarkupLine($"[Yellow]Image to Analyze[/]");
         await DisplayHelpers.DisplayImageAsync(imageUri);
 
         // Analyze the image using Azure AI Services to generate a caption
+        AzureKeyCredential credential = new(_settings.AzureAIServices.Key);
+        VisionServiceOptions serviceOptions = new(_settings.AzureAIServices.Endpoint, credential);
+        using VisionSource source = VisionSource.FromUrl(imageUri);
 
-        // Hint: You'll need an AzureKeyCredential, VisionServiceOptions, VisionSource, ImageAnalysisOptions, and ImageAnalyzer her
-        // e
-        string caption = ""; // Replace with something from Azure here
+        ImageAnalysisOptions analysisOptions = new()
+        {
+            GenderNeutralCaption = true,
+            Language = "en",
+            Features = ImageAnalysisFeature.Caption
+        };
+
+        using ImageAnalyzer client = new(serviceOptions, source, analysisOptions);
+
+        ImageAnalysisResult captionResult = await client.AnalyzeAsync();
 
         // Display the caption
-        AnsiConsole.MarkupLine($"[Yellow]Caption:[/] {Markup.Escape(caption)}");
+        AnsiConsole.MarkupLine($"[Yellow]Caption:[/] {Markup.Escape(captionResult.Caption.Content)}");
 
         // Use the caption as a prompt for DALL-E to generate a new image
+        OpenAIClient dalleClient = new(_settings.OpenAI.Key);
 
-        // Hint: You'll need an OpenAIClient and ImageGenerationOptions here
+        ImageGenerationOptions options = new()
+        {
+            Prompt = captionResult.Caption.Content,
+        };
 
-        Uri? generatedUrl = null; // Replace with something from OpenAI here
+        Response<ImageGenerations> imageResult = await dalleClient.GetImageGenerationsAsync(options);
+        Uri generatedUrl = imageResult.Value.Data.First().Url;
 
         // Display the generated image
         AnsiConsole.MarkupLine($"[Yellow]Generated Image[/]");
         await DisplayHelpers.DisplayImageAsync(generatedUrl);
-
-        // EXTRA CREDIT:
-        // Try adding in more context beyond just the caption. Perhaps including tags or detected objects.
-        // Try adding in a prefix suffix to your prompt to customize the style for example "An oil painting of {caption}"
-        // If you finish early, try using OpenAI to customize your image prompt so the flow goes from Azure AI Services analyzing the image to OpenAI customizing the prompt to DALL-E generating an image.
     }
 }
