@@ -17,7 +17,7 @@ public class LargeLanguageModelDemo
 
     public LargeLanguageModelDemo(AppSettings settings)
     {
-        bool useAzureOpenAI = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAI = settings.AzureOpenAI.IsConfigured;
 
         if (!useAzureOpenAI)
         {
@@ -35,10 +35,10 @@ public class LargeLanguageModelDemo
 
     public async Task<string?> GetTextCompletionAsync(string prompt)
     {
-        bool useAzureOpenAI = !string.IsNullOrEmpty(_settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAI = _settings.AzureOpenAI.IsConfigured;
         string deployment = useAzureOpenAI 
             ? _settings.AzureOpenAI.TextDeploymentName 
-            : _settings.OpenAI.TextModel; // TODO: This may not work. Verify
+            : _settings.OpenAI.TextModel;
 
         CompletionsOptions options = new()
         {

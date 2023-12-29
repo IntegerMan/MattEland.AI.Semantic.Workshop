@@ -25,7 +25,7 @@ public abstract class KernelDemoBase
 
     protected void AddLargeLanguageModelIntegration(IKernelBuilder builder)
     {
-        bool useAzureOpenAI = !string.IsNullOrEmpty(Settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAI = Settings.AzureOpenAI.IsConfigured;
         if (useAzureOpenAI)
         {
             builder.AddAzureOpenAIChatCompletion(Settings.AzureOpenAI.ChatDeploymentName, Settings.AzureOpenAI.Endpoint, Settings.AzureOpenAI.Key);

@@ -11,7 +11,7 @@ public class ChatDemo
 
     public ChatDemo(AppSettings settings, string systemPrompt)
     {
-        bool useAzureOpenAi = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAi = settings.AzureOpenAI.IsConfigured;
         string deploymentName = useAzureOpenAi 
             ? settings.AzureOpenAI.ChatDeploymentName 
             : settings.OpenAI.ChatModel;

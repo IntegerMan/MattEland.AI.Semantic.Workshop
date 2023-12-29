@@ -23,7 +23,7 @@ public class AzureAISettings
 public class OpenAISettings
 {
     public required string Key { get; init; }
-    public required string TextModel { get; init; } = "gpt-4";
+    public required string TextModel { get; init; } = "gpt-3.5-turbo-instruct";
     public required string ChatModel { get; init; } = "gpt-4";
     public required string EmbeddingModel { get; init; } = "text-embedding-ada-002";
     public required string ImageModel { get; init; } = "dall-e-3";
@@ -40,5 +40,7 @@ public class AzureOpenAISettings
     public required string EmbeddingDeploymentName { get; init; }
     // Image deployments doesn't seem to be available at the moment, sadly.
 
-    public bool IsConfigured => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(TextDeploymentName) && !string.IsNullOrEmpty(ChatDeploymentName) && !string.IsNullOrEmpty(EmbeddingDeploymentName);
+    public bool IsDisabled { get; init; }
+
+    public bool IsConfigured => !IsDisabled && !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(TextDeploymentName) && !string.IsNullOrEmpty(ChatDeploymentName) && !string.IsNullOrEmpty(EmbeddingDeploymentName);
 }

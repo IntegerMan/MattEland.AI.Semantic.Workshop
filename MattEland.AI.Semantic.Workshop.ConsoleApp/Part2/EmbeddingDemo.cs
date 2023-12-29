@@ -11,7 +11,7 @@ public class EmbeddingDemo
 
     public EmbeddingDemo(AppSettings settings)
     {
-        bool useAzureOpenAI = !string.IsNullOrEmpty(settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAI = settings.AzureOpenAI.IsConfigured;
 
         if (!useAzureOpenAI)
         {
@@ -29,10 +29,10 @@ public class EmbeddingDemo
 
     public async Task<float[]> GetEmbeddingsAsync(string prompt)
     {
-        bool useAzureOpenAI = !string.IsNullOrEmpty(_settings.AzureOpenAI.Endpoint);
+        bool useAzureOpenAI = _settings.AzureOpenAI.IsConfigured;
         string deployment = useAzureOpenAI 
             ? _settings.AzureOpenAI.EmbeddingDeploymentName 
-            : _settings.OpenAI.EmbeddingModel; // TODO: This may not be available. Test this!
+            : _settings.OpenAI.EmbeddingModel;
 
         EmbeddingsOptions options = new()
         {

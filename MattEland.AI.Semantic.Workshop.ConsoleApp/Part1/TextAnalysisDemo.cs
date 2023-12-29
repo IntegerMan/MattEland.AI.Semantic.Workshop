@@ -271,8 +271,6 @@ public class TextAnalysisDemo
         foreach (HealthcareEntity entity in healthcareEntityResult.Entities.DistinctBy(e => e.Text))
         {
             sb.AppendLine($"- [Yellow]{entity.Text}:[/] in category [SteelBlue]{entity.Category}[/] with {entity.ConfidenceScore:P} confidence (offset {entity.Offset})");
-
-            // TODO: Investigate entity.Assertion and entity.DataSources
         }
 
         DisplayHelpers.DisplayBorderedMessage("Healthcare Entities", sb.ToString());

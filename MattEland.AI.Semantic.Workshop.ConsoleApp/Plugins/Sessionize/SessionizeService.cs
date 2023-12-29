@@ -10,7 +10,7 @@ public class SessionizeService : IDisposable
     public SessionizeService(string apiToken)
     {
         _apiToken = apiToken;
-        _client = new HttpClient(); // TODO: Use IHttpClientFactory
+        _client = new HttpClient(); // This would be better if you could pass it a HttpClientFactory
     }
 
     public async Task<IEnumerable<Speaker>> GetSpeakerEntriesAsync()
