@@ -9,11 +9,11 @@ using Azure.AI.TextAnalytics;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part1;
 
-public class Part1Lab
+public class Part1LabSolution
 {
     private readonly AzureAISettings _settings;
 
-    public Part1Lab(AzureAISettings settings)
+    public Part1LabSolution(AzureAISettings settings)
     {
         _settings = settings;
     }
@@ -24,25 +24,30 @@ public class Part1Lab
         // It's up to you what aspects of Azure AI Language you use, but key phrase extraction, abstractive summarization, and sentiment analysis are good ideas to consider.        
         // You should need to create a speech client as well as a language client in order to accomplish this task. Use values from _settings to accomplish this.
 
-        // HINT: You will need to create a SpeechConfig, SpeechRecognizer, SpeechSynthesizer, and TextAnalyticsClient.
-
-        // If you get stuck, reach out for help, or look at Part1LabSolution.cs for a working solution.
-
         // Recognize speech
+        SpeechConfig speechConfig = SpeechConfig.FromSubscription(_settings.Key, _settings.Region);
+        speechConfig.SpeechSynthesisVoiceName = _settings.VoiceName;
+        SpeechRecognizer recognizer = new(speechConfig);
+
         AnsiConsole.MarkupLine("[Yellow]Speak your sentence to be analyzed[/]");
 
-        string text = ""; // Replace this with the results from Azure
+        SpeechRecognitionResult result = await recognizer.RecognizeOnceAsync();
+
+        string text = result.Text;
         AnsiConsole.MarkupLine($"[Yellow]Recognized:[/] {Markup.Escape(text)}");
 
         // Extract key phrases
+        Uri endpoint = new(_settings.Endpoint);
+        TextAnalyticsClient textClient = new(endpoint, new AzureKeyCredential(_settings.Key));
 
-        // HINT: You may choose to use a different method than AnalyzeActions if you only want one type of analysis. For example, ExtractKeyPhrasesAsync
+        Response<KeyPhraseCollection> response = await textClient.ExtractKeyPhrasesAsync(text);
+        KeyPhraseCollection keyPhrases = response.Value;
 
         // Speak the key phrases
-        string voicePrompt = $"The key phrases in your sentence are: "; // Add the key phrases here or whatever else you want to highlight
+        string voicePrompt = $"The key phrases in your sentence are: {string.Join(", ", keyPhrases)}";
         AnsiConsole.MarkupLine($"[Yellow]Speaking:[/] {Markup.Escape(voicePrompt)}");
 
-        // EXTRA CREDIT: Add error handling for the speech recognition, text analysis, and speech synthesizer as needed.
-        // EXTRA CREDIT: Try using sentiment analysis to generate different types of responses based on the overall sentiment.
+        SpeechSynthesizer synthesizer = new(speechConfig);
+        await synthesizer.SpeakTextAsync(voicePrompt);
     }
 }
