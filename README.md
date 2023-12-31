@@ -1,5 +1,13 @@
 # Azure AI and Semantic Kernel Workshop
-Workshop content for CodeMash 2024
+Workshop content for CodeMash 2024.
+
+**In order to follow along with the workshop you will need to do the following things:**
+
+- Install .NET 8 and Visual Studio 2022 v17.8 or higher
+- Create an Azure account, an **Azure AI Services** resource, and get its **key** and **endpoint**.
+- Create an OpenAI API account, add a balance to it, and **get an API key** for that account.
+
+Some of these activities will take time to complete and should be done before the workshop.
 
 ## Prerequisites
 
