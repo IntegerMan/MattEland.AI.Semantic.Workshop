@@ -20,7 +20,7 @@ try
     IConfigurationRoot config = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .AddUserSecrets(Assembly.GetExecutingAssembly())
-        .AddEnvironmentVariables("NAN") // if you define values in memory as environment variables, they must start with this. E.G. CODEMASH_SK_SkipCostDisclaimer or CODEMASH_SK_AzureAIServices:Key
+        .AddEnvironmentVariables("CODEMASH_SK_") // if you define values in memory as environment variables, they must start with this. E.G. CODEMASH_SK_SkipCostDisclaimer or CODEMASH_SK_AzureAIServices:Key
         .Build();
 
     AppSettings settings = config.Get<AppSettings>()!;
