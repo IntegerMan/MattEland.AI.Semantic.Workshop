@@ -174,7 +174,7 @@ public class ImageAnalysisDemo
 
         ImageAnalysisOptions analysisOptions = new()
         {
-            SegmentationMode = ImageSegmentationMode.ForegroundMatting,
+            SegmentationMode = ImageSegmentationMode.BackgroundRemoval,
             Features = ImageAnalysisFeature.None
         };
 
