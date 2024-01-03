@@ -114,7 +114,7 @@ Walk through setting up an API key in OpenAI and adding a balance, then stressin
 
 Dismiss for break and encouraging folks who haven't set up OpenAI to do so over break and to reach out for help if they need it.
 
-### === BREAK 1 ==================================================================================
+### === BREAK 1 ======================================================
 9:30 - 9:45
 
 ### Guided Exploration: OpenAI
@@ -175,7 +175,7 @@ Finally, we'll talk about chaining together two different semantic functions to 
 
 This sets us up well to talk about the need for plugins and plans, which we'll tease before the final break.
 
-### === BREAK 2 ==================================================================================
+### === BREAK 2 ======================================================
 11:00 - 11:10
 
 ## Part 4: Semantic Kernel Plugins and Planners
@@ -198,7 +198,8 @@ We *may* cover the Handlebars planner, but I'll likely mention it and skip over 
 #### Function-Calling Stepwise Planner
 We'll talk about the experimental function-calling stepwise planner and how it iteratively calls to the LLM to see what the next step it should do is.
 
-Depending on time, I'll likely talk more about scalability needs and the ability to opt-in or opt-out different plugins from SK based on the user's text as well as where I think personality belongs with planners in the picture. This will likely involve one or two small new examples I'll write before the workshop.
+#### Excluding functions from plans
+We talk about scalability and Microsoft's current recommendation to manually exclude functions from plans.
 
 ### LAB 3: Build your own plugins
 11:25 - 11:50

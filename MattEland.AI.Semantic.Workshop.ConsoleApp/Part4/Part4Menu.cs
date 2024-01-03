@@ -29,6 +29,7 @@ public class Part4Menu
                 Part4MenuOptions.KernelEvents => new EventsDemo(_settings),
                 Part4MenuOptions.HandlebarsPlanner => new HandlebarsPlannerDemo(_settings),
                 Part4MenuOptions.FunctionCallingPlanner => new FunctionCallingStepwisePlannerDemo(_settings),
+                Part4MenuOptions.PlannerFilteringDemo => new PlannerFilteringDemo(_settings),
                 Part4MenuOptions.Lab => new Part4Lab(_settings),
                 _ => null
             };

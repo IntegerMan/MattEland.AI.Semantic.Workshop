@@ -45,9 +45,9 @@ public abstract class KernelDemoBase
         builder.Plugins.AddFromType<PreferencesPlugin>();
         builder.Plugins.AddFromType<EmbeddingSearchPlugin>();
 
-        if (!string.IsNullOrEmpty(Settings.SessionizeApiToken))
+        if (!string.IsNullOrEmpty(Settings.SessionizeToken))
         {
-            builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeApiToken));
+            builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeToken));
         }
     }       
 

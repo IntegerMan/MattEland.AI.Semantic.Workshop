@@ -12,6 +12,8 @@ public enum Part4MenuOptions
     HandlebarsPlanner,
     [Description("Chat using the Function-Calling Stepwise Planner")]
     FunctionCallingPlanner,
+    [Description("Filtering functions from the planner")]
+    PlannerFilteringDemo,
     [Description("Lab 3: Build your own plugin(s)")]
     Lab,
     [Description("Go back")]
