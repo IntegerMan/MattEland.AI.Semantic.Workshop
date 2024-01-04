@@ -77,7 +77,6 @@ Open the `CodeMashAIWorkshop.sln` solution in Visual Studio and find the `appset
 
 ```json
 {
-  "SkipCostDisclaimer": false,
   // WARNING: These keys should be kept secret. Do not share them in public or commit them to source control.
   // SERIOUSLY: If you do commit keys to source control, others can use them to incur charges on your behalf. Revoke any shared keys immediately!
   // NOTE: Using Azure and OpenAI will result in charges to your Azure and/or OpenAI accounts.
@@ -90,16 +89,6 @@ Open the `CodeMashAIWorkshop.sln` solution in Visual Studio and find the `appset
     "EmbeddingModel": "text-embedding-ada-002",
     "ImageModel": "dall-e-3"
   },
-  "AzureOpenAI": {
-    "IsDisabled": false, // This disables Azure OpenAI services when you want to use OpenAI directly. Otherwise, Azure OpenAI will be used if both are configured.
-    "Key": "",
-    "Endpoint": "",
-    // You will need to create deployments of these in Azure in Azure OpenAI Studio's Deployments blade
-    "TextDeploymentName": "",
-    "ChatDeploymentName": "",
-    "EmbeddingDeploymentName": "",
-    "ImageDeploymentName": "dall-e-3" // Not yet available
-  },
   "AzureAIServices": {
     // These values can be found on your Keys and Endpoint blade in your Azure AI Services resource
     "Key": "",
@@ -107,13 +96,7 @@ Open the `CodeMashAIWorkshop.sln` solution in Visual Studio and find the `appset
     "Region": "eastus",
     // More voice options at https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt#supported-languages"
     "VoiceName": "en-GB-AlfieNeural"
-  },
-
-  // This is an event identifier for a sessionize event's feed that has been configured to return JSON. This is a non-sensitive value
-  "SessionizeToken": "112yvhui",
-
-  // Governs whether part 3 and 4 of the lab should speak bot responses. Only turn this on if you have headphones or hate those near you in the workshop.
-  "SpeakKernelResponses":  true
+  }
 }
 ```
 

@@ -151,6 +151,12 @@
   <data name="SemanticKernelAnnouncement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SemanticKernelAnnouncement.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="SessionizeSessions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SessionizeSessions.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SessionizeSpeakers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SessionizeSpeakers.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="TextFewShot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TextFewShot.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

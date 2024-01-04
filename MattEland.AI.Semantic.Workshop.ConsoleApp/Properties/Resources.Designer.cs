@@ -210,6 +210,45 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [
+        ///    {
+        ///        &quot;groupId&quot;: null,
+        ///        &quot;groupName&quot;: &quot;All&quot;,
+        ///        &quot;sessions&quot;: [
+        ///            {
+        ///                &quot;questionAnswers&quot;: [],
+        ///                &quot;id&quot;: &quot;5d259231-72f7-46d5-88c3-920767952ee1&quot;,
+        ///                &quot;title&quot;: &quot;Breakfast (Tuesday)&quot;,
+        ///                &quot;description&quot;: null,
+        ///                &quot;startsAt&quot;: &quot;2024-01-09T12:00:00Z&quot;,
+        ///                &quot;endsAt&quot;: &quot;2024-01-09T13:00:00Z&quot;,
+        ///                &quot;isServiceSession&quot;: true,
+        ///                &quot;isPlenumSession&quot;: false,
+        ///                &quot;speakers&quot;: [],
+        ///            [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SessionizeSessions {
+            get {
+                return ResourceManager.GetString("SessionizeSessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [
+        ///    {
+        ///        &quot;id&quot;: &quot;e6551495-056e-429e-8dbf-004c0d88ec90&quot;,
+        ///        &quot;firstName&quot;: &quot; Nadine&quot;,
+        ///        &quot;lastName&quot;: &quot;Farah&quot;,
+        ///        &quot;fullName&quot;: &quot;Nadine Farah&quot;,
+        ///        &quot;bio&quot;: &quot;Nadine Farah is leading Onehouse&apos;s developer initiatives and an Apache Hudi contributor. She&apos;s passionate about bridging engineering, product &amp; marketing to help drive product adoption. She previously led Rockset&apos;s developer initiatives, focusing on building technical content to drive developer adoption for real-time analytics. At Bose [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SessionizeSpeakers {
+            get {
+                return ResourceManager.GetString("SessionizeSpeakers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are a bot designed to generate workshop content outlines.
         ///
         ///User: Generate a workshop outline covering AI in .NET with Azure AI Services, OpenAI, and Semantic Kernel

@@ -45,10 +45,8 @@ public abstract class KernelDemoBase
         builder.Plugins.AddFromType<PreferencesPlugin>();
         builder.Plugins.AddFromType<EmbeddingSearchPlugin>();
 
-        if (!string.IsNullOrEmpty(Settings.SessionizeToken))
-        {
-            builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeToken));
-        }
+        // Add the sessionize plugin using the token from settings. If this is not set, hard-coded data will be used instead of live data
+        builder.Plugins.AddFromObject(new SessionizePlugin(Settings.SessionizeToken));
     }       
 
     public abstract Task RunAsync();

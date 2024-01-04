@@ -1,4 +1,5 @@
-﻿using Microsoft.SemanticKernel;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Properties;
+using Microsoft.SemanticKernel;
 using System.ComponentModel;
 using System.Text;
 
@@ -7,35 +8,25 @@ namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
 public class SessionizePlugin
 {
     private readonly SessionizeService _sessionize;
-    private readonly List<Session> _sessions = new();
-    private readonly List<Speaker> _speakers = new();
 
-    public SessionizePlugin(string apiToken)
+    public SessionizePlugin(string? apiToken)
     {
-        _sessionize = new SessionizeService(apiToken);
-    }
-
-    private async Task<List<Session>> GetSessionsAsync()
-    {
-        if (_sessions.Count <= 0)
+        // This is built to work either with API calls or by using hard-coded JSON. The JSON is particularly helpful for conference WiFi and to prevent DDOSing Sessionize
+        if (!string.IsNullOrEmpty(apiToken))
         {
-            IEnumerable<Session> sessions = await _sessionize.GetSessionsAsync();
-            _sessions.AddRange(sessions);
-        }
-
-        return _sessions;
-    }
-
-    private async Task<List<Speaker>> GetSpeakersAsync()
-    {
-        if (_speakers.Count <= 0)
+            _sessionize = new SessionizeService(apiToken);
+        } 
+        else
         {
-            IEnumerable<Speaker> speakers = await _sessionize.GetSpeakerEntriesAsync();
-            _speakers.AddRange(speakers);
+            _sessionize = new SessionizeService(Resources.SessionizeSessions, Resources.SessionizeSpeakers);
         }
-
-        return _speakers;
     }
+
+    private async Task<IEnumerable<Session>> GetSessionsAsync() 
+        => await _sessionize.GetSessionsAsync();
+
+    private async Task<IEnumerable<Speaker>> GetSpeakersAsync() 
+        => await _sessionize.GetSpeakerEntriesAsync();
 
     [KernelFunction, Description("Gets the names of all speakers for the conference")]
     public async Task<string> GetAllSpeakerNames()
@@ -70,6 +61,7 @@ public class SessionizePlugin
             sessions.OrderBy(s => s.StartsAt).ThenBy(s => s.Title).Select(s => s.Title));
     }
 
+    /*
     [KernelFunction, Description("Gets the unique dates of the conference")]
     public async Task<string> GetAllSessionDates()
     {
@@ -78,7 +70,9 @@ public class SessionizePlugin
 
         return string.Join(", ", dates.Select(d => d.ToShortDateString()));
     }
+    */
 
+    /* Disabling to reduce demo complexity
     [KernelFunction, Description("Gets the unique session start times")]
     public async Task<string> GetAllSessionStartTimes()
     {
@@ -87,7 +81,9 @@ public class SessionizePlugin
 
         return string.Join(", ", dates.Select(d => d.ToString("f")));
     }
+    */
 
+    /*
     [KernelFunction, Description("Gets the unique session start times for a specific day of the conference")]
     public async Task<string> GetAllSessionStartTimesForSpecificDate(
         [Description("The date to retrieve session start times for. For example, 1/9/24")] string date)
@@ -102,7 +98,23 @@ public class SessionizePlugin
 
         return string.Join(", ", dates.Select(d => d.ToString("f")));
     }
+    */
 
+
+    [KernelFunction, Description("Gets the session names for a specific day of the conference")]
+    public async Task<string> GetAllSessionNamesForSpecificDate(
+        [Description("The date to retrieve sessions for. For example, 1/9/24")] string date)
+    {
+        if (!DateTime.TryParse(date, out DateTime dateTime))
+        {
+            return $"{date} is not a valid date";
+        }
+
+        IEnumerable<Session> sessions = await GetSessionsAsync();
+        return string.Join(", ", sessions.Where(s => s.StartsAt.Date == dateTime.Date).Select(s => s.Title));
+    }
+
+    /*
     [KernelFunction, Description("Gets the titles of all upcoming sessions")]
     public async Task<string> GetUpcomingSessionTitles()
     {
@@ -124,8 +136,9 @@ public class SessionizePlugin
 
         return $"Completed sessions are {string.Join(", ", sessions.OrderBy(s => s.StartsAt).ThenBy(s => s.Title).Select(s => s.Title))}";
     }
+    */
 
-    [KernelFunction, Description("Gets the title of all sessions in a specific room")]
+    [KernelFunction, Description("Gets the name of all sessions in a specific room")]
     public async Task<string> GetSessionNamesByRoom([Description("The name of the room. For example, River A")] string room)
     {
         IEnumerable<Session> sessions = (await GetSessionsAsync())
@@ -174,6 +187,23 @@ public class SessionizePlugin
         return BuildSessionString(session);
     }
 
+    [KernelFunction, Description("Gets speaker details by their full name")]
+    public async Task<string> GetSpeakerDetails([Description("The full name of the speaker")] string fullName)
+    {
+        IEnumerable<Speaker> speakers = await GetSpeakersAsync();
+        Speaker? speaker = speakers.FirstOrDefault(s => string.Equals(s.FullName, fullName, StringComparison.OrdinalIgnoreCase));
+
+        if (speaker == null)
+        {
+            return $"Could not find a speaker named '{fullName}'";
+        }
+
+        return BuildSpeakerString(speaker);
+    }
+
+    private static string BuildSpeakerString(Speaker speaker)
+        => $"{speaker.FullName} is speaking on the following sessions: {string.Join(", ", speaker.Sessions.Select(s => s.Name))}. Their bio follows: \r\n{speaker.Bio}";
+
     private static string BuildSessionString(Session session)
     {
         StringBuilder sb = new();
@@ -202,23 +232,6 @@ public class SessionizePlugin
 
         return sb.ToString();
     }
-
-    [KernelFunction, Description("Gets speaker details by their full name")]
-    public async Task<string> GetSpeakerDetails([Description("The full name of the speaker")] string fullName)
-    {
-        IEnumerable<Speaker> speakers = await GetSpeakersAsync();
-        Speaker? speaker = speakers.FirstOrDefault(s => string.Equals(s.FullName, fullName, StringComparison.OrdinalIgnoreCase));
-
-        if (speaker == null)
-        {
-            return $"Could not find a speaker named '{fullName}'";
-        }
-
-        return BuildSpeakerString(speaker);
-    }
-
-    private static string BuildSpeakerString(Speaker speaker)
-        => $"{speaker.FullName} is speaking on the following sessions: {string.Join(", ", speaker.Sessions.Select(s => s.Name))}. Their bio follows: \r\n{speaker.Bio}";
 
     public void Dispose()
     {
