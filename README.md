@@ -14,6 +14,7 @@ Some of these activities will take time to complete and should be done before th
 - [Install the .NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) 
 	- You must be on v17.8.0 or higher to use .NET 8
+    - Note: Rider or VS Code _should_ work as well, but the workshop was developed and tested for Visual Studio 2022 which needs v17.8+ for .NET 8 support
 - Clone the [git repository](https://github.com/IntegerMan/MattEland.AI.Semantic.Workshop) locally
 	- Be sure to pull the latest changes before the workshop
 

@@ -70,13 +70,22 @@ public abstract class KernelDemoBase
     protected void OnFunctionInvoking(object? sender, FunctionInvokingEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Function Invoking:[/] {e.Function.Name}");
+        if (e.Arguments.Any())
+        {
+            AnsiConsole.MarkupLine($"[Yellow]   Arguments:[/] {Markup.Escape(string.Join(", ", e.Arguments.Select(a => $"{a.Key}:{a.Value}")))}");
+        }
 
         RenderMetadata(e.Metadata, $"{e.Function.Name} Invoking Metadata");
     }
 
     protected void OnFunctionInvoked(object? sender, FunctionInvokedEventArgs e)
     {
-        AnsiConsole.MarkupLine($"[Yellow]Function Invoked:[/] {Markup.Escape(e.Function.Name)}, result: {Markup.Escape(e.Result.ToString())}");
+        AnsiConsole.MarkupLine($"[Yellow]Function Invoked:[/] {Markup.Escape(e.Function.Name)}");
+        if (e.Arguments.Any())
+        {
+            AnsiConsole.MarkupLine($"[Yellow]   Arguments:[/] {Markup.Escape(string.Join(", ", e.Arguments.Select(a => $"{a.Key}:{a.Value}")))}");
+        }
+        AnsiConsole.MarkupLine($"[Yellow]   Result:[/] {Markup.Escape(e.Result.ToString())}");
 
         RenderMetadata(e.Metadata, $"{e.Function.Name} Invoked Metadata");
     }
@@ -84,6 +93,10 @@ public abstract class KernelDemoBase
     protected void OnPromptRendering(object? sender, PromptRenderingEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Prompt Rendering:[/] {Markup.Escape(e.Function.Name)}");
+        if (e.Arguments.Any())
+        {
+            AnsiConsole.MarkupLine($"[Yellow]   Arguments:[/] {Markup.Escape(string.Join(", ", e.Arguments.Select(a => $"{a.Key}:{a.Value}")))}");
+        }
 
         RenderMetadata(e.Metadata, $"{e.Function.Name} Rendering Metadata");
     }
@@ -91,6 +104,10 @@ public abstract class KernelDemoBase
     protected void OnPromptRendered(object? sender, PromptRenderedEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Prompt Rendered:[/] {Markup.Escape(e.Function.Name)}");
+        if (e.Arguments.Any())
+        {
+            AnsiConsole.MarkupLine($"[Yellow]   Arguments:[/] {Markup.Escape(string.Join(", ", e.Arguments.Select(a => $"{a.Key}:{a.Value}")))}");
+        }
 
         // Some responses have a [FUNCTIONS] section that we want to render as JSON. This represents the JSON contents of our available functions and is more readable using Spectre's JSON rendering
         int functionsIndex = e.RenderedPrompt.IndexOf("[FUNCTIONS]", StringComparison.Ordinal);

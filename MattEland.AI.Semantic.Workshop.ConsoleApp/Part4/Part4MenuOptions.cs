@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using MattEland.AI.Semantic.Workshop.ConsoleApp.Helpers;
+using System.ComponentModel;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Part4;
 
@@ -8,7 +9,7 @@ public enum Part4MenuOptions
     PluginDemo,
     [Description("Observability with Kernel Events")]
     KernelEvents,
-    [Description("Chat using the Handlebars Planner")]
+    [Description("Chat using the Handlebars Planner"), Hidden(Reason = "I have literally never seen HandlebarsPlanner not error")]
     HandlebarsPlanner,
     [Description("Chat using the Function-Calling Stepwise Planner")]
     FunctionCallingPlanner,

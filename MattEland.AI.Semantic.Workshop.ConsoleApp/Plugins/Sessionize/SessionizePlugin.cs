@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using System.ComponentModel;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MattEland.AI.Semantic.Workshop.ConsoleApp.Plugins.Sessionize;
 
@@ -47,7 +48,7 @@ public class SessionizePlugin
     [KernelFunction, Description("Gets the titles of all sessions active at a specified time")]
     public async Task<string> GetAllActiveSessionNames([Description("The date and time of the session")] string dateTime)
     {
-        if (!DateTime.TryParse(dateTime, out DateTime activeDateTime))
+        if (!TryParseDate(dateTime, out DateTime activeDateTime))
         {
             return $"{dateTime} is not a valid date / time";
         }
@@ -105,13 +106,52 @@ public class SessionizePlugin
     public async Task<string> GetAllSessionNamesForSpecificDate(
         [Description("The date to retrieve sessions for. For example, 1/9/24")] string date)
     {
-        if (!DateTime.TryParse(date, out DateTime dateTime))
+        if (!TryParseDate(date, out DateTime dateTime))
         {
             return $"{date} is not a valid date";
         }
 
         IEnumerable<Session> sessions = await GetSessionsAsync();
-        return string.Join(", ", sessions.Where(s => s.StartsAt.Date == dateTime.Date).Select(s => s.Title));
+        IEnumerable<Session> matchingSessions = sessions.Where(s => s.StartsAt.Date == dateTime.Date);
+
+        if (!matchingSessions.Any())
+        {
+            if (sessions.Any(s => s.StartsAt.Date > dateTime.Date))
+            {
+                return $"There are no sessions on {dateTime.ToShortDateString()}. The next session is on {sessions.OrderBy(s => s.StartsAt).First().StartsAt.ToLongDateString()}";
+            }
+
+            return $"There are no sessions on {dateTime.ToShortDateString()}. The last session occurred on {sessions.OrderBy(s => s.StartsAt).Last().StartsAt.ToLongDateString()}";
+        }
+
+        return $"Sessions on {dateTime.ToShortDateString()} include " + string.Join(", ", matchingSessions.Select(s => s.Title));
+    }
+
+    private static bool TryParseDate(string time, out DateTime dateTime)
+    {
+        if (time.Equals("today", StringComparison.OrdinalIgnoreCase))
+        {
+            dateTime = DateTime.Today;
+            return true;
+        }
+
+        if (time.Equals("tomorrow", StringComparison.OrdinalIgnoreCase))
+        {
+            dateTime = DateTime.Today.AddDays(1);
+            return true;
+        }
+
+        if (time.Equals("yesterday", StringComparison.OrdinalIgnoreCase))
+        {
+            dateTime = DateTime.Today.AddDays(-1);
+            return true;
+        }
+
+        if (DateTime.TryParse(time, out dateTime))
+        {
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -174,7 +214,7 @@ public class SessionizePlugin
     }
 
     [KernelFunction, Description("Gets session details by a session title")]
-    public async Task<string> GetSessionDetails([Description("The title of the session")] string title)
+    public async Task<string> GetSessionDetails([Description("The name of the session")] string title)
     {
         IEnumerable<Session> sessions = await GetSessionsAsync();
         Session? session = sessions.FirstOrDefault(s => string.Equals(s.Title, title, StringComparison.OrdinalIgnoreCase));
@@ -188,7 +228,7 @@ public class SessionizePlugin
     }
 
     [KernelFunction, Description("Gets speaker details by their full name")]
-    public async Task<string> GetSpeakerDetails([Description("The full name of the speaker")] string fullName)
+    public async Task<string> GetSpeakerDetails([Description("The name of the speaker")] string fullName)
     {
         IEnumerable<Speaker> speakers = await GetSpeakersAsync();
         Speaker? speaker = speakers.FirstOrDefault(s => string.Equals(s.FullName, fullName, StringComparison.OrdinalIgnoreCase));

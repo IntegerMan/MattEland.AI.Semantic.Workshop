@@ -17,10 +17,15 @@ public class Part4Menu
         KernelDemoBase? demo = null;
         do
         {
+            IEnumerable<Part4MenuOptions> choices = Enum.GetValues(typeof(Part4MenuOptions))
+                .Cast<Part4MenuOptions>()
+                .Where(o => !o.GetType().GetField(o.ToString())!
+                    .IsDefined(typeof(HiddenAttribute), false));
+
             Part4MenuOptions choice = AnsiConsole.Prompt(new SelectionPrompt<Part4MenuOptions>()
                 .Title("What task in part 4?")
                 .HighlightStyle(Style.Parse("Orange3"))
-                .AddChoices(Enum.GetValues(typeof(Part4MenuOptions)).Cast<Part4MenuOptions>())
+                .AddChoices(choices)
                 .UseConverter(c => c.ToFriendlyName()));
 
             demo = choice switch
