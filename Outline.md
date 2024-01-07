@@ -192,9 +192,6 @@ We'll also show how you can have SK call these plugins "automagically"
 #### Observability and Kernel Events
 The prior example begs for more observability so we talk about kernel events here and the additional information and control you can get over the kernel by subscribing to these events.
 
-#### Handlebars Planner
-We *may* cover the Handlebars planner, but I'll likely mention it and skip over it because **it does not work in my experimentation with it!**
-
 #### Function-Calling Stepwise Planner
 We'll talk about the experimental function-calling stepwise planner and how it iteratively calls to the LLM to see what the next step it should do is.
 

@@ -10,7 +10,7 @@ public class SessionizePlugin
 {
     private readonly SessionizeService _sessionize;
 
-    public SessionizePlugin(string? apiToken)
+    public SessionizePlugin(string? apiToken = null)
     {
         // This is built to work either with API calls or by using hard-coded JSON. The JSON is particularly helpful for conference WiFi and to prevent DDOSing Sessionize
         if (!string.IsNullOrEmpty(apiToken))
