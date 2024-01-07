@@ -19,6 +19,8 @@ public class MainMenu
 
     public async Task RunAsync()
     {
+        DisplayConfigurationStatus();
+
         // Standard cost disclaimer
         if (!_settings.SkipCostDisclaimer)
         {
@@ -93,5 +95,36 @@ public class MainMenu
 
             AnsiConsole.WriteLine();
         }
+    }
+
+    private void DisplayConfigurationStatus()
+    {
+        // Display the Azure AI Services status
+        if (_settings.AzureAIServices.IsConfigured)
+        {
+            AnsiConsole.MarkupLine($"[Green]:check_mark_button:Azure AI Services are configured. You're ready for part 1![/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[Orange3]:yellow_square:Azure AI Services are not configured. You will not be able to do part 1 or the part 2 lab![/]");
+            DisplayHelpers.DisplayBorderedMessage("Azure AI Services not configured", Resources.AzureAIServicesNotConfiguredMessage, Color.Orange3);
+        }
+
+        // Display the OpenAI Services status
+        if (_settings.AzureOpenAI.IsConfigured && !_settings.AzureOpenAI.IsDisabled)
+        {
+            AnsiConsole.MarkupLine($"[Green]:check_mark_button:[Blue]Azure OpenAI[/] is configured. You're ready for parts 2, 3, & 4![/]");
+        }
+        else if (_settings.OpenAI.IsConfigured)
+        {
+            AnsiConsole.MarkupLine($"[Green]:check_mark_button:OpenAI is configured. You're ready for parts 2, 3, & 4![/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[Orange3]:yellow_square:OpenAI is not configured. You will not be able to do parts 2, 3, or 4![/]");
+            DisplayHelpers.DisplayBorderedMessage("OpenAI is not configured", Resources.OpenAINotConfiguredMessage, Color.Orange3);
+        }
+
+        AnsiConsole.WriteLine();
     }
 }

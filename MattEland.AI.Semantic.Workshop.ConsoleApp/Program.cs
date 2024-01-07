@@ -25,7 +25,6 @@ try
 
     AppSettings settings = config.Get<AppSettings>()!;
 
-
     // Run the menu system
     MainMenu menu = new(settings);
     await menu.RunAsync();
