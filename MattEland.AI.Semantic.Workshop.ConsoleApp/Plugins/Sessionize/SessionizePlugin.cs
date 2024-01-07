@@ -37,6 +37,7 @@ public class SessionizePlugin
         return string.Join(", ", speakers.OrderBy(s => s.FullName).Select(s => s.FullName).Distinct());
     }
 
+    /*
     [KernelFunction, Description("Gets the title of all sessions for the conference")]
     public async Task<string> GetAllSessions()
     {
@@ -44,9 +45,10 @@ public class SessionizePlugin
 
         return string.Join(", ", sessions.OrderBy(s => s.StartsAt).ThenBy(s => s.Title).Select(s => s.Title));
     }
+    */
 
     [KernelFunction, Description("Gets the titles of all sessions active at a specified time")]
-    public async Task<string> GetAllActiveSessionNames([Description("The date and time of the session")] string dateTime)
+    public async Task<string> GetSessionsOnDate([Description("The date and time of the session")] string dateTime)
     {
         if (!TryParseDate(dateTime, out DateTime activeDateTime))
         {
@@ -147,6 +149,15 @@ public class SessionizePlugin
             return true;
         }
 
+        // Handle cases like "Tuesday"
+        DayOfWeek targetDayOfWeek;
+        if (Enum.TryParse(time, out targetDayOfWeek))
+        {
+            int daysUntilTargetDay = ((int)targetDayOfWeek - (int)DateTime.Today.DayOfWeek + 7) % 7;
+            dateTime = DateTime.Today.AddDays(daysUntilTargetDay);
+            return true;
+        }
+
         if (DateTime.TryParse(time, out dateTime))
         {
             return true;
@@ -213,6 +224,7 @@ public class SessionizePlugin
         return $"{fullName}'s sessions are {string.Join(", ", sessions.OrderBy(s => s.StartsAt).ThenBy(s => s.Title).Select(s => s.Title))}";
     }
 
+    /*
     [KernelFunction, Description("Gets session details by a session title")]
     public async Task<string> GetSessionDetails([Description("The name of the session")] string title)
     {
@@ -226,6 +238,7 @@ public class SessionizePlugin
 
         return BuildSessionString(session);
     }
+    */
 
     [KernelFunction, Description("Gets speaker details by their full name")]
     public async Task<string> GetSpeakerDetails([Description("The name of the speaker")] string fullName)

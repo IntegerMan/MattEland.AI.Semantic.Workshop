@@ -81,7 +81,7 @@ public abstract class KernelDemoBase
     protected void OnFunctionInvoked(object? sender, FunctionInvokedEventArgs e)
     {
         AnsiConsole.MarkupLine($"[Yellow]Function Invoked:[/] {Markup.Escape(e.Function.Name)}");
-        if (e.Arguments.Any())
+        if (e.Arguments.Any() && !e.Function.Name.Equals("GeneratePlan", StringComparison.OrdinalIgnoreCase))
         {
             AnsiConsole.MarkupLine($"[Yellow]   Arguments:[/] {Markup.Escape(string.Join(", ", e.Arguments.Select(a => $"{a.Key}:{a.Value}")))}");
         }
