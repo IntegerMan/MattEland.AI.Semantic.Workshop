@@ -10,7 +10,7 @@ public class ChainedDemo : KernelDemoBase
     {
     }
 
-    public async override Task RunAsync()
+    public override async Task RunAsync()
     {
         IKernelBuilder builder = Kernel.CreateBuilder();
         AddLargeLanguageModelIntegration(builder);

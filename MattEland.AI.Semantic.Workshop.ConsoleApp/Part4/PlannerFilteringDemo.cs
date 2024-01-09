@@ -14,7 +14,7 @@ public class PlannerFilteringDemo : KernelDemoBase
     {
     }
 
-    public async override Task RunAsync()
+    public override async Task RunAsync()
     {
         string[] weatherStrings = ["rain", "weather", "hot", "cold", "temperature", "snow"];
         string[] conferenceStrings = ["CodeMash", "conference", "session", "talk", "speaker", "KidzMash"];
