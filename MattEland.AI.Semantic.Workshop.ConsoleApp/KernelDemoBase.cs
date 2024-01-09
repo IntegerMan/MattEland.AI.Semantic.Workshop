@@ -154,10 +154,10 @@ public abstract class KernelDemoBase
                 {
                     table.AddRow(new Text(Markup.Escape(key)), DisplayHelpers.GetTokenUsageDisplay(usage));
                 }
-                else if (value is List<ContentFilterResultsForPrompt> filterList)
+                else if (value is IEnumerable<ContentFilterResultsForPrompt> filterList)
                 {
                     // In some cases we see null results come back, so let's not even render those in the UI
-                    if (filterList.Count == 0 || filterList.First().ContentFilterResults.Sexual is null)
+                    if (filterList.Count() == 0 || filterList.First().ContentFilterResults.Sexual is null)
                     {
                         continue;
                     }

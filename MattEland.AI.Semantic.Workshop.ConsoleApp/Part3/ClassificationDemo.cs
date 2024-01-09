@@ -77,8 +77,7 @@ public class ClassificationDemo : KernelDemoBase
             }
         );
             RenderMetadata(response.Metadata, "Response Metadata");
-
-
+            
             string reply = response.ToString();
 
             await DisplayBotResponseAsync(reply);
